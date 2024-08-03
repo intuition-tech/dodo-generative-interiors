@@ -4,11 +4,17 @@ export function Pane(PARAMS) {
   // letterColor: "#000000",
   const pane = new Tweakpane.Pane()
   // pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
-  // pane.addInput(PARAMS, 'contourStepSize', {
-  //   min: 1,
-  //   max: 80,
-  //   label: 'Contour step size',
-  // })
+  pane.addInput(PARAMS, 'slicesNumber', {
+    min: 1,
+    max: 80,
+    step: 1,
+    label: 'Полоски',
+  })
+  pane.addInput(PARAMS, 'scale', {
+    min: 1,
+    max: 30,
+    label: 'Сжатие',
+  })
   // pane.addInput(PARAMS, 'contourCircleScale', {
   //   min: 0.1,
   //   max: 3,
@@ -44,11 +50,6 @@ export function Pane(PARAMS) {
   //   max: 20,
   //   label: 'Canvas scale',
   // })
-  // // pane.addInput(PARAMS, 'size', {
-  // //   x: {min: 1, max: 2048, step: 1},
-  // //   y: {min: 1, max: 2048, step: 1},
-  // //   label: 'Size',
-  // // })
   // pane.addInput(PARAMS, 'targetDist', {
   //   min: 1,
   //   max: 10000,
@@ -94,5 +95,10 @@ export function Pane(PARAMS) {
   // //     body.slop = PARAMS.slop
   // //   })
   // // })
+  pane.addInput(PARAMS, 'size', {
+    x: {min: 1, max: 2048, step: 1},
+    y: {min: 1, max: 2048, step: 1},
+    label: 'Size',
+  })
   return pane
 }
