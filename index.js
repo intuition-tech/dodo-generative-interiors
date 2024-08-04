@@ -11,6 +11,10 @@ let PARAMS = {
   scale: 1,
   slicesNumber: 1,
   shapesNumber: 10,
+  shapeProbability: 0.8,
+  shapeSizeMin: {x: 0.05, y: 0.1},
+  shapeSizeMax: {x: 0.1, y: 0.4},
+  shapesVertAmp: 0.5,
   size: {x: 800, y: 800},
   debug: false,
 }

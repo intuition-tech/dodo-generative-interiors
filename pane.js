@@ -102,5 +102,35 @@ export function Pane(PARAMS) {
     y: {min: 1, max: 2048, step: 1},
     label: 'Size',
   })
+
+  let shapesFolder = pane.addFolder({title: 'Shapes'})
+  shapesFolder.addInput(PARAMS, 'shapesNumber', {
+    min: 0,
+    max: 100,
+    label: 'Shapes number',
+  })
+  shapesFolder.addInput(PARAMS, 'shapeProbability', {
+    min: 0,
+    max: 1,
+    step: 0.01,
+    label: 'Shape probability',
+  })
+  shapesFolder.addInput(PARAMS, 'shapesVertAmp', {
+    min: 0,
+    max: 1,
+    step: 0.01,
+    label: 'Amp',
+  })
+  shapesFolder.addInput(PARAMS, 'shapeSizeMin', {
+    x: {min: 0.01, max: 2, step: 0.01},
+    y: {min: 0.01, max: 2, step: 0.01},
+    label: 'Shape size min',
+  })
+  shapesFolder.addInput(PARAMS, 'shapeSizeMax', {
+    x: {min: 0.01, max: 2, step: 0.01},
+    y: {min: 0.01, max: 2, step: 0.01},
+    label: 'Shape size max',
+  })
+
   return pane
 }

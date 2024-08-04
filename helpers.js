@@ -82,3 +82,13 @@ export function parseColors(colors) {
   const regex = /#([a-fA-F0-9]{3,4}|[a-fA-F0-9]{6,8})\b/g
   return colors.match(regex) || []
 }
+
+export function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(R() * (i + 1))
+    const temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+  return array
+}

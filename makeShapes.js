@@ -1,5 +1,5 @@
 import {chaikinSmooth} from './chaikinSmooth.js'
-import {R, stringHash, mod} from './helpers.js'
+import {R, stringHash, mod, shuffleArray} from './helpers.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 
 export function makeShapes(PARAMS) {
@@ -7,6 +7,8 @@ export function makeShapes(PARAMS) {
   let h = PARAMS.size.y
 
   let shapes = makeRectangleComposition(PARAMS)
+
+  shapes = shuffleArray(shapes)
 
   shapes = shapes.map(shape => {
     return shape.map(poly => {
