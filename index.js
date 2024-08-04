@@ -8,13 +8,15 @@ import {makeShapes} from './makeShapes.js'
 let PARAMS = {
   seedString: 'Dodo',
   colors: '#CC4817 #D6DB0D #CA97E4 #F29F2B #D71D01 #F47401 #E31C33',
-  scale: 1,
-  slicesNumber: 1,
-  shapesNumber: 10,
-  shapeProbability: 0.8,
-  shapeSizeMin: {x: 0.05, y: 0.1},
-  shapeSizeMax: {x: 0.1, y: 0.4},
+  scale: 4,
+  slicesNumber: 40,
+  shapesNumber: 23,
+  shapeRadius: 80,
+  shapeProbability: 0.2,
+  shapeSizeMin: {x: 0.1, y: 0.5},
+  shapeSizeMax: {x: 0.3, y: 0.7},
   shapesVertAmp: 0.5,
+  shapesStep: 40,
   size: {x: 800, y: 800},
   debug: false,
 }
@@ -34,7 +36,7 @@ textInput.element.querySelector('input').addEventListener('input', ev => {
 pane.addButton({title: 'Save SVG'}).on('click', saveSVG)
 
 function updateSvg() {
-  setSeed(stringHash(PARAMS.seedString) + 35)
+  setSeed(stringHash(PARAMS.seedString) + 2)
   // shape is made of polys
   let shapes = makeShapes(PARAMS)
 

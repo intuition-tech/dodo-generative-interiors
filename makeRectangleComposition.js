@@ -14,19 +14,29 @@ export function makeRectangleComposition(PARAMS) {
   // const hMin = 3,
   //   hMax = 8
 
+  let ceil = (x, m) => {
+    return Math.ceil(x / m) * m
+  }
+
   for (let i = 0; i < shapesNumber; i++) {
     if (R() > PARAMS.shapeProbability) continue
 
-    debugger
-    const w = Math.floor(wMin + (wMax - wMin) * R())
-    const h = Math.floor(hMin + (hMax - hMin) * R())
-    const centerX = ((i + 0.5) / shapesNumber) * size.x
-    const centerY = (0.5 + (R() - 0.5) * PARAMS.shapesVertAmp) * size.y
+    const step = PARAMS.shapesStep
 
-    const x1 = centerX - w / 2
-    const y1 = centerY - h / 2
-    const x2 = centerX + w / 2
-    const y2 = centerY + h / 2
+    let w = Math.floor(wMin + (wMax - wMin) * R())
+    let h = Math.floor(hMin + (hMax - hMin) * R())
+    let centerX = (i / (shapesNumber - 1)) * size.x
+    let centerY = (0.5 + (R() - 0.5) * PARAMS.shapesVertAmp) * size.y
+
+    w = ceil(w, step)
+    h = ceil(h, step)
+    centerX = ceil(centerX - step / 2, step)
+    centerY = ceil(centerY - step / 2, step)
+
+    let x1 = centerX - w / 2
+    let y1 = centerY - h / 2
+    let x2 = centerX + w / 2
+    let y2 = centerY + h / 2
 
     let poly = [
       [x1, y1],

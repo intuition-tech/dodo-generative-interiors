@@ -13,7 +13,7 @@ export function makeShapes(PARAMS) {
   shapes = shapes.map(shape => {
     return shape.map(poly => {
       poly = tiltRect(poly)
-      poly = subdivide3(poly)
+      poly = subdivide3(poly, PARAMS.shapeRadius)
       poly = chaikinSmooth(poly, 4)
       return poly
     })
