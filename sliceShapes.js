@@ -33,7 +33,6 @@ export function sliceShapes(PARAMS, shapes) {
         newShape.push(...intersect(newPoly, rectPoly))
       }
       newShape = union(newShape)
-      console.log('newShape:', newShape)
     })
     newShapes.push(newShape)
   })

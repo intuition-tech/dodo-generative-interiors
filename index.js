@@ -3,17 +3,20 @@ import {chaikinSmooth} from './chaikinSmooth.js'
 import {sliceShapes} from './sliceShapes.js'
 import {saveSVG, R, setSeed, stringHash} from './helpers.js'
 import {makeSvg} from './makeSvg.js'
+import {makeShapes} from './makeShapes.js'
 
 let PARAMS = {
   seedString: 'Dodo',
-  scale: 3,
-  slicesNumber: 20,
+  colors: '#CC4817 #D6DB0D #CA97E4 #F29F2B #D71D01 #F47401 #E31C33',
+  scale: 1,
+  slicesNumber: 1,
+  shapesNumber: 10,
   size: {x: 800, y: 800},
+  debug: false,
 }
 
 let pane = Pane(PARAMS)
 pane.on('change', e => {
-  console.log('e:', e)
   updateSvg()
 })
 
@@ -27,16 +30,9 @@ textInput.element.querySelector('input').addEventListener('input', ev => {
 pane.addButton({title: 'Save SVG'}).on('click', saveSVG)
 
 function updateSvg() {
-  let w = PARAMS.size.x
-  let h = PARAMS.size.y
   setSeed(stringHash(PARAMS.seedString) + 35)
   // shape is made of polys
-  let shapes = [
-    // [rombus(w / 2 + 64 * R(), h / 2, 64 * R() + 20)],
-    [rombus(w / 2 - (w / 2) * R(), h / 2, 64 * R() + 400)],
-    [rombus(w / 2 + (w / 2) * R(), h / 2, 64 * R() + 400)],
-    [rombus(w / 2 + (w / 2) * R(), h / 2, 64 * R() + 400)],
-  ]
+  let shapes = makeShapes(PARAMS)
 
   shapes = sliceShapes(PARAMS, shapes)
 
@@ -46,13 +42,3 @@ function updateSvg() {
   container.appendChild(svg)
 }
 updateSvg()
-
-function rombus(x, y, r) {
-  let poly = []
-  poly.push([x - r, y])
-  poly.push([x, y + r])
-  poly.push([x + r, y])
-  poly.push([x, y - r])
-  poly = chaikinSmooth(poly, 4)
-  return poly
-}

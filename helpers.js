@@ -77,3 +77,8 @@ export function stringHash(str) {
       0,
     )
 }
+
+export function parseColors(colors) {
+  const regex = /#([a-fA-F0-9]{3,4}|[a-fA-F0-9]{6,8})\b/g
+  return colors.match(regex) || []
+}

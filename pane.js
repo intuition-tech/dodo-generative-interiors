@@ -4,6 +4,8 @@ export function Pane(PARAMS) {
   // letterColor: "#000000",
   const pane = new Tweakpane.Pane()
   // pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
+  pane.addInput(PARAMS, 'debug')
+  pane.addInput(PARAMS, 'colors', {label: 'Цвета'})
   pane.addInput(PARAMS, 'slicesNumber', {
     min: 1,
     max: 80,

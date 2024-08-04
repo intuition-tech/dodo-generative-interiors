@@ -1,10 +1,10 @@
 import {round, mod, vmul, vadd} from './helpers.js'
-import {saveSVG, R, setSeed, stringHash} from './helpers.js'
+import {saveSVG, R, stringHash} from './helpers.js'
+import {parseColors} from './helpers.js'
 
 let svgNS = 'http://www.w3.org/2000/svg'
 
 export function makeSvg(PARAMS, shapes) {
-  setSeed(stringHash(PARAMS.seedString) + 20)
   const svg = document.createElementNS(svgNS, 'svg')
   svg.setAttribute('xmlns', svgNS)
   let viewBox = [0, 0, PARAMS.size.x, PARAMS.size.y]
@@ -24,25 +24,27 @@ export function makeSvg(PARAMS, shapes) {
   rect.setAttribute('y', viewBox[1])
   rect.setAttribute('width', viewBox[2])
   rect.setAttribute('height', viewBox[3])
-  rect.setAttribute('fill', 'silver')
-  // rect.setAttribute('stroke', 'silver')
-  // rect.setAttribute('stroke-width', '30')
+  rect.setAttribute('fill', '#FDF9F8')
   svg.appendChild(rect)
 
+  let colors = parseColors(PARAMS.colors)
   shapes.forEach(shape => {
     let polys = shape
-    let fill = `rgb(${(R() * 255) | 0}, ${(R() * 255) | 0}, ${(R() * 255) | 0})`
+    let fill = colors[(R() * colors.length) | 0]
     let pathD = ''
     polys.forEach(poly => {
       pathD += getPolyPath(poly, PARAMS)
+      if (PARAMS.debug) svg.appendChild(drawPointsSVG(poly, PARAMS))
     })
     const path = document.createElementNS(svgNS, 'path')
     path.setAttribute('d', pathD)
     path.setAttribute('fill-rule', 'evenodd')
     // path.setAttribute('opacity', '0.5')
     path.setAttribute('fill', fill)
-    // path.setAttribute('fill', 'none')
-    // path.setAttribute('stroke', 'black')
+    if (PARAMS.debug) {
+      path.setAttribute('fill', 'none')
+      path.setAttribute('stroke', 'black')
+    }
     svg.appendChild(path)
   })
 
@@ -60,10 +62,7 @@ export function drawPointsSVG(polylines, PARAMS) {
     let circle = document.createElementNS(svgNS, 'circle')
     circle.setAttribute('cx', x)
     circle.setAttribute('cy', y)
-    let radius =
-      (PARAMS.contourStepSize / 2) *
-      PARAMS.letterScale *
-      PARAMS.contourCircleScale
+    let radius = 2
     circle.setAttribute('r', radius)
 
     group.appendChild(circle)
