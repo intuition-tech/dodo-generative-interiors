@@ -5,10 +5,13 @@ export function makeRectangleComposition(PARAMS) {
   const shapes = []
   let wMin = PARAMS.shapeSizeMin.x * size.x,
     wMax = PARAMS.shapeSizeMax.x * size.x
+  console.log('wMin:', wMin)
   let hMin = PARAMS.shapeSizeMin.y * size.y,
     hMax = PARAMS.shapeSizeMax.y * size.y
+  console.log('hMin:', hMin)
   ;[wMin, wMax] = [Math.min(wMin, wMax), Math.max(wMin, wMax)]
   ;[hMin, hMax] = [Math.min(hMin, hMax), Math.max(hMin, hMax)]
+  console.log('hMax:', hMax)
   // const wMin = 2,
   //   wMax = 6
   // const hMin = 3,

@@ -9,15 +9,15 @@ let PARAMS = {
   seedString: 'Dodo',
   colors: '#CC4817 #D6DB0D #CA97E4 #F29F2B #D71D01 #F47401 #E31C33',
   scale: 4,
-  slicesNumber: 40,
+  slicesNumber: 40, // remove, calc from size
   shapesNumber: 23,
-  shapeRadius: 80,
+  shapeRadius: 1500,
   shapeProbability: 0.2,
   shapeSizeMin: {x: 0.1, y: 0.5},
   shapeSizeMax: {x: 0.3, y: 0.7},
   shapesVertAmp: 0.5,
-  shapesStep: 40,
-  size: {x: 800, y: 800},
+  shapesStep: 0.001,
+  size: {x: 8000, y: 3000},
   debug: false,
 }
 

@@ -6,21 +6,21 @@ export function Pane(PARAMS) {
   // pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
   pane.addInput(PARAMS, 'debug', {label: 'Отладка'})
   pane.addInput(PARAMS, 'colors', {label: 'Цвета'})
-  pane.addInput(PARAMS, 'slicesNumber', {
-    min: 1,
-    max: 80,
-    step: 1,
-    label: 'Полоски',
-  })
+  // pane.addInput(PARAMS, 'slicesNumber', {
+  //   min: 1,
+  //   max: 80,
+  //   step: 1,
+  //   label: 'Полоски',
+  // })
   pane.addInput(PARAMS, 'scale', {
     min: 1,
     max: 30,
     label: 'Сжатие',
   })
   pane.addInput(PARAMS, 'size', {
-    x: {min: 1, max: 2048, step: 1},
-    y: {min: 1, max: 2048, step: 1},
-    label: 'Size',
+    x: {min: 1, max: 10000},
+    y: {min: 1, max: 10000},
+    label: 'Размер, мм',
   })
 
   let shapesFolder = pane.addFolder({title: 'Фигуры'})
@@ -31,7 +31,7 @@ export function Pane(PARAMS) {
   })
   shapesFolder.addInput(PARAMS, 'shapeRadius', {
     min: 0,
-    max: 512,
+    max: 3000,
     label: 'Скругление',
   })
   shapesFolder.addInput(PARAMS, 'shapeProbability', {
@@ -48,7 +48,7 @@ export function Pane(PARAMS) {
   })
   shapesFolder.addInput(PARAMS, 'shapesStep', {
     min: 1,
-    max: 512,
+    max: 1000,
     label: 'Шаг',
   })
   shapesFolder.addInput(PARAMS, 'shapeSizeMin', {

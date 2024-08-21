@@ -12,6 +12,8 @@ export function makeSvg(PARAMS, shapes) {
     'viewBox',
     `${viewBox[0]} ${viewBox[1]} ${viewBox[2]} ${viewBox[3]}`,
   )
+  svg.setAttribute('width', PARAMS.size.x)
+  svg.setAttribute('height', PARAMS.size.y)
 
   // Clear existing SVG elements
   while (svg.firstChild) {

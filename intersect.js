@@ -1,6 +1,10 @@
 // Function to convert array format
+const SCALE_FACTOR = 100000
 function convertToClipperFormat(poly) {
-  return poly.map(point => ({X: point[0], Y: point[1]}))
+  return poly.map(point => ({
+    X: (point[0] * SCALE_FACTOR) | 0,
+    Y: (point[1] * SCALE_FACTOR) | 0,
+  }))
 }
 
 // Function to intersect paths using Clipper.js
@@ -22,6 +26,8 @@ export function intersect(poly1, poly2) {
     ClipperLib.PolyFillType.pftNonZero,
   )
 
-  solution = solution.map(poly => poly.map(point => [point.X, point.Y]))
+  solution = solution.map(poly =>
+    poly.map(point => [point.X / SCALE_FACTOR, point.Y / SCALE_FACTOR]),
+  )
   return solution
 }
