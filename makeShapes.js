@@ -11,14 +11,43 @@ export function makeShapes(PARAMS) {
   shapes = shuffleArray(shapes)
 
   shapes = shapes.map(shape => {
-    return shape.map(poly => {
+    let type = shape.type
+    shape = shape.map(poly => {
       poly = tiltRect(poly)
       poly = subdivide3(poly, PARAMS.shapeRadius)
       poly = chaikinSmooth(poly, 4)
       return poly
     })
+    shape.type = type
+    return shape
   })
 
+  shapes = addForegroundShapes(shapes, PARAMS)
+  console.log('shapes:', shapes)
+  shapes.forEach(shape => {
+    console.log('shape:', shape.type)
+  })
+
+  return shapes
+}
+
+function addForegroundShapes(shapes, PARAMS) {
+  let h = PARAMS.size.y
+  for (let w = 200; w < 1000; w += 50) {
+    let shape = []
+    for (let i = 0; i < 4; i++) {
+      let cx = i * 1000
+      let poly = [
+        [cx - w / 2, 0],
+        [cx + w / 2, 0],
+        [cx + w / 2, h],
+        [cx - w / 2, h],
+      ]
+      shape.push(poly)
+      shape.type = 'foreground'
+    }
+    shapes.push(shape)
+  }
   return shapes
 }
 

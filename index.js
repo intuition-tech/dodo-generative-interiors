@@ -41,6 +41,9 @@ function updateSvg() {
   let shapes = makeShapes(PARAMS)
 
   shapes = sliceShapes(PARAMS, shapes)
+  shapes.forEach(shape => {
+    console.log('shape:', shape.type)
+  })
 
   let container = document.getElementById('container')
   container.innerHTML = ''

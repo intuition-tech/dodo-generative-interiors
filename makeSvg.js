@@ -30,7 +30,7 @@ export function makeSvg(PARAMS, shapes) {
   svg.appendChild(rect)
 
   let colors = parseColors(PARAMS.colors)
-  shapes.forEach(shape => {
+  shapes.forEach((shape, shapeId) => {
     let polys = shape
     let fill = colors[(R() * colors.length) | 0]
     let pathD = ''
@@ -43,6 +43,10 @@ export function makeSvg(PARAMS, shapes) {
     path.setAttribute('fill-rule', 'evenodd')
     // path.setAttribute('opacity', '0.5')
     path.setAttribute('fill', fill)
+    if (shape.type === 'foreground') {
+      path.setAttribute('fill', 'black')
+      path.setAttribute('opacity', '.02')
+    }
     if (PARAMS.debug) {
       path.setAttribute('fill', 'none')
       path.setAttribute('stroke', 'black')

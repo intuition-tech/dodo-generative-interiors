@@ -11,6 +11,7 @@ export function sliceShapes(PARAMS, shapes) {
   let newShapes = []
   shapes.forEach(shape => {
     let newShape = []
+    newShape.type = shape.type
     shape.forEach(poly => {
       for (let i = 0; i < slicesNumber; i++) {
         let rectPoly = []

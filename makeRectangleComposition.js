@@ -48,6 +48,7 @@ export function makeRectangleComposition(PARAMS) {
       [x2, y1],
     ]
     let shape = [poly]
+    shape.type = 'rect'
     shapes.push(shape)
   }
   console.log('shapes:', shapes)

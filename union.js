@@ -11,15 +11,16 @@ function convertFromClipperFormat(poly) {
   return poly.map(point => [point.X / SCALE_FACTOR, point.Y / SCALE_FACTOR])
 }
 
-export function union(polys) {
-  if (!polys.length) return []
-  if (polys.length === 1) return polys
+export function union(shape) {
+  let type = shape.type
+  if (!shape.length) return []
+  if (shape.length === 1) return shape
 
   let clipper = new ClipperLib.Clipper()
   let solution = new ClipperLib.Paths()
 
   // Convert all polygons to Clipper format
-  let clipperPolys = polys.map(convertToClipperFormat)
+  let clipperPolys = shape.map(convertToClipperFormat)
 
   // Perform union on all polygons at once
   clipper.AddPaths(clipperPolys, ClipperLib.PolyType.ptSubject, true)
@@ -31,5 +32,7 @@ export function union(polys) {
   )
 
   // Convert the result back to original format
-  return solution.map(convertFromClipperFormat)
+  let result = solution.map(convertFromClipperFormat)
+  result.type = type
+  return result
 }
