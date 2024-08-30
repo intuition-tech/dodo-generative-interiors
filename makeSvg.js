@@ -20,6 +20,9 @@ export function makeSvg(PARAMS, shapes) {
     svg.removeChild(svg.firstChild)
   }
 
+  let rectsGroup = document.createElementNS(svgNS, 'g')
+  let foregroundGroup = document.createElementNS(svgNS, 'g')
+
   // bg
   const rect = document.createElementNS(svgNS, 'rect')
   rect.setAttribute('x', viewBox[0])
@@ -27,10 +30,19 @@ export function makeSvg(PARAMS, shapes) {
   rect.setAttribute('width', viewBox[2])
   rect.setAttribute('height', viewBox[3])
   rect.setAttribute('fill', '#FDF9F8')
-  svg.appendChild(rect)
+  rectsGroup.appendChild(rect)
+
+  //fg
+  const rectFg = document.createElementNS(svgNS, 'rect')
+  rect.setAttribute('x', viewBox[0])
+  rect.setAttribute('y', viewBox[1])
+  rect.setAttribute('width', viewBox[2])
+  rect.setAttribute('height', viewBox[3])
+  rect.setAttribute('fill', PARAMS.gradient1)
+  foregroundGroup.appendChild(rect)
 
   let colors = parseColors(PARAMS.colors)
-  shapes.forEach((shape, shapeId) => {
+  shapes.forEach(shape => {
     let polys = shape
     let fill = colors[(R() * colors.length) | 0]
     let pathD = ''
@@ -43,16 +55,22 @@ export function makeSvg(PARAMS, shapes) {
     path.setAttribute('fill-rule', 'evenodd')
     // path.setAttribute('opacity', '0.5')
     path.setAttribute('fill', fill)
-    if (shape.type === 'foreground') {
-      path.setAttribute('fill', 'black')
-      path.setAttribute('opacity', '.02')
-    }
     if (PARAMS.debug) {
       path.setAttribute('fill', 'none')
       path.setAttribute('stroke', 'black')
     }
-    svg.appendChild(path)
+    if (shape.type === 'foreground') {
+      path.setAttribute('fill', PARAMS.gradient2)
+      path.setAttribute('opacity', '0.1')
+      foregroundGroup.appendChild(path)
+    } else if (shape.type === 'rect') {
+      rectsGroup.appendChild(path)
+    }
   })
+  svg.appendChild(rectsGroup)
+  // set svg multyply blending of foreground
+  foregroundGroup.setAttribute('style', 'mix-blend-mode: multiply;')
+  svg.appendChild(foregroundGroup)
 
   return svg
 }

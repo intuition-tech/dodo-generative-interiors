@@ -33,10 +33,13 @@ export function makeShapes(PARAMS) {
 
 function addForegroundShapes(shapes, PARAMS) {
   let h = PARAMS.size.y
-  for (let w = 200; w < 1000; w += 50) {
+  let number = Math.ceil(PARAMS.size.x / 1000) + 1
+  let period = PARAMS.size.x / (number - 1)
+  let grades = 8
+  for (let w = period / grades; w < period; w += period / grades) {
     let shape = []
-    for (let i = 0; i < 4; i++) {
-      let cx = i * 1000
+    for (let i = 0; i < number; i++) {
+      let cx = i * period
       let poly = [
         [cx - w / 2, 0],
         [cx + w / 2, 0],

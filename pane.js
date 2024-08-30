@@ -6,6 +6,8 @@ export function Pane(PARAMS) {
   // pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
   pane.addInput(PARAMS, 'debug', {label: 'Отладка'})
   pane.addInput(PARAMS, 'colors', {label: 'Цвета'})
+  pane.addInput(PARAMS, 'gradient1', {label: 'Градиент 1'})
+  pane.addInput(PARAMS, 'gradient2', {label: 'Градиент 2'})
   // pane.addInput(PARAMS, 'slicesNumber', {
   //   min: 1,
   //   max: 80,
@@ -23,7 +25,7 @@ export function Pane(PARAMS) {
     label: 'Размер, мм',
   })
 
-  let shapesFolder = pane.addFolder({title: 'Фигуры'})
+  let shapesFolder = pane.addFolder({title: 'Фигуры', expanded: false})
   shapesFolder.addInput(PARAMS, 'shapesNumber', {
     min: 0,
     max: 100,
