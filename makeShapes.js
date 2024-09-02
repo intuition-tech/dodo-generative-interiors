@@ -9,11 +9,12 @@ export function makeShapes(PARAMS) {
   let shapes = makeRectangleComposition(PARAMS)
 
   shapes = shuffleArray(shapes)
+  // FIXME remove? Or remove one from makeRectangleComposition
 
   shapes = shapes.map(shape => {
     let type = shape.type
     shape = shape.map(poly => {
-      poly = tiltRect(poly)
+      // poly = tiltRect(poly)
       poly = subdivide3(poly, PARAMS.shapeRadius)
       poly = chaikinSmooth(poly, 4)
       return poly

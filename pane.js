@@ -1,19 +1,9 @@
 export function Pane(PARAMS) {
-  // ballsColor: "#000000",
-  // backgroundColor: "#ffffff",
-  // letterColor: "#000000",
   const pane = new Tweakpane.Pane()
-  // pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
   pane.addInput(PARAMS, 'debug', {label: 'Отладка'})
   pane.addInput(PARAMS, 'colors', {label: 'Цвета'})
   pane.addInput(PARAMS, 'gradient1', {label: 'Градиент 1'})
   pane.addInput(PARAMS, 'gradient2', {label: 'Градиент 2'})
-  // pane.addInput(PARAMS, 'slicesNumber', {
-  //   min: 1,
-  //   max: 80,
-  //   step: 1,
-  //   label: 'Полоски',
-  // })
   pane.addInput(PARAMS, 'scale', {
     min: 1,
     max: 30,
@@ -25,43 +15,34 @@ export function Pane(PARAMS) {
     label: 'Размер, мм',
   })
 
-  let shapesFolder = pane.addFolder({title: 'Фигуры', expanded: false})
-  shapesFolder.addInput(PARAMS, 'shapesNumber', {
-    min: 0,
-    max: 100,
-    label: 'Число',
-  })
-  shapesFolder.addInput(PARAMS, 'shapeRadius', {
-    min: 0,
-    max: 3000,
-    label: 'Скругление',
-  })
+  let shapesFolder = pane.addFolder({title: 'Фигуры', expanded: true})
   shapesFolder.addInput(PARAMS, 'shapeProbability', {
     min: 0,
     max: 1,
     step: 0.01,
-    label: 'Вероятность',
+    label: 'Вероятность фигуры',
   })
   shapesFolder.addInput(PARAMS, 'shapesVertAmp', {
     min: 0,
     max: 1,
     step: 0.01,
-    label: 'Расколбас',
-  })
-  shapesFolder.addInput(PARAMS, 'shapesStep', {
-    min: 1,
-    max: 1000,
-    label: 'Шаг',
+    label: 'Вертикальная амплитуда',
   })
   shapesFolder.addInput(PARAMS, 'shapeSizeMin', {
-    x: {min: 0.01, max: 2, step: 0.01},
-    y: {min: 0.01, max: 2, step: 0.01},
-    label: 'Мелкость',
+    x: {min: 0.01, max: 0.5, step: 0.01},
+    y: {min: 0, max: 5, step: 0.1},
+    label: 'Мин. размер',
   })
   shapesFolder.addInput(PARAMS, 'shapeSizeMax', {
-    x: {min: 0.01, max: 2, step: 0.01},
-    y: {min: 0.01, max: 2, step: 0.01},
-    label: 'Крупность',
+    x: {min: 0.01, max: 1, step: 0.01},
+    y: {min: 0.1, max: 5, step: 0.1},
+    label: 'Макс. размер',
+  })
+  shapesFolder.addInput(PARAMS, 'shapesFreq', {
+    min: 0.1,
+    max: 6,
+    step: 0.1,
+    label: 'Частота',
   })
 
   return pane

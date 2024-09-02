@@ -12,15 +12,20 @@ let PARAMS = {
   gradient2: '#CCD8E4',
   scale: 4,
   slicesNumber: 40, // remove, calc from size
-  shapesNumber: 23,
-  shapeRadius: 1500,
-  shapeProbability: 0.2,
-  shapeSizeMin: {x: 0.1, y: 0.5},
-  shapeSizeMax: {x: 0.3, y: 0.7},
-  shapesVertAmp: 0.5,
-  shapesStep: 0.001,
+  // shapesNumber: 23,
+  // shapeRadius: 1500,
+  // shapeProbability: 0.2,
+  // shapeSizeMin: {x: 0.1, y: 0.5},
+  // shapeSizeMax: {x: 0.3, y: 0.7},
+  // shapesVertAmp: 0.5,
+  // shapesStep: 0.001,
   size: {x: 2000, y: 1000},
   debug: false,
+  shapeProbability: 0.77,
+  shapesVertAmp: 0.67,
+  shapeSizeMin: {x: 0.05, y: 0.5},
+  shapeSizeMax: {x: 0.1, y: 2.8},
+  shapesFreq: 0.8,
 }
 
 let pane = Pane(PARAMS)
