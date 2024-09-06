@@ -14,7 +14,7 @@ export function makeShapes(PARAMS) {
   shapes = shapes.map(shape => {
     let type = shape.type
     shape = shape.map(poly => {
-      // poly = tiltRect(poly)
+      poly = tiltRect(poly)
       poly = subdivide3(poly, PARAMS.shapesRadius)
       poly = chaikinSmooth(poly, 4)
       return poly
