@@ -19,25 +19,48 @@ let PARAMS = {
   // shapeSizeMax: {x: 0.3, y: 0.7},
   // shapesVertAmp: 0.5,
   // shapesStep: 0.001,
-  size: {x: 2000, y: 1000},
+  size: {x: 4000, y: 1000},
   debug: false,
   shapeProbability: 0.77,
   shapesVertAmp: 0.67,
   shapeSizeMin: {x: 0.05, y: 0.5},
   shapeSizeMax: {x: 0.1, y: 2.8},
-  shapesFreq: 0.8,
+  shapesFreq: 0.3,
+  shapesOverlap: 10,
+  shapesDistribution: 1,
 }
 
 let pane = Pane(PARAMS)
 pane.on('change', e => {
   updateSvg()
 })
+console.log('pane:', pane)
 
-const textInput = pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
-textInput.element.querySelector('input').addEventListener('input', ev => {
-  PARAMS.seedString = ev.target.value
-  updateSvg()
-})
+// const textInput = pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
+// textInput.element.querySelector('input').addEventListener('input', ev => {
+//   PARAMS.seedString = ev.target.value
+//   if (ev.target.value == 'password') {
+//     revealSecretPane()
+//   }
+//   updateSvg()
+// })
+
+const textInput = pane
+  .addInput(PARAMS, 'seedString', {label: 'Слово'})
+  .on('change', ev => {
+    PARAMS.seedString = ev.value
+    console.log('ev.value:', ev.value)
+    if (ev.value == 'password') {
+      revealSecretPane()
+    }
+    updateSvg()
+  })
+
+function revealSecretPane() {
+  pane.secretElements.forEach(el => {
+    el.hidden = false
+  })
+}
 
 // save button
 pane.addButton({title: 'Save SVG'}).on('click', saveSVG)

@@ -1,54 +1,59 @@
 import {R} from './helpers.js'
 
 export function makeRectangleComposition(PARAMS) {
-  const {size, shapesNumber} = PARAMS
   const shapes = []
 
   // Initialize parameters from PARAMS or use defaults
   const PROBABILITY = PARAMS.shapeProbability
   const OFFSET_Y_K = PARAMS.shapesVertAmp
-  const MIN_WIDTH = PARAMS.shapeSizeMin.x
+  const MIN_WIDTH_K = PARAMS.shapeSizeMin.x
   const MAX_WIDTH_K = PARAMS.shapeSizeMax.x
   const MIN_HEIGHT_K = PARAMS.shapeSizeMin.y
   const MAX_HEIGHT_K = PARAMS.shapeSizeMax.y
   const FREQ = PARAMS.shapesFreq
-  const OVERLAP_K = 1.2
+  const OVERLAP_K = PARAMS.shapesOverlap
+  const size = PARAMS.size
 
   const offset = R() * Math.PI * 2 // Random offset for sine wave
 
   function getShapeHeight(x, minHeightK, maxHeightK, freq) {
     let n = Math.asin(Math.sin((x / 100) * freq + offset))
-    let y = map(n, 0, Math.PI, size.y * minHeightK, size.y * maxHeightK)
-    return Math.abs(y)
+    n = (n + Math.PI / 2) / Math.PI
+    // console.log('n:', n)
+    n = n ** PARAMS.shapesDistribution
+    let y = map(n, 0, 1, size.y * minHeightK, size.y * maxHeightK)
+    // console.log('y:', y)
+    // console.log('size.y * minHeightK:', size.y * minHeightK)
+    // return size.y * minHeightK
+    return y
   }
 
   function map(x, in_min, in_max, out_min, out_max) {
-    return ((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
+    return ((x - in_min) / (in_max - in_min)) * (out_max - out_min) + out_min
   }
 
   let i = 0
   while (i < size.x) {
     let h = getShapeHeight(i, MIN_HEIGHT_K, MAX_HEIGHT_K, FREQ)
-    let from = size.y * MIN_WIDTH
-    let to = h * MAX_WIDTH_K
-    let w = R() * (to - from) + from
+    let minWidth = size.y * MIN_WIDTH_K
+    let maxWidth = h * MAX_WIDTH_K
+    let r = R()
+    r = r ** PARAMS.shapesDistribution
+    let w = r * (maxWidth - minWidth) + minWidth
     if (w < 1) w = 1
 
     let dh = h * OFFSET_Y_K
-    console.log('OFFSET_Y_K:', OFFSET_Y_K)
     let offsetY = (R() * 2 - 1) * dh
 
     if (R() < PROBABILITY) {
       let y = size.y / 2 + offsetY
-      console.log('offsetY:', offsetY)
       let x = i
-      w *= OVERLAP_K // Apply overlap factor
-
+      let wOverlap = w + OVERLAP_K // Apply overlap factor
       let poly = [
-        [x, y - h / 2],
-        [x, y + h / 2],
-        [x + w, y + h / 2],
-        [x + w, y - h / 2],
+        [x + w / 2 - wOverlap / 2, y - h / 2],
+        [x + w / 2 - wOverlap / 2, y + h / 2],
+        [x + w / 2 + wOverlap / 2, y + h / 2],
+        [x + w / 2 + wOverlap / 2, y - h / 2],
       ]
       let shape = [poly]
       shape.type = 'rect'
