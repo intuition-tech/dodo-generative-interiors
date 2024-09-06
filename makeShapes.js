@@ -15,7 +15,7 @@ export function makeShapes(PARAMS) {
     let type = shape.type
     shape = shape.map(poly => {
       // poly = tiltRect(poly)
-      poly = subdivide3(poly, PARAMS.shapeRadius)
+      poly = subdivide3(poly, PARAMS.shapesRadius)
       poly = chaikinSmooth(poly, 4)
       return poly
     })
@@ -108,41 +108,71 @@ function subdivide2(poly) {
   return newPoly
 }
 
-function subdivide3(poly, cornerRadius = 800) {
+// FIXME use radius
+function subdivide3(poly, radius) {
   let newPoly = []
-  // make radius fit the smallest segment
+
   for (let i = 0; i < poly.length; i++) {
-    let id1 = i
-    let id2 = (i + 1) % poly.length
-    let p1 = poly[id1]
-    let p2 = poly[id2]
-    let len = Math.hypot(p1[0] - p2[0], p1[1] - p2[1])
-    if (cornerRadius * 2 > len) {
-      cornerRadius = len / 2
+    let prevIndex = (i - 1 + poly.length) % poly.length
+    let currIndex = i
+    let nextIndex = (i + 1) % poly.length
+    let nextNextIndex = (i + 2) % poly.length
+
+    let prevPoint = poly[prevIndex]
+    let currPoint = poly[currIndex]
+    let nextPoint = poly[nextIndex]
+    let nextNextPoint = poly[nextNextIndex]
+
+    let prevLen = Math.hypot(
+      prevPoint[0] - currPoint[0],
+      prevPoint[1] - currPoint[1],
+    )
+    let currLen = Math.hypot(
+      currPoint[0] - nextPoint[0],
+      currPoint[1] - nextPoint[1],
+    )
+    let nextLen = Math.hypot(
+      nextPoint[0] - nextNextPoint[0],
+      nextPoint[1] - nextNextPoint[1],
+    )
+    if (nextLen > radius) {
+      nextLen = radius
+    }
+    if (prevLen > radius) {
+      prevLen = radius
+    }
+
+    newPoly.push(currPoint)
+
+    if (prevLen < currLen / 2) {
+      let k = prevLen / currLen
+      let midPoint = [
+        currPoint[0] * (1 - k) + nextPoint[0] * k,
+        currPoint[1] * (1 - k) + nextPoint[1] * k,
+      ]
+      newPoly.push(midPoint)
+    }
+
+    if (nextLen < currLen / 2) {
+      let k = (currLen - nextLen) / currLen
+      let midPoint = [
+        currPoint[0] * (1 - k) + nextPoint[0] * k,
+        currPoint[1] * (1 - k) + nextPoint[1] * k,
+      ]
+      newPoly.push(midPoint)
     }
   }
 
-  for (let i = 0; i < poly.length; i++) {
-    let id1 = i
-    let id2 = (i + 1) % poly.length
-    let p1 = poly[id1]
-    let p2 = poly[id2]
-
-    let len = Math.hypot(p1[0] - p2[0], p1[1] - p2[1])
-    // if (len < cornerRadius * 2) {
-    // let k = 0.5
-    // newPoly.push(p1)
-    // newPoly.push([p1[0] * k + p2[0] * k, p1[1] * k + p2[1] * k])
-    // } else {
-    let k1 = cornerRadius / len
-    let k2 = 1 - k1
-    newPoly.push(p1)
-    newPoly.push([p1[0] * k2 + p2[0] * k1, p1[1] * k2 + p2[1] * k1])
-    newPoly.push([p1[0] * k1 + p2[0] * k2, p1[1] * k1 + p2[1] * k2])
-    // }
-  }
   return newPoly
 }
+
+// }
+// }
+// if (len < cornerRadius * 2) {
+// let k = 0.5
+// newPoly.push(p1)
+// newPoly.push([p1[0] * k + p2[0] * k, p1[1] * k + p2[1] * k])
+// } else {
 
 function rombus(x, y, r) {
   let poly = []

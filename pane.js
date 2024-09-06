@@ -54,6 +54,11 @@ export function Pane(PARAMS) {
     y: {min: 0.1, max: 5},
     label: 'Макс. размер',
   })
+  shapesFolder.addInput(PARAMS, 'shapesRadius', {
+    min: 0,
+    max: 500,
+    label: 'Радиус',
+  })
   shapesFolder.addInput(PARAMS, 'shapesFreq', {
     min: 0.1,
     max: 6,
