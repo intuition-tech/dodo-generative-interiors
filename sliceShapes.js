@@ -3,9 +3,9 @@ import {union} from './union.js'
 const EPS = 0.000001
 const stripeWidth = 30 // 3 cm
 export function sliceShapes(PARAMS, shapes) {
-  let slicesNumber = Math.ceil(PARAMS.size.x / stripeWidth) // 3 cm
-  let w = PARAMS.size.x
-  let h = PARAMS.size.y
+  let slicesNumber = Math.ceil(PARAMS.sizeX / stripeWidth) // 3 cm
+  let w = PARAMS.sizeX
+  let h = PARAMS.sizeY
   let sliceWidth = stripeWidth // 3 cm
 
   let newShapes = []

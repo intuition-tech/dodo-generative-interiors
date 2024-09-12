@@ -7,13 +7,13 @@ let svgNS = 'http://www.w3.org/2000/svg'
 export function makeSvg(PARAMS, shapes) {
   const svg = document.createElementNS(svgNS, 'svg')
   svg.setAttribute('xmlns', svgNS)
-  let viewBox = [0, 0, PARAMS.size.x, PARAMS.size.y]
+  let viewBox = [0, 0, PARAMS.sizeX, PARAMS.sizeY]
   svg.setAttribute(
     'viewBox',
     `${viewBox[0]} ${viewBox[1]} ${viewBox[2]} ${viewBox[3]}`,
   )
-  svg.setAttribute('width', PARAMS.size.x)
-  svg.setAttribute('height', PARAMS.size.y)
+  svg.setAttribute('width', PARAMS.sizeX)
+  svg.setAttribute('height', PARAMS.sizeY)
 
   // Clear existing SVG elements
   while (svg.firstChild) {

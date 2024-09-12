@@ -23,10 +23,20 @@ export function Pane(PARAMS) {
   })
   pane.secretElements.push(scale)
 
-  pane.addInput(PARAMS, 'size', {
-    x: {min: 1, max: 10000},
-    y: {min: 1, max: 10000},
-    label: 'Размер, мм',
+  // pane.addInput(PARAMS, 'size', {
+  //   x: {min: 1, max: 10000},
+  //   y: {min: 1, max: 10000},
+  //   label: 'Размер, мм',
+  // })
+  let sizeX = pane.addInput(PARAMS, 'sizeX', {
+    min: 1,
+    max: 10000,
+    label: 'Ширина, мм',
+  })
+  let sizeY = pane.addInput(PARAMS, 'sizeY', {
+    min: 1,
+    max: 10000,
+    label: 'Высота, мм',
   })
 
   let shapesFolder = pane.addFolder({title: 'Фигуры', expanded: true})

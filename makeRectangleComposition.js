@@ -12,7 +12,8 @@ export function makeRectangleComposition(PARAMS) {
   const MAX_HEIGHT_K = PARAMS.shapeSizeMax.y
   const FREQ = PARAMS.shapesFreq
   const OVERLAP_K = PARAMS.shapesOverlap
-  const size = PARAMS.size
+  const sizeX = PARAMS.sizeX
+  const sizeY = PARAMS.sizeY
 
   const offset = R() * Math.PI * 2 // Random offset for sine wave
 
@@ -21,10 +22,7 @@ export function makeRectangleComposition(PARAMS) {
     n = (n + Math.PI / 2) / Math.PI
     // console.log('n:', n)
     n = n ** PARAMS.shapesDistribution
-    let y = map(n, 0, 1, size.y * minHeightK, size.y * maxHeightK)
-    // console.log('y:', y)
-    // console.log('size.y * minHeightK:', size.y * minHeightK)
-    // return size.y * minHeightK
+    let y = map(n, 0, 1, sizeY * minHeightK, sizeY * maxHeightK)
     return y
   }
 
@@ -33,9 +31,9 @@ export function makeRectangleComposition(PARAMS) {
   }
 
   let i = 0
-  while (i < size.x) {
+  while (i < sizeX) {
     let h = getShapeHeight(i, MIN_HEIGHT_K, MAX_HEIGHT_K, FREQ)
-    let minWidth = size.y * MIN_WIDTH_K
+    let minWidth = sizeY * MIN_WIDTH_K
     let maxWidth = h * MAX_WIDTH_K
     let r = R()
     r = r ** PARAMS.shapesDistribution
@@ -46,7 +44,7 @@ export function makeRectangleComposition(PARAMS) {
     let offsetY = (R() * 2 - 1) * dh
 
     if (R() < PROBABILITY) {
-      let y = size.y / 2 + offsetY
+      let y = sizeY / 2 + offsetY
       let x = i
       let wOverlap = w + OVERLAP_K // Apply overlap factor
       let poly = [

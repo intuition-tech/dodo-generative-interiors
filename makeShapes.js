@@ -3,8 +3,8 @@ import {R, stringHash, mod, shuffleArray} from './helpers.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 
 export function makeShapes(PARAMS) {
-  let w = PARAMS.size.x
-  let h = PARAMS.size.y
+  let w = PARAMS.sizeX
+  let h = PARAMS.sizeY
 
   let shapes = makeRectangleComposition(PARAMS)
 
@@ -24,18 +24,15 @@ export function makeShapes(PARAMS) {
   })
 
   shapes = addForegroundShapes(shapes, PARAMS)
-  console.log('shapes:', shapes)
-  shapes.forEach(shape => {
-    console.log('shape:', shape.type)
-  })
+  shapes.forEach(shape => {})
 
   return shapes
 }
 
 function addForegroundShapes(shapes, PARAMS) {
-  let h = PARAMS.size.y
-  let number = Math.ceil(PARAMS.size.x / 1000) + 1
-  let period = PARAMS.size.x / (number - 1)
+  let h = PARAMS.sizeY
+  let number = Math.ceil(PARAMS.sizeX / 1000) + 1
+  let period = PARAMS.sizeX / (number - 1)
   let grades = 8
   for (let w = period / grades; w < period; w += period / grades) {
     let shape = []
@@ -56,7 +53,6 @@ function addForegroundShapes(shapes, PARAMS) {
 }
 
 function tiltRect(poly) {
-  console.log('poly:', poly)
   // expect poly is a rectangle
   let bb = getBoundingRect(poly)
   let width = bb[2] - bb[0]
@@ -75,7 +71,6 @@ function tiltRect(poly) {
   pLB[1] -= (tiltB * width) / 2
   pRB[1] += (tiltB * width) / 2
   let newPoly = [pLT, pRT, pRB, pLB]
-  console.log('newPoly:', newPoly)
   return newPoly
 }
 

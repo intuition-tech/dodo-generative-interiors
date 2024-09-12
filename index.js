@@ -6,29 +6,22 @@ import {makeSvg} from './makeSvg.js'
 import {makeShapes} from './makeShapes.js'
 
 let PARAMS = {
+  debug: false,
   seedString: 'Dodo',
-  colors: '#CC4817 #D6DB0D #CA97E4 #F29F2B #D71D01 #F47401 #E31C33',
+  colors:
+    '#03BB8F,#07939B,#252525,#3E1D15,#810F00,#909DC5,#D04102,#D0D6EF,#D8E302,#EFE0D9,#F283AD,#F9E7CE,#FE1F00,#FF6D03,#FF9A00,#FFB07F',
   gradient1: '#F6ECEC',
   gradient2: '#CCD8E4',
-  scale: 1, //4,
-  slicesNumber: 40, // remove, calc from size
-  // shapesNumber: 23,
-  shapesRadius: 15,
-  // shapeProbability: 0.2,
-  // shapeSizeMin: {x: 0.1, y: 0.5},
-  // shapeSizeMax: {x: 0.3, y: 0.7},
-  // shapesVertAmp: 0.5,
-  // shapesStep: 0.001,
-  // size: {x: 4000, y: 1000},
-  size: {x: 1000, y: 1000},
-  // debug: false,
-  debug: true,
-  shapeProbability: 0.77,
-  shapesVertAmp: 0.67,
-  shapeSizeMin: {x: 0.05, y: 0.5},
-  shapeSizeMax: {x: 0.1, y: 2.8},
-  shapesFreq: 0.3,
-  shapesOverlap: 10,
+  scale: 8, //4,
+  sizeX: 3000,
+  sizeY: 1000,
+  shapeProbability: 0.7,
+  shapesVertAmp: 0.37,
+  shapeSizeMin: {x: 0.05, y: 0.3},
+  shapeSizeMax: {x: 0.25, y: 3},
+  shapesRadius: 100,
+  shapesFreq: 2.9,
+  shapesOverlap: 0,
   shapesDistribution: 1,
 }
 
@@ -73,9 +66,7 @@ function updateSvg() {
   let shapes = makeShapes(PARAMS)
 
   shapes = sliceShapes(PARAMS, shapes)
-  shapes.forEach(shape => {
-    console.log('shape:', shape.type)
-  })
+  shapes.forEach(shape => {})
 
   let container = document.getElementById('container')
   container.innerHTML = ''
