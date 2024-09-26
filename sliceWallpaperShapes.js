@@ -2,7 +2,7 @@ import {intersect} from './intersect.js'
 import {union} from './union.js'
 const EPS = 0.000001
 const stripeWidth = 30 // 3 cm
-export function sliceShapes(PARAMS, shapes) {
+export function sliceWallpaperShapes(PARAMS, shapes) {
   let slicesNumber = Math.ceil(PARAMS.sizeX / stripeWidth) // 3 cm
   let w = PARAMS.sizeX
   let h = PARAMS.sizeY

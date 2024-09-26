@@ -1,19 +1,10 @@
 import {chaikinSmooth} from './chaikinSmooth.js'
-import {R, stringHash, mod, shuffleArray} from './helpers.js'
-import {makeRectangleComposition} from './makeRectangleComposition.js'
+import {R} from './helpers.js'
 
-export function makeShapes(PARAMS) {
-  let w = PARAMS.sizeX
-  let h = PARAMS.sizeY
-
-  let shapes = makeRectangleComposition(PARAMS)
-
-  shapes = shuffleArray(shapes)
-  // FIXME remove? Or remove one from makeRectangleComposition
-
-  shapes = shapes.map(shape => {
-    let type = shape.type
-    shape = shape.map(poly => {
+export function makeWallpaperShapes(PARAMS, rectangleComposition) {
+  let shapes = rectangleComposition.map(rect => {
+    let type = rect.type
+    let shape = rect.map(poly => {
       poly = tiltRect(poly)
       poly = subdivide3(poly, PARAMS.shapesRadius)
       poly = chaikinSmooth(poly, 4)
@@ -23,13 +14,15 @@ export function makeShapes(PARAMS) {
     return shape
   })
 
-  shapes = addForegroundShapes(shapes, PARAMS)
-  shapes.forEach(shape => {})
+  if (PARAMS.gradientsEnabled) {
+    shapes = addForegroundShapes(PARAMS, shapes)
+  }
 
   return shapes
 }
 
-function addForegroundShapes(shapes, PARAMS) {
+function addForegroundShapes(PARAMS, shapes) {
+  console.log('PARAMS:', PARAMS)
   let h = PARAMS.sizeY
   let number = Math.ceil(PARAMS.sizeX / 1000) + 1
   let period = PARAMS.sizeX / (number - 1)
