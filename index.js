@@ -38,7 +38,7 @@ let PARAMS = {
 
 let pane = Pane(PARAMS)
 pane.on('change', e => {
-  updateSvg()
+  updateWallpaperSvg()
 })
 console.log('pane:', pane)
 
@@ -48,7 +48,7 @@ console.log('pane:', pane)
 //   if (ev.target.value == 'password') {
 //     revealSecretPane()
 //   }
-//   updateSvg()
+//   updateWallpaperSvg()
 // })
 
 const textInput = pane
@@ -59,7 +59,7 @@ const textInput = pane
     if (ev.value == 'password') {
       revealSecretPane()
     }
-    updateSvg()
+    updateWallpaperSvg()
   })
 
 function revealSecretPane() {
@@ -71,19 +71,68 @@ function revealSecretPane() {
 // save button
 pane.addButton({title: 'Save SVG'}).on('click', saveSVG)
 
-function updateSvg() {
+function updateWallpaperSvg() {
   setSeed(stringHash(PARAMS.seedString) + 2)
   // shape is made of polys
 
   let rectangleComposition = makeRectangleComposition(PARAMS)
-  let pano = makePano(PARAMS, rectangleComposition)
   let wallpaperShapes = makeWallpaperShapes(PARAMS, rectangleComposition)
 
   wallpaperShapes = sliceWallpaperShapes(PARAMS, wallpaperShapes)
 
-  let container = document.getElementById('container')
+  let container = document.getElementById('wallpaper')
   container.innerHTML = ''
-  let svg = makeSvg(PARAMS, wallpaperShapes, pano)
+  let svg = makeSvg(PARAMS, wallpaperShapes)
   container.appendChild(svg)
 }
-updateSvg()
+
+async function updatePanoSvg() {
+  let container = document.getElementById('pano')
+  container.innerHTML = ''
+  let rectangleComposition = makeRectangleComposition(PARAMS) // FIXME reuse one from wallpaper
+  let svg = await makePanoSvg(PARAMS, rectangleComposition)
+  container.appendChild(svg)
+}
+
+async function makePanoSvg(PARAMS, rectangleComposition) {
+  // Fetch the SVG file
+  const response = await fetch('dodo.svg')
+  const svgText = await response.text()
+
+  // Parse the SVG
+  const parser = new DOMParser()
+  const svgDoc = parser.parseFromString(svgText, 'image/svg+xml')
+  const svgElement = svgDoc.documentElement
+
+  // Get the viewBox values
+  const viewBox = svgElement.getAttribute('viewBox')
+  const [, , width, height] = viewBox.split(' ').map(Number)
+
+  // Create a new SVG element
+  const newSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+
+  newSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+  newSvg.setAttribute('viewBox', `0 0 ${width * 3} ${height}`)
+
+  // Add a defs section with the original SVG content
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
+  const symbol = document.createElementNS('http://www.w3.org/2000/svg', 'symbol')
+  symbol.id = 'dodo'
+  symbol.setAttribute('viewBox', viewBox)
+  symbol.innerHTML = svgElement.innerHTML
+  defs.appendChild(symbol)
+  newSvg.appendChild(defs)
+
+  // Create three use elements
+  for (let i = 0; i < 1; i++) {
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use')
+    use.setAttribute('href', '#dodo')
+    use.setAttribute('x', i * width)
+    newSvg.appendChild(use)
+  }
+
+  return newSvg
+}
+
+updatePanoSvg()
+updateWallpaperSvg()

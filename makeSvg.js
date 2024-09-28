@@ -1,5 +1,4 @@
 import {round, mod, vmul, vadd} from './helpers.js'
-import {saveSVG, R, stringHash} from './helpers.js'
 import {parseColors} from './helpers.js'
 
 let svgNS = 'http://www.w3.org/2000/svg'
