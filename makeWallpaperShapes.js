@@ -1,21 +1,33 @@
 import {chaikinSmooth} from './chaikinSmooth.js'
+import {parseColors} from './helpers.js'
 import {R} from './helpers.js'
 
 export function makeWallpaperShapes(PARAMS, rectangleComposition) {
+  console.log('------------------------')
+  console.log('shapes regeneration')
+  console.log('------------------------')
   let shapes = rectangleComposition.map(rect => {
-    let type = rect.type
-    let shape = rect.map(poly => {
+    let polys = rect.map(poly => {
       poly = tiltRect(poly)
       poly = subdivide3(poly, PARAMS.shapesRadius)
       poly = chaikinSmooth(poly, 4)
       return poly
     })
-    shape.type = type
+
+    let palette = parseColors(PARAMS.colors)
+    let color = palette[(R() * palette.length) | 0]
+    console.log('R():', R())
+
+    let shape = {
+      type: rect.type,
+      polys: polys,
+      fill: color,
+    }
     return shape
   })
 
   if (PARAMS.gradientsEnabled) {
-    shapes = addForegroundShapes(PARAMS, shapes)
+    // shapes = addForegroundShapes(PARAMS, shapes)
   }
 
   return shapes

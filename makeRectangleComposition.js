@@ -61,10 +61,10 @@ export function makeRectangleComposition(PARAMS) {
   }
 
   // Shuffle the shapes array
-  for (let i = shapes.length - 1; i > 0; i--) {
-    const j = Math.floor(R() * (i + 1))
-    ;[shapes[i], shapes[j]] = [shapes[j], shapes[i]]
-  }
+  // for (let i = shapes.length - 1; i > 0; i--) {
+  //   const j = Math.floor(R() * (i + 1))
+  //   ;[shapes[i], shapes[j]] = [shapes[j], shapes[i]]
+  // }
 
   return shapes
 }

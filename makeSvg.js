@@ -42,19 +42,20 @@ export function makeSvg(PARAMS, shapes) {
   foregroundGroup.appendChild(rect)
 
   let colors = parseColors(PARAMS.colors)
+  let colorfulShapesCounter = 0 // FIXME replace with colors from the Shape object
   shapes.forEach(shape => {
-    let polys = shape
-    let fill = colors[(R() * colors.length) | 0]
+    let polys = shape.polys
+    let fill = shape.fill
     let pathD = ''
     polys.forEach(poly => {
       pathD += getPolyPath(poly, PARAMS)
       if (PARAMS.debug) svg.appendChild(drawPointsSVG(poly, PARAMS))
     })
     const path = document.createElementNS(svgNS, 'path')
+    // path.setAttribute('data-id', colorfulShapesCounter)
     path.setAttribute('d', pathD)
     path.setAttribute('fill-rule', 'evenodd')
     // path.setAttribute('opacity', '0.5')
-    path.setAttribute('fill', fill)
     if (PARAMS.debug) {
       path.setAttribute('fill', 'none')
       path.setAttribute('stroke', 'black')
@@ -64,7 +65,11 @@ export function makeSvg(PARAMS, shapes) {
       path.setAttribute('opacity', '0.1')
       foregroundGroup.appendChild(path)
     } else if (shape.type === 'rect') {
+      path.setAttribute('fill', fill)
       rectsGroup.appendChild(path)
+      colorfulShapesCounter += 1
+    } else {
+      console.log('wtf?') // FIXME remove
     }
   })
   svg.appendChild(rectsGroup)

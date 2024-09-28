@@ -1,10 +1,19 @@
 import {Pane} from './pane.js'
 import {sliceWallpaperShapes} from './sliceWallpaperShapes.js'
-import {saveSVG, setSeed, stringHash} from './helpers.js'
+import {
+  saveSVG,
+  setSeed,
+  stringHash,
+  parseColors,
+  R,
+  makeColorsSequence,
+} from './helpers.js'
 import {makeSvg} from './makeSvg.js'
 import {makeWallpaperShapes} from './makeWallpaperShapes.js'
 import {makePano} from './makePano.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
+
+let colorsSequence = []
 
 let PARAMS = {
   debug: false,
@@ -67,7 +76,6 @@ function updateSvg() {
   // shape is made of polys
 
   let rectangleComposition = makeRectangleComposition(PARAMS)
-  console.log('rectangleComposition:', rectangleComposition)
   let pano = makePano(PARAMS, rectangleComposition)
   let wallpaperShapes = makeWallpaperShapes(PARAMS, rectangleComposition)
 

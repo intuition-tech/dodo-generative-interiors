@@ -10,9 +10,13 @@ export function sliceWallpaperShapes(PARAMS, shapes) {
 
   let newShapes = []
   shapes.forEach(shape => {
-    let newShape = []
-    newShape.type = shape.type
-    shape.forEach(poly => {
+    let newShape = {
+      type: shape.type,
+      fill: shape.fill,
+      polys: [],
+    }
+
+    shape.polys.forEach(poly => {
       for (let i = 0; i < slicesNumber; i++) {
         let rectPoly = []
         rectPoly.push([i * sliceWidth - EPS, 0])
@@ -31,11 +35,12 @@ export function sliceWallpaperShapes(PARAMS, shapes) {
           newPoly.push([x, y])
         })
 
-        // intersect may return multiple polygons
-        newShape.push(...intersect(newPoly, rectPoly))
+        // intersect may return several polys
+        newShape.polys.push(...intersect(newPoly, rectPoly))
       }
-      newShape = union(newShape)
     })
+
+    newShape.polys = union(newShape.polys)
     newShapes.push(newShape)
   })
   return newShapes

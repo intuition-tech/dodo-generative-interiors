@@ -51,8 +51,11 @@ export function saveSVG(fileName) {
   URL.revokeObjectURL(url)
 }
 
-function splitmix32(a) {
+export function splitmix32(a) {
+  let counter = 0
   return function () {
+    counter += 1
+    console.log(`R() is called ${counter} times`)
     a |= 0
     a = (a + 0x9e3779b9) | 0
     var t = a ^ (a >>> 16)
@@ -91,4 +94,14 @@ export function shuffleArray(array) {
     array[j] = temp
   }
   return array
+}
+
+// FIXME remove
+export function makeColorsSequence(PARAMS) {
+  let colR = splitmix32(stringHash(PARAMS.seedString) + 5)
+  let palette = parseColors(PARAMS.colors)
+  let colorSequence = [...Array(1000)].map(_ => {
+    return palette[Math.floor(colR() * palette.length)]
+  })
+  return colorSequence
 }
