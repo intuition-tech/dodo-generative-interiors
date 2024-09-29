@@ -69,7 +69,9 @@ function revealSecretPane() {
 }
 
 // save button
-pane.addButton({title: 'Save SVG'}).on('click', saveSVG)
+pane.addButton({title: 'Save SVG'}).on('click', () => {
+  saveSVG('#pano svg', 'pano.svg')
+})
 
 function updateWallpaperSvg() {
   setSeed(stringHash(PARAMS.seedString) + 2)
@@ -95,6 +97,7 @@ async function updatePanoSvg() {
 }
 
 async function makePanoSvg(PARAMS, rectangleComposition) {
+  const svgNS = 'http://www.w3.org/2000/svg'
   // Fetch the SVG file
   const response = await fetch('dodo.svg')
   const svgText = await response.text()
@@ -106,30 +109,68 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
 
   // Get the viewBox values
   const viewBox = svgElement.getAttribute('viewBox')
-  const [, , width, height] = viewBox.split(' ').map(Number)
+  const [minX, minY, width, height] = viewBox.split(' ').map(Number)
+
+  // Number of segments
+  const N = PARAMS.panoSegments || 8
 
   // Create a new SVG element
-  const newSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  const newSvg = document.createElementNS(svgNS, 'svg')
+  newSvg.setAttribute('xmlns', svgNS)
+  newSvg.setAttribute('viewBox', `${minX} ${minY} ${width * 2} ${height}`)
 
-  newSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
-  newSvg.setAttribute('viewBox', `0 0 ${width * 3} ${height}`)
+  // // Add a defs section
+  // const defs = document.createElementNS(svgNS, 'defs')
+  // newSvg.appendChild(defs)
 
-  // Add a defs section with the original SVG content
-  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
-  const symbol = document.createElementNS('http://www.w3.org/2000/svg', 'symbol')
-  symbol.id = 'dodo'
-  symbol.setAttribute('viewBox', viewBox)
-  symbol.innerHTML = svgElement.innerHTML
-  defs.appendChild(symbol)
-  newSvg.appendChild(defs)
+  // Create N symbols, each with a different mask
+  for (let i = 0; i < N; i++) {
+    const segment = document.createElementNS(svgNS, 'g')
+    segment.setAttribute('transform', `translate(${(i * width) / N}, 0)`)
 
-  // Create three use elements
-  for (let i = 0; i < 1; i++) {
-    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use')
-    use.setAttribute('href', '#dodo')
-    use.setAttribute('x', i * width)
-    newSvg.appendChild(use)
+    const mask = document.createElementNS(svgNS, 'mask')
+    mask.id = `mask-${i}`
+    mask.style = 'mask-type:alpha'
+    mask.setAttribute('maskUnits', 'userSpaceOnUse')
+    mask.setAttribute('x', minX + (i * width) / N)
+    mask.setAttribute('y', minY)
+    mask.setAttribute('width', width / N)
+    mask.setAttribute('height', height)
+
+    const maskRect = document.createElementNS(svgNS, 'rect')
+    maskRect.setAttribute('width', width / N)
+    maskRect.setAttribute('height', height)
+    maskRect.setAttribute('fill', 'white')
+    mask.appendChild(maskRect)
+
+    const g = document.createElementNS(svgNS, 'g')
+    g.setAttribute('mask', `url(#mask-${i})`)
+    g.innerHTML = svgElement.innerHTML
+
+    segment.appendChild(g)
+    segment.appendChild(mask)
+
+    newSvg.appendChild(segment)
   }
+
+  // // Add the original SVG content as a symbol
+  // const originalSymbol = document.createElementNS(svgNS, 'symbol')
+  // originalSymbol.id = 'dodo-original'
+  // originalSymbol.setAttribute('viewBox', viewBox)
+  // originalSymbol.innerHTML = svgElement.innerHTML
+  // defs.appendChild(originalSymbol)
+
+  // for (let i = 0; i < N; i++) {
+  //   const rect = document.createElementNS(svgNS, 'rect')
+  //   rect.setAttribute('x', (((i + 0.5) * width) / N) * 2)
+  //   rect.setAttribute('width', width / N)
+  //   rect.setAttribute('height', height)
+  //   rect.setAttribute(
+  //     'fill',
+  //     `rgb(${(Math.random() * 255) | 0},${(Math.random() * 255) | 0},${(Math.random() * 255) | 0})`,
+  //   )
+  //   newSvg.appendChild(rect)
+  // }
 
   return newSvg
 }

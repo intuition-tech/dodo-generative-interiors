@@ -37,8 +37,8 @@ export function smoothstep(min, max, x) {
   return s
 }
 
-export function saveSVG(fileName) {
-  let svgElement = document.querySelector('#container svg')
+export function saveSVG(selector, fileName) {
+  let svgElement = document.querySelector(selector)
   const svgContent = svgElement.outerHTML
   const blob = new Blob([svgContent], {type: 'image/svg+xml'})
   const url = URL.createObjectURL(blob)
