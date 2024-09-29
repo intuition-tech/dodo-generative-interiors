@@ -14,6 +14,7 @@ import {makePano} from './makePano.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 
 let colorsSequence = []
+let svgInputElement
 
 let PARAMS = {
   debug: false,
@@ -34,11 +35,18 @@ let PARAMS = {
   shapesFreq: 2.9,
   shapesOverlap: 0,
   shapesDistribution: 1,
+  panoWidth: 1000,
+  panoHeight: 500,
+  panoOffset: -0.2,
 }
 
 let pane = Pane(PARAMS)
 pane.on('change', e => {
-  updateWallpaperSvg()
+  if (e.presetKey.includes('pano')) {
+    updatePanoSvg()
+  } else {
+    updateWallpaperSvg()
+  }
 })
 console.log('pane:', pane)
 
@@ -68,6 +76,10 @@ function revealSecretPane() {
   })
 }
 
+// load svg
+pane.addButton({title: 'Load SVG'}).on('click', () => {
+  openFileDialog(fileLoadedCallback)
+})
 // save button
 pane.addButton({title: 'Save SVG'}).on('click', () => {
   saveSVG('#pano svg', 'pano.svg')
@@ -97,27 +109,38 @@ async function updatePanoSvg() {
 }
 
 async function makePanoSvg(PARAMS, rectangleComposition) {
-  const svgNS = 'http://www.w3.org/2000/svg'
-  // Fetch the SVG file
-  const response = await fetch('dodo.svg')
-  const svgText = await response.text()
+  const panoSvgWidth = PARAMS.panoWidth * Math.sqrt(2)
+  const panoSvgHeight = PARAMS.panoHeight
 
-  // Parse the SVG
-  const parser = new DOMParser()
-  const svgDoc = parser.parseFromString(svgText, 'image/svg+xml')
-  const svgElement = svgDoc.documentElement
+  // A prism is a 3d element the pano is made of
+  // A prism consists of two stripes for each side
+  const panoPrismWidthFrontalProjection = 100 // FIXME adjust
+  // Number of prisms
+  const N = (PARAMS.panoWidth / panoPrismWidthFrontalProjection) | 0
+  console.log('N:', N)
+
+  // Fetch the SVG file
+  if (!svgInputElement) {
+    const response = await fetch('dodo.svg')
+    const svgText = await response.text()
+    const parser = new DOMParser()
+    const svgDoc = parser.parseFromString(svgText, 'image/svg+xml')
+    svgInputElement = svgDoc.documentElement
+  }
 
   // Get the viewBox values
-  const viewBox = svgElement.getAttribute('viewBox')
-  const [minX, minY, width, height] = viewBox.split(' ').map(Number)
-
-  // Number of segments
-  const N = PARAMS.panoSegments || 20
+  const viewBox = svgInputElement.getAttribute('viewBox')
+  const [minXOrig, minYOrig, widthOrig, heightOrig] = viewBox
+    .split(' ')
+    .map(Number)
 
   // Create a new SVG element
+  const svgNS = 'http://www.w3.org/2000/svg'
   const newSvg = document.createElementNS(svgNS, 'svg')
   newSvg.setAttribute('xmlns', svgNS)
-  newSvg.setAttribute('viewBox', `${minX} ${minY} ${width * 2} ${height}`)
+  newSvg.setAttribute('viewBox', `${0} ${0} ${panoSvgWidth} ${panoSvgHeight}`)
+  newSvg.setAttribute('width', panoSvgWidth)
+  newSvg.setAttribute('height', panoSvgHeight)
 
   // Add a defs section
   const defs = document.createElementNS(svgNS, 'defs')
@@ -125,7 +148,7 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
 
   // Create N symbols, each with a different mask
   for (let i = 0; i < N; i++) {
-    const symbol = document.createElementNS(svgNS, 'symbol')
+    const symbol = document.createElementNS(svgNS, 'g')
     symbol.id = `dodo-segment-${i}`
     symbol.setAttribute('viewBox', viewBox)
 
@@ -133,53 +156,58 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
     mask.id = `mask-${i}`
     mask.style = 'mask-type:alpha'
     mask.setAttribute('maskUnits', 'userSpaceOnUse')
-    mask.setAttribute('x', minX + (i * width) / N)
-    mask.setAttribute('y', minY)
-    mask.setAttribute('width', width / N)
-    mask.setAttribute('height', height)
+    mask.setAttribute('x', (i * panoSvgWidth) / N)
+    mask.setAttribute('y', 0)
+    mask.setAttribute('width', panoSvgWidth / N / 2)
+    mask.setAttribute('height', panoSvgHeight)
 
     const maskRect = document.createElementNS(svgNS, 'rect')
-    maskRect.setAttribute('x', minX + (i * width) / N)
-    maskRect.setAttribute('y', minY)
-    maskRect.setAttribute('width', width / N)
-    maskRect.setAttribute('height', height)
+    maskRect.setAttribute('x', (i * panoSvgWidth) / N)
+    maskRect.setAttribute('y', 0)
+    maskRect.setAttribute('width', panoSvgWidth / N / 2)
+    maskRect.setAttribute('height', panoSvgHeight)
     maskRect.setAttribute('fill', 'white')
-
     mask.appendChild(maskRect)
 
+    const useElementWrapper = document.createElementNS(svgNS, 'g')
     const useElement = document.createElementNS(svgNS, 'use')
     useElement.setAttribute('href', '#dodo-original')
-    useElement.setAttribute('x', -(i * width) / N) // works O_o
-    useElement.setAttribute('mask', `url(#mask-${i})`)
+    const offset = panoSvgWidth * PARAMS.panoOffset
+    useElement.setAttribute(
+      'transform',
+      `translate(${(i * panoSvgWidth) / N / 2 + offset} 0) scale(${panoSvgHeight / heightOrig})`,
+    )
+    useElementWrapper.setAttribute('mask', `url(#mask-${i})`)
 
     symbol.appendChild(mask)
-    symbol.appendChild(useElement)
+    useElementWrapper.appendChild(useElement)
+    symbol.appendChild(useElementWrapper)
 
-    defs.appendChild(symbol)
+    newSvg.appendChild(symbol)
   }
 
   // Add the original SVG content as a symbol
   const originalSymbol = document.createElementNS(svgNS, 'symbol')
   originalSymbol.id = 'dodo-original'
-  originalSymbol.setAttribute('viewBox', viewBox)
-  originalSymbol.innerHTML = svgElement.innerHTML
+  // originalSymbol.setAttribute('viewBox', viewBox)
+  originalSymbol.innerHTML = svgInputElement.innerHTML
   defs.appendChild(originalSymbol)
 
   // Create N use elements, each referencing a different segment
-  for (let i = 0; i < N; i++) {
-    const use = document.createElementNS(svgNS, 'use')
-    use.setAttribute('href', `#dodo-segment-${i}`)
-    use.setAttribute('x', ((i * width) / N) * 2)
-    use.setAttribute('width', width)
-    use.setAttribute('height', height)
-    newSvg.appendChild(use)
-  }
+  // for (let i = 0; i < N; i++) {
+  //   const use = document.createElementNS(svgNS, 'use')
+  //   use.setAttribute('href', `#dodo-segment-${i}`)
+  //   use.setAttribute('x', ((i * widthOrig) / N) * 2)
+  //   use.setAttribute('width', widthOrig)
+  //   use.setAttribute('height', heightOrig)
+  //   newSvg.appendChild(use)
+  // }
 
   for (let i = 0; i < N; i++) {
     const rect = document.createElementNS(svgNS, 'rect')
-    rect.setAttribute('x', (((i + 0.5) * width) / N) * 2)
-    rect.setAttribute('width', width / N)
-    rect.setAttribute('height', height)
+    rect.setAttribute('x', ((i + 0.5) * panoSvgWidth) / N)
+    rect.setAttribute('width', panoSvgWidth / N / 2)
+    rect.setAttribute('height', panoSvgHeight)
     rect.setAttribute(
       'fill',
       `rgb(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},128)`,
@@ -192,3 +220,42 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
 
 updatePanoSvg()
 updateWallpaperSvg()
+
+function openFileDialog() {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = '*/*'
+  input.style.display = 'none'
+
+  input.onchange = event => {
+    const file = event.target.files[0]
+    console.log('file:', file)
+    if (file) {
+      const reader = new FileReader()
+      reader.readAsText(file)
+      reader.onload = e => {
+        const content = e.target.result
+        const filetype = file.type
+        fileLoadedCallback(content, filetype)
+      }
+    }
+  }
+
+  document.body.appendChild(input)
+  input.click()
+  console.log('input:', input)
+  document.body.removeChild(input)
+}
+
+function fileLoadedCallback(content, filetype) {
+  console.log('content:', content)
+  if (filetype !== 'image/svg+xml') return
+  let svgStr = content
+
+  // make an svg element
+  const parser = new DOMParser()
+  const svgDoc = parser.parseFromString(svgStr, 'image/svg+xml')
+  svgInputElement = svgDoc.documentElement
+
+  updatePanoSvg()
+}

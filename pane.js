@@ -1,6 +1,7 @@
 export function Pane(PARAMS) {
   const pane = new Tweakpane.Pane()
   pane.secretElements = []
+
   let debug = pane.addInput(PARAMS, 'debug', {label: 'Отладка'})
   pane.secretElements.push(debug)
 
@@ -88,6 +89,23 @@ export function Pane(PARAMS) {
 
   pane.secretElements.forEach(el => {
     el.hidden = true
+  })
+
+  let pano = pane.addFolder({title: 'Пано'})
+  pano.addInput(PARAMS, 'panoWidth', {
+    label: 'Ширина',
+    min: 1,
+    max: 10000,
+  })
+  pano.addInput(PARAMS, 'panoHeight', {
+    label: 'Высота',
+    min: 1,
+    max: 10000,
+  })
+  pano.addInput(PARAMS, 'panoOffset', {
+    label: 'Смещение',
+    min: -1,
+    max: 1,
   })
 
   return pane
