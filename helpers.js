@@ -55,7 +55,6 @@ export function splitmix32(a) {
   let counter = 0
   return function () {
     counter += 1
-    // console.log(`R() is called ${counter} times`)
     a |= 0
     a = (a + 0x9e3779b9) | 0
     var t = a ^ (a >>> 16)

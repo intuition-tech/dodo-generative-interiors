@@ -3,9 +3,6 @@ import {parseColors} from './helpers.js'
 import {R} from './helpers.js'
 
 export function makeWallpaperShapes(PARAMS, rectangleComposition) {
-  console.log('------------------------')
-  console.log('shapes regeneration')
-  console.log('------------------------')
   let shapes = rectangleComposition.map(rect => {
     let polys = rect.map(poly => {
       poly = tiltRect(poly)
@@ -16,7 +13,6 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
 
     let palette = parseColors(PARAMS.colors)
     let color = palette[(R() * palette.length) | 0]
-    console.log('R():', R())
 
     let shape = {
       type: rect.type,

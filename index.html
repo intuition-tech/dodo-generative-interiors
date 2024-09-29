@@ -13,20 +13,25 @@
         margin: 0;
         padding: 0;
       }
-      #container {
-        margin-right: 265px;
-      }
       svg {
-        max-height: 100vh;
-        width: auto;
-        height: auto;
-        max-width: 100%;
+      }
+      .tp-dfwv {
+        position: fixed !important;
+        right: 0 !important;
+        top: 0 !important;
+      }
+      #workspace {
+        transform: scale(0.5) translate(0, 0);
       }
     </style>
   </head>
   <body>
-    <div id="panel"></div>
-    <div id="wallpaper"></div>
+    <div id="workspace">
+      <h2>обои</h2>
+      <div id="wallpaper"></div>
+      <h2>панно</h2>
+      <div id="panel"></div>
+    </div>
     <script src="index.js" type="module"></script>
   </body>
 </html>

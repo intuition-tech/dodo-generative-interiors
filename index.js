@@ -25,7 +25,7 @@ let PARAMS = {
   gradient2: '#CCD8E4',
   gradientsEnabled: true,
   scale: 8,
-  sizeX: 1000,
+  sizeX: 2000,
   sizeY: 1000,
   shapeProbability: 0.7,
   shapesVertAmp: 0.37,
@@ -48,7 +48,6 @@ pane.on('change', e => {
     updateWallpaperSvg()
   }
 })
-console.log('pane:', pane)
 
 // const textInput = pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
 // textInput.element.querySelector('input').addEventListener('input', ev => {
@@ -97,6 +96,8 @@ function updateWallpaperSvg() {
   let container = document.getElementById('wallpaper')
   container.innerHTML = ''
   let svg = makeSvg(PARAMS, wallpaperShapes)
+  svg.setAttribute('width', PARAMS.sizeX)
+  svg.setAttribute('height', PARAMS.sizeY)
   container.appendChild(svg)
 }
 
@@ -114,10 +115,9 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
 
   // A prism is a 3d element the panel is made of
   // A prism consists of two stripes for each side
-  const panelPrismWidthFrontalProjection = 100 // FIXME adjust
+  const panelPrismWidthFrontalProjection = 50 // FIXME adjust
   // Number of prisms
   const N = (PARAMS.panelWidth / panelPrismWidthFrontalProjection) | 0
-  console.log('N:', N)
 
   // Fetch the SVG file
   if (!svgInputElement) {
@@ -140,6 +140,7 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
   newSvg.setAttribute('xmlns', svgNS)
   newSvg.setAttribute('viewBox', `${0} ${0} ${panelSvgWidth} ${panelSvgHeight}`)
   newSvg.setAttribute('width', panelSvgWidth)
+  console.log('panelSvgWidth:', panelSvgWidth)
   newSvg.setAttribute('height', panelSvgHeight)
 
   // Add a defs section
