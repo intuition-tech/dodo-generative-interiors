@@ -112,21 +112,22 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
   const [minX, minY, width, height] = viewBox.split(' ').map(Number)
 
   // Number of segments
-  const N = PARAMS.panoSegments || 8
+  const N = PARAMS.panoSegments || 20
 
   // Create a new SVG element
   const newSvg = document.createElementNS(svgNS, 'svg')
   newSvg.setAttribute('xmlns', svgNS)
   newSvg.setAttribute('viewBox', `${minX} ${minY} ${width * 2} ${height}`)
 
-  // // Add a defs section
-  // const defs = document.createElementNS(svgNS, 'defs')
-  // newSvg.appendChild(defs)
+  // Add a defs section
+  const defs = document.createElementNS(svgNS, 'defs')
+  newSvg.appendChild(defs)
 
   // Create N symbols, each with a different mask
   for (let i = 0; i < N; i++) {
-    const segment = document.createElementNS(svgNS, 'g')
-    segment.setAttribute('transform', `translate(${(i * width) / N}, 0)`)
+    const symbol = document.createElementNS(svgNS, 'symbol')
+    symbol.id = `dodo-segment-${i}`
+    symbol.setAttribute('viewBox', viewBox)
 
     const mask = document.createElementNS(svgNS, 'mask')
     mask.id = `mask-${i}`
@@ -138,39 +139,53 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
     mask.setAttribute('height', height)
 
     const maskRect = document.createElementNS(svgNS, 'rect')
+    maskRect.setAttribute('x', minX + (i * width) / N)
+    maskRect.setAttribute('y', minY)
     maskRect.setAttribute('width', width / N)
     maskRect.setAttribute('height', height)
     maskRect.setAttribute('fill', 'white')
+
     mask.appendChild(maskRect)
 
-    const g = document.createElementNS(svgNS, 'g')
-    g.setAttribute('mask', `url(#mask-${i})`)
-    g.innerHTML = svgElement.innerHTML
+    const useElement = document.createElementNS(svgNS, 'use')
+    useElement.setAttribute('href', '#dodo-original')
+    useElement.setAttribute('x', -(i * width) / N) // works O_o
+    useElement.setAttribute('mask', `url(#mask-${i})`)
 
-    segment.appendChild(g)
-    segment.appendChild(mask)
+    symbol.appendChild(mask)
+    symbol.appendChild(useElement)
 
-    newSvg.appendChild(segment)
+    defs.appendChild(symbol)
   }
 
-  // // Add the original SVG content as a symbol
-  // const originalSymbol = document.createElementNS(svgNS, 'symbol')
-  // originalSymbol.id = 'dodo-original'
-  // originalSymbol.setAttribute('viewBox', viewBox)
-  // originalSymbol.innerHTML = svgElement.innerHTML
-  // defs.appendChild(originalSymbol)
+  // Add the original SVG content as a symbol
+  const originalSymbol = document.createElementNS(svgNS, 'symbol')
+  originalSymbol.id = 'dodo-original'
+  originalSymbol.setAttribute('viewBox', viewBox)
+  originalSymbol.innerHTML = svgElement.innerHTML
+  defs.appendChild(originalSymbol)
 
-  // for (let i = 0; i < N; i++) {
-  //   const rect = document.createElementNS(svgNS, 'rect')
-  //   rect.setAttribute('x', (((i + 0.5) * width) / N) * 2)
-  //   rect.setAttribute('width', width / N)
-  //   rect.setAttribute('height', height)
-  //   rect.setAttribute(
-  //     'fill',
-  //     `rgb(${(Math.random() * 255) | 0},${(Math.random() * 255) | 0},${(Math.random() * 255) | 0})`,
-  //   )
-  //   newSvg.appendChild(rect)
-  // }
+  // Create N use elements, each referencing a different segment
+  for (let i = 0; i < N; i++) {
+    const use = document.createElementNS(svgNS, 'use')
+    use.setAttribute('href', `#dodo-segment-${i}`)
+    use.setAttribute('x', ((i * width) / N) * 2)
+    use.setAttribute('width', width)
+    use.setAttribute('height', height)
+    newSvg.appendChild(use)
+  }
+
+  for (let i = 0; i < N; i++) {
+    const rect = document.createElementNS(svgNS, 'rect')
+    rect.setAttribute('x', (((i + 0.5) * width) / N) * 2)
+    rect.setAttribute('width', width / N)
+    rect.setAttribute('height', height)
+    rect.setAttribute(
+      'fill',
+      `rgb(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},128)`,
+    )
+    newSvg.appendChild(rect)
+  }
 
   return newSvg
 }
