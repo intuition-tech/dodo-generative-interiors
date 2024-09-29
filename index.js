@@ -12,6 +12,8 @@ import {makeSvg} from './makeSvg.js'
 import {makeWallpaperShapes} from './makeWallpaperShapes.js'
 import {makePanel} from './makePanel.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
+import {zoomAndPan} from './zoomAndPan.js'
+zoomAndPan('#workspace-wrapper', '#workspace')
 
 let colorsSequence = []
 let svgInputElement
