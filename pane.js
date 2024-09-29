@@ -91,18 +91,18 @@ export function Pane(PARAMS) {
     el.hidden = true
   })
 
-  let pano = pane.addFolder({title: 'Пано'})
-  pano.addInput(PARAMS, 'panoWidth', {
+  let panel = pane.addFolder({title: 'Панно'})
+  panel.addInput(PARAMS, 'panelWidth', {
     label: 'Ширина',
     min: 1,
     max: 10000,
   })
-  pano.addInput(PARAMS, 'panoHeight', {
+  panel.addInput(PARAMS, 'panelHeight', {
     label: 'Высота',
     min: 1,
     max: 10000,
   })
-  pano.addInput(PARAMS, 'panoOffset', {
+  panel.addInput(PARAMS, 'panelOffset', {
     label: 'Смещение',
     min: -1,
     max: 1,

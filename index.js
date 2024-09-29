@@ -10,7 +10,7 @@ import {
 } from './helpers.js'
 import {makeSvg} from './makeSvg.js'
 import {makeWallpaperShapes} from './makeWallpaperShapes.js'
-import {makePano} from './makePano.js'
+import {makePanel} from './makePanel.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 
 let colorsSequence = []
@@ -35,15 +35,15 @@ let PARAMS = {
   shapesFreq: 2.9,
   shapesOverlap: 0,
   shapesDistribution: 1,
-  panoWidth: 1000,
-  panoHeight: 500,
-  panoOffset: -0.2,
+  panelWidth: 1000,
+  panelHeight: 500,
+  panelOffset: -0.2,
 }
 
 let pane = Pane(PARAMS)
 pane.on('change', e => {
-  if (e.presetKey.includes('pano')) {
-    updatePanoSvg()
+  if (e.presetKey.includes('panel')) {
+    updatePanelSvg()
   } else {
     updateWallpaperSvg()
   }
@@ -82,7 +82,7 @@ pane.addButton({title: 'Load SVG'}).on('click', () => {
 })
 // save button
 pane.addButton({title: 'Save SVG'}).on('click', () => {
-  saveSVG('#pano svg', 'pano.svg')
+  saveSVG('#panel svg', 'panel.svg')
 })
 
 function updateWallpaperSvg() {
@@ -100,23 +100,23 @@ function updateWallpaperSvg() {
   container.appendChild(svg)
 }
 
-async function updatePanoSvg() {
-  let container = document.getElementById('pano')
+async function updatePanelSvg() {
+  let container = document.getElementById('panel')
   container.innerHTML = ''
   let rectangleComposition = makeRectangleComposition(PARAMS) // FIXME reuse one from wallpaper
-  let svg = await makePanoSvg(PARAMS, rectangleComposition)
+  let svg = await makePanelSvg(PARAMS, rectangleComposition)
   container.appendChild(svg)
 }
 
-async function makePanoSvg(PARAMS, rectangleComposition) {
-  const panoSvgWidth = PARAMS.panoWidth * Math.sqrt(2)
-  const panoSvgHeight = PARAMS.panoHeight
+async function makePanelSvg(PARAMS, rectangleComposition) {
+  const panelSvgWidth = PARAMS.panelWidth * Math.sqrt(2)
+  const panelSvgHeight = PARAMS.panelHeight
 
-  // A prism is a 3d element the pano is made of
+  // A prism is a 3d element the panel is made of
   // A prism consists of two stripes for each side
-  const panoPrismWidthFrontalProjection = 100 // FIXME adjust
+  const panelPrismWidthFrontalProjection = 100 // FIXME adjust
   // Number of prisms
-  const N = (PARAMS.panoWidth / panoPrismWidthFrontalProjection) | 0
+  const N = (PARAMS.panelWidth / panelPrismWidthFrontalProjection) | 0
   console.log('N:', N)
 
   // Fetch the SVG file
@@ -138,9 +138,9 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
   const svgNS = 'http://www.w3.org/2000/svg'
   const newSvg = document.createElementNS(svgNS, 'svg')
   newSvg.setAttribute('xmlns', svgNS)
-  newSvg.setAttribute('viewBox', `${0} ${0} ${panoSvgWidth} ${panoSvgHeight}`)
-  newSvg.setAttribute('width', panoSvgWidth)
-  newSvg.setAttribute('height', panoSvgHeight)
+  newSvg.setAttribute('viewBox', `${0} ${0} ${panelSvgWidth} ${panelSvgHeight}`)
+  newSvg.setAttribute('width', panelSvgWidth)
+  newSvg.setAttribute('height', panelSvgHeight)
 
   // Add a defs section
   const defs = document.createElementNS(svgNS, 'defs')
@@ -156,26 +156,26 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
     mask.id = `mask-${i}`
     mask.style = 'mask-type:alpha'
     mask.setAttribute('maskUnits', 'userSpaceOnUse')
-    mask.setAttribute('x', (i * panoSvgWidth) / N)
+    mask.setAttribute('x', (i * panelSvgWidth) / N)
     mask.setAttribute('y', 0)
-    mask.setAttribute('width', panoSvgWidth / N / 2)
-    mask.setAttribute('height', panoSvgHeight)
+    mask.setAttribute('width', panelSvgWidth / N / 2)
+    mask.setAttribute('height', panelSvgHeight)
 
     const maskRect = document.createElementNS(svgNS, 'rect')
-    maskRect.setAttribute('x', (i * panoSvgWidth) / N)
+    maskRect.setAttribute('x', (i * panelSvgWidth) / N)
     maskRect.setAttribute('y', 0)
-    maskRect.setAttribute('width', panoSvgWidth / N / 2)
-    maskRect.setAttribute('height', panoSvgHeight)
+    maskRect.setAttribute('width', panelSvgWidth / N / 2)
+    maskRect.setAttribute('height', panelSvgHeight)
     maskRect.setAttribute('fill', 'white')
     mask.appendChild(maskRect)
 
     const useElementWrapper = document.createElementNS(svgNS, 'g')
     const useElement = document.createElementNS(svgNS, 'use')
     useElement.setAttribute('href', '#dodo-original')
-    const offset = panoSvgWidth * PARAMS.panoOffset
+    const offset = panelSvgWidth * PARAMS.panelOffset
     useElement.setAttribute(
       'transform',
-      `translate(${(i * panoSvgWidth) / N / 2 + offset} 0) scale(${panoSvgHeight / heightOrig})`,
+      `translate(${(i * panelSvgWidth) / N / 2 + offset} 0) scale(${panelSvgHeight / heightOrig})`,
     )
     useElementWrapper.setAttribute('mask', `url(#mask-${i})`)
 
@@ -205,9 +205,9 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
 
   for (let i = 0; i < N; i++) {
     const rect = document.createElementNS(svgNS, 'rect')
-    rect.setAttribute('x', ((i + 0.5) * panoSvgWidth) / N)
-    rect.setAttribute('width', panoSvgWidth / N / 2)
-    rect.setAttribute('height', panoSvgHeight)
+    rect.setAttribute('x', ((i + 0.5) * panelSvgWidth) / N)
+    rect.setAttribute('width', panelSvgWidth / N / 2)
+    rect.setAttribute('height', panelSvgHeight)
     rect.setAttribute(
       'fill',
       `rgb(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},128)`,
@@ -218,7 +218,7 @@ async function makePanoSvg(PARAMS, rectangleComposition) {
   return newSvg
 }
 
-updatePanoSvg()
+updatePanelSvg()
 updateWallpaperSvg()
 
 function openFileDialog() {
@@ -257,5 +257,5 @@ function fileLoadedCallback(content, filetype) {
   const svgDoc = parser.parseFromString(svgStr, 'image/svg+xml')
   svgInputElement = svgDoc.documentElement
 
-  updatePanoSvg()
+  updatePanelSvg()
 }
