@@ -2,22 +2,26 @@ export function Pane(PARAMS) {
   const pane = new Tweakpane.Pane()
   pane.secretElements = []
 
+  pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
+
   let debug = pane.addInput(PARAMS, 'debug', {label: 'Отладка'})
   pane.secretElements.push(debug)
 
   let colors = pane.addInput(PARAMS, 'colors', {label: 'Цвета'})
   pane.secretElements.push(colors)
 
-  let gradient1 = pane.addInput(PARAMS, 'gradient1', {
+  let wall = pane.addFolder({title: 'Обои'})
+
+  let gradient1 = wall.addInput(PARAMS, 'gradient1', {
     label: 'Градиент 1',
   })
   pane.secretElements.push(gradient1)
-  let gradient2 = pane.addInput(PARAMS, 'gradient2', {
+  let gradient2 = wall.addInput(PARAMS, 'gradient2', {
     label: 'Градиент 2',
   })
   pane.secretElements.push(gradient2)
 
-  let scale = pane.addInput(PARAMS, 'scale', {
+  let scale = wall.addInput(PARAMS, 'scale', {
     min: 1,
     max: 30,
     label: 'Сжатие',
@@ -29,18 +33,18 @@ export function Pane(PARAMS) {
   //   y: {min: 1, max: 10000},
   //   label: 'Размер, мм',
   // })
-  let sizeX = pane.addInput(PARAMS, 'sizeX', {
+  let sizeX = wall.addInput(PARAMS, 'sizeX', {
     min: 1,
     max: 10000,
     label: 'Ширина, мм',
   })
-  let sizeY = pane.addInput(PARAMS, 'sizeY', {
+  let sizeY = wall.addInput(PARAMS, 'sizeY', {
     min: 1,
     max: 10000,
     label: 'Высота, мм',
   })
 
-  let shapesFolder = pane.addFolder({title: 'Фигуры', expanded: true})
+  let shapesFolder = wall.addFolder({title: 'Фигуры', expanded: true})
   pane.secretElements.push(shapesFolder)
 
   shapesFolder.addInput(PARAMS, 'shapeProbability', {
@@ -93,12 +97,12 @@ export function Pane(PARAMS) {
 
   let panel = pane.addFolder({title: 'Панно'})
   panel.addInput(PARAMS, 'panelWidth', {
-    label: 'Ширина',
+    label: 'Ширина, мм',
     min: 1,
     max: 10000,
   })
   panel.addInput(PARAMS, 'panelHeight', {
-    label: 'Высота',
+    label: 'Высота, мм',
     min: 1,
     max: 10000,
   })

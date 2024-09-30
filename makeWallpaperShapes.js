@@ -29,7 +29,7 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
   })
 
   if (PARAMS.gradientsEnabled) {
-    // shapes = addForegroundShapes(PARAMS, shapes) // FIXME
+    shapes = addForegroundShapes(PARAMS, shapes) // FIXME
   }
 
   return shapes

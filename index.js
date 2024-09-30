@@ -39,7 +39,7 @@ let PARAMS = {
   shapesDistribution: 1,
   panelWidth: 1000,
   panelHeight: 500,
-  panelOffset: -0.2,
+  panelOffset: -0.04,
 }
 
 let pane = Pane(PARAMS)
@@ -51,13 +51,15 @@ pane.on('change', e => {
       revealSecretPane()
     }
     updateWallpaperSvg()
-  } else if (e.presetKey == 'colors') {
     updatePanelSvg()
+  } else if (e.presetKey == 'colors') {
     updateWallpaperSvg()
+    updatePanelSvg()
   } else if (e.presetKey.includes('panel')) {
     updatePanelSvg()
   } else {
     updateWallpaperSvg()
+    updatePanelSvg() // panel needs to update colors as well
   }
 })
 
@@ -69,10 +71,6 @@ pane.on('change', e => {
 //   }
 //   updateWallpaperSvg()
 // })
-
-const textInput = pane
-  .addInput(PARAMS, 'seedString', {label: 'Слово'})
-  .on('change', ev => {})
 
 function revealSecretPane() {
   pane.secretElements.forEach(el => {
@@ -222,7 +220,11 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
     rect.setAttribute('width', panelSvgWidth / N / 2)
     rect.setAttribute('height', panelSvgHeight)
     console.log('wallpaperShapes:', wallpaperShapes)
-    let color = wallpaperShapes[map(i, 0, N, 0, wallpaperShapes.length) | 0].fill
+    let index =
+      map(i, 0, N, 0, wallpaperShapes.filter(d => d.type == 'rect').length) | 0
+    console.log('index:', index)
+    let color = wallpaperShapes[index].fill
+    console.log('color:', color)
     rect.setAttribute('fill', color)
     newSvg.appendChild(rect)
   }
