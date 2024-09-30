@@ -1,6 +1,13 @@
 import {Pane} from './pane.js'
 import {sliceWallpaperShapes} from './sliceWallpaperShapes.js'
-import {saveSVG, setSeed, stringHash, parseColors, R} from './helpers.js'
+import {
+  saveSVG,
+  setSeed,
+  stringHash,
+  parseColors,
+  splitmix32,
+  map,
+} from './helpers.js'
 import {makeSvg} from './makeSvg.js'
 import {makeWallpaperShapes} from './makeWallpaperShapes.js'
 import {makePanel} from './makePanel.js'
@@ -9,6 +16,7 @@ import {zoomAndPan} from './zoomAndPan.js'
 zoomAndPan('#workspace-wrapper', '#workspace', {scale: 0.4})
 
 let svgInputElement
+let wallpaperShapes
 
 let PARAMS = {
   debug: false,
@@ -89,7 +97,8 @@ function updateWallpaperSvg() {
   // shape is made of polys
 
   let rectangleComposition = makeRectangleComposition(PARAMS)
-  let wallpaperShapes = makeWallpaperShapes(PARAMS, rectangleComposition)
+  // used for panel generation
+  wallpaperShapes = makeWallpaperShapes(PARAMS, rectangleComposition)
   console.log('rectangleComposition:', rectangleComposition)
   console.log('wallpaperShapes:', wallpaperShapes[0])
 
@@ -207,13 +216,13 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
   // }
 
   setSeed(stringHash(PARAMS.seedString) + 2)
-  let colors = parseColors(PARAMS.colors)
   for (let i = 0; i < N; i++) {
     const rect = document.createElementNS(svgNS, 'rect')
     rect.setAttribute('x', ((i + 0.5) * panelSvgWidth) / N)
     rect.setAttribute('width', panelSvgWidth / N / 2)
     rect.setAttribute('height', panelSvgHeight)
-    let color = colors[(colors.length * R()) | 0]
+    console.log('wallpaperShapes:', wallpaperShapes)
+    let color = wallpaperShapes[map(i, 0, N, 0, wallpaperShapes.length) | 0].fill
     rect.setAttribute('fill', color)
     newSvg.appendChild(rect)
   }
@@ -221,8 +230,8 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
   return newSvg
 }
 
-updatePanelSvg()
 updateWallpaperSvg()
+updatePanelSvg()
 
 function openFileDialog() {
   const input = document.createElement('input')

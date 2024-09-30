@@ -3,18 +3,19 @@ import {parseColors} from './helpers.js'
 import {splitmix32, stringHash} from './helpers.js'
 
 export function makeWallpaperShapes(PARAMS, rectangleComposition) {
-  let shapesRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
+  let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
+  let tiltRandom = splitmix32(stringHash(PARAMS.seedString) + 10)
   let shapes = rectangleComposition.map((rect, i) => {
     let polys = rect.map(poly => {
       // two random numbers to set the tilt
-      poly = tiltRect(poly, shapesRandom(), shapesRandom())
+      poly = tiltRect(poly, tiltRandom(), tiltRandom())
       poly = subdivide3(poly, PARAMS.shapesRadius)
       poly = chaikinSmooth(poly, 4)
       return poly
     })
 
     let palette = parseColors(PARAMS.colors)
-    let color = palette[(shapesRandom() * palette.length) | 0]
+    let color = palette[(colorRandom() * palette.length) | 0]
     if (i == 0) {
       console.log(color)
     }
