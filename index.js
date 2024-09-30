@@ -1,13 +1,6 @@
 import {Pane} from './pane.js'
 import {sliceWallpaperShapes} from './sliceWallpaperShapes.js'
-import {
-  saveSVG,
-  setSeed,
-  stringHash,
-  parseColors,
-  R,
-  makeColorsSequence,
-} from './helpers.js'
+import {saveSVG, setSeed, stringHash, parseColors, R} from './helpers.js'
 import {makeSvg} from './makeSvg.js'
 import {makeWallpaperShapes} from './makeWallpaperShapes.js'
 import {makePanel} from './makePanel.js'
@@ -15,7 +8,6 @@ import {makeRectangleComposition} from './makeRectangleComposition.js'
 import {zoomAndPan} from './zoomAndPan.js'
 zoomAndPan('#workspace-wrapper', '#workspace', {scale: 0.4})
 
-let colorsSequence = []
 let svgInputElement
 
 let PARAMS = {
@@ -47,7 +39,7 @@ pane.on('change', e => {
   // console.log('e:', e)
   if (e.presetKey == 'seedString') {
     PARAMS.seedString = e.value
-    if (ev.value == 'password') {
+    if (e.value == 'password') {
       revealSecretPane()
     }
     updateWallpaperSvg()
@@ -98,6 +90,8 @@ function updateWallpaperSvg() {
 
   let rectangleComposition = makeRectangleComposition(PARAMS)
   let wallpaperShapes = makeWallpaperShapes(PARAMS, rectangleComposition)
+  console.log('rectangleComposition:', rectangleComposition)
+  console.log('wallpaperShapes:', wallpaperShapes[0])
 
   wallpaperShapes = sliceWallpaperShapes(PARAMS, wallpaperShapes)
 

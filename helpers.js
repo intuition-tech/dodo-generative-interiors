@@ -94,13 +94,3 @@ export function shuffleArray(array) {
   }
   return array
 }
-
-// FIXME remove
-export function makeColorsSequence(PARAMS) {
-  let colR = splitmix32(stringHash(PARAMS.seedString) + 5)
-  let palette = parseColors(PARAMS.colors)
-  let colorSequence = [...Array(1000)].map(_ => {
-    return palette[Math.floor(colR() * palette.length)]
-  })
-  return colorSequence
-}

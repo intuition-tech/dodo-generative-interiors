@@ -1,18 +1,23 @@
 import {chaikinSmooth} from './chaikinSmooth.js'
 import {parseColors} from './helpers.js'
-import {R} from './helpers.js'
+import {splitmix32, stringHash} from './helpers.js'
 
 export function makeWallpaperShapes(PARAMS, rectangleComposition) {
-  let shapes = rectangleComposition.map(rect => {
+  let shapesRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
+  let shapes = rectangleComposition.map((rect, i) => {
     let polys = rect.map(poly => {
-      poly = tiltRect(poly)
+      // two random numbers to set the tilt
+      poly = tiltRect(poly, shapesRandom(), shapesRandom())
       poly = subdivide3(poly, PARAMS.shapesRadius)
       poly = chaikinSmooth(poly, 4)
       return poly
     })
 
     let palette = parseColors(PARAMS.colors)
-    let color = palette[(R() * palette.length) | 0]
+    let color = palette[(shapesRandom() * palette.length) | 0]
+    if (i == 0) {
+      console.log(color)
+    }
 
     let shape = {
       type: rect.type,
@@ -23,7 +28,7 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
   })
 
   if (PARAMS.gradientsEnabled) {
-    // shapes = addForegroundShapes(PARAMS, shapes)
+    // shapes = addForegroundShapes(PARAMS, shapes) // FIXME
   }
 
   return shapes
@@ -36,7 +41,9 @@ function addForegroundShapes(PARAMS, shapes) {
   let period = PARAMS.sizeX / (number - 1)
   let grades = 8
   for (let w = period / grades; w < period; w += period / grades) {
-    let shape = []
+    let shape = {}
+    shape.type = 'foreground'
+    shape.polys = []
     for (let i = 0; i < number; i++) {
       let cx = i * period
       let poly = [
@@ -45,15 +52,14 @@ function addForegroundShapes(PARAMS, shapes) {
         [cx + w / 2, h],
         [cx - w / 2, h],
       ]
-      shape.push(poly)
-      shape.type = 'foreground'
+      shape.polys.push(poly)
     }
     shapes.push(shape)
   }
   return shapes
 }
 
-function tiltRect(poly) {
+function tiltRect(poly, r1, r2) {
   // expect poly is a rectangle
   let bb = getBoundingRect(poly)
   let width = bb[2] - bb[0]
@@ -61,8 +67,8 @@ function tiltRect(poly) {
   let cx = bb[0] + width / 2
   let cy = bb[1] + height / 2
   let tiltKoeff = 0.25
-  let tiltT = ((R() * 6 - 3) | 0) * tiltKoeff
-  let tiltB = ((R() * 6 - 3) | 0) * tiltKoeff
+  let tiltT = ((r1 * 6 - 3) | 0) * tiltKoeff
+  let tiltB = ((r2 * 6 - 3) | 0) * tiltKoeff
   let pLT = [cx - width / 2, cy - height / 2]
   let pRT = [cx + width / 2, cy - height / 2]
   let pLB = [cx - width / 2, cy + height / 2]
