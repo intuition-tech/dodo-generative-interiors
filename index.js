@@ -13,7 +13,7 @@ import {makeWallpaperShapes} from './makeWallpaperShapes.js'
 import {makePanel} from './makePanel.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 import {zoomAndPan} from './zoomAndPan.js'
-zoomAndPan('#workspace-wrapper', '#workspace')
+zoomAndPan('#workspace-wrapper', '#workspace', {scale: 0.4})
 
 let colorsSequence = []
 let svgInputElement
@@ -82,7 +82,10 @@ pane.addButton({title: 'Load SVG'}).on('click', () => {
   openFileDialog(fileLoadedCallback)
 })
 // save button
-pane.addButton({title: 'Save SVG'}).on('click', () => {
+pane.addButton({title: 'Save wallpaper'}).on('click', () => {
+  saveSVG('#wallpaper svg', 'wallpaper.svg')
+})
+pane.addButton({title: 'Save panel'}).on('click', () => {
   saveSVG('#panel svg', 'panel.svg')
 })
 

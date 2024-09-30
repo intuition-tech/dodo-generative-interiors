@@ -1,10 +1,10 @@
-export function zoomAndPan(selectorContainer, selectorMovable) {
+export function zoomAndPan(selectorContainer, selectorMovable, options = {}) {
   const container = document.querySelector(selectorContainer)
   const movable = container.querySelector(selectorMovable)
   movable.style.transformOrigin = '0 0'
   movable.style.position = 'absolute'
 
-  let scale = 1
+  let scale = options.scale || 1
   let panning = false
   let startPoint = {x: 0, y: 0}
   let endPoint = {x: 0, y: 0}
@@ -49,4 +49,6 @@ export function zoomAndPan(selectorContainer, selectorMovable) {
   function updateTransform() {
     movable.style.transform = `translate(${endPoint.x}px, ${endPoint.y}px) scale(${scale})`
   }
+
+  updateTransform()
 }
