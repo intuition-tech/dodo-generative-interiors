@@ -44,7 +44,17 @@ let PARAMS = {
 
 let pane = Pane(PARAMS)
 pane.on('change', e => {
-  if (e.presetKey.includes('panel')) {
+  // console.log('e:', e)
+  if (e.presetKey == 'seedString') {
+    PARAMS.seedString = e.value
+    if (ev.value == 'password') {
+      revealSecretPane()
+    }
+    updateWallpaperSvg()
+  } else if (e.presetKey == 'colors') {
+    updatePanelSvg()
+    updateWallpaperSvg()
+  } else if (e.presetKey.includes('panel')) {
     updatePanelSvg()
   } else {
     updateWallpaperSvg()
@@ -62,14 +72,7 @@ pane.on('change', e => {
 
 const textInput = pane
   .addInput(PARAMS, 'seedString', {label: 'Слово'})
-  .on('change', ev => {
-    PARAMS.seedString = ev.value
-    console.log('ev.value:', ev.value)
-    if (ev.value == 'password') {
-      revealSecretPane()
-    }
-    updateWallpaperSvg()
-  })
+  .on('change', ev => {})
 
 function revealSecretPane() {
   pane.secretElements.forEach(el => {
@@ -145,7 +148,6 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
   newSvg.setAttribute('xmlns', svgNS)
   newSvg.setAttribute('viewBox', `${0} ${0} ${panelSvgWidth} ${panelSvgHeight}`)
   newSvg.setAttribute('width', panelSvgWidth)
-  console.log('panelSvgWidth:', panelSvgWidth)
   newSvg.setAttribute('height', panelSvgHeight)
 
   // Add a defs section
@@ -178,10 +180,11 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
     const useElementWrapper = document.createElementNS(svgNS, 'g')
     const useElement = document.createElementNS(svgNS, 'use')
     useElement.setAttribute('href', '#dodo-original')
-    const offset = panelSvgWidth * PARAMS.panelOffset
+    let scale = panelSvgHeight / heightOrig
+    const offset = widthOrig * scale * PARAMS.panelOffset
     useElement.setAttribute(
       'transform',
-      `translate(${(i * panelSvgWidth) / N / 2 + offset} 0) scale(${panelSvgHeight / heightOrig})`,
+      `translate(${(i * panelSvgWidth) / N / 2 + offset} 0) scale(${scale})`,
     )
     useElementWrapper.setAttribute('mask', `url(#mask-${i})`)
 
@@ -209,15 +212,15 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
   //   newSvg.appendChild(use)
   // }
 
+  setSeed(stringHash(PARAMS.seedString) + 2)
+  let colors = parseColors(PARAMS.colors)
   for (let i = 0; i < N; i++) {
     const rect = document.createElementNS(svgNS, 'rect')
     rect.setAttribute('x', ((i + 0.5) * panelSvgWidth) / N)
     rect.setAttribute('width', panelSvgWidth / N / 2)
     rect.setAttribute('height', panelSvgHeight)
-    rect.setAttribute(
-      'fill',
-      `rgb(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},128)`,
-    )
+    let color = colors[(colors.length * R()) | 0]
+    rect.setAttribute('fill', color)
     newSvg.appendChild(rect)
   }
 
