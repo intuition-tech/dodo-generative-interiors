@@ -26,13 +26,18 @@ let PARAMS = {
   gradient1: '#F6ECEC',
   gradient2: '#CCD8E4',
   gradientsEnabled: true,
-  scale: 8,
+  scale: 1, // FIXME 8
   sizeX: 2000,
   sizeY: 1000,
   shapeProbability: 0.7,
   shapesVertAmp: 0.37,
-  shapeSizeMin: {x: 0.05, y: 0.3},
-  shapeSizeMax: {x: 0.25, y: 3},
+  shapeSmallSizeMin: {x: 0.05, y: 0.3},
+  shapeSmallSizeMax: {x: 0.25, y: 3},
+  shapeBigSizeMin: {x: 0.05, y: 0.3},
+  shapeBigSizeMax: {x: 0.25, y: 3},
+  shapeBigSizeMax: {x: 0.25, y: 3},
+  shapeSpaceMin: 0.25,
+  shapeSpaceMax: 3,
   shapesRadius: 100,
   shapesFreq: 2.9,
   shapesOverlap: 0,
@@ -97,8 +102,6 @@ function updateWallpaperSvg() {
   let rectangleComposition = makeRectangleComposition(PARAMS)
   // used for panel generation
   wallpaperShapes = makeWallpaperShapes(PARAMS, rectangleComposition)
-  console.log('rectangleComposition:', rectangleComposition)
-  console.log('wallpaperShapes:', wallpaperShapes[0])
 
   wallpaperShapes = sliceWallpaperShapes(PARAMS, wallpaperShapes)
 
@@ -219,12 +222,9 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
     rect.setAttribute('x', ((i + 0.5) * panelSvgWidth) / N)
     rect.setAttribute('width', panelSvgWidth / N / 2)
     rect.setAttribute('height', panelSvgHeight)
-    console.log('wallpaperShapes:', wallpaperShapes)
     let index =
       map(i, 0, N, 0, wallpaperShapes.filter(d => d.type == 'rect').length) | 0
-    console.log('index:', index)
     let color = wallpaperShapes[index].fill
-    console.log('color:', color)
     rect.setAttribute('fill', color)
     newSvg.appendChild(rect)
   }

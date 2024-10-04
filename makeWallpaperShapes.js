@@ -8,7 +8,7 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
   let shapes = rectangleComposition.map((rect, i) => {
     let polys = rect.map(poly => {
       // two random numbers to set the tilt
-      poly = tiltRect(poly, tiltRandom(), tiltRandom())
+      // poly = tiltRect(poly, tiltRandom(), tiltRandom()) // FIXME
       poly = subdivide3(poly, PARAMS.shapesRadius)
       poly = chaikinSmooth(poly, 4)
       return poly
@@ -16,9 +16,6 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
 
     let palette = parseColors(PARAMS.colors)
     let color = palette[(colorRandom() * palette.length) | 0]
-    if (i == 0) {
-      console.log(color)
-    }
 
     let shape = {
       type: rect.type,

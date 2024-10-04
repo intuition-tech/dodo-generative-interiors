@@ -59,15 +59,35 @@ export function Pane(PARAMS) {
     step: 0.01,
     label: 'Вертикальная амплитуда',
   })
-  shapesFolder.addInput(PARAMS, 'shapeSizeMin', {
+  shapesFolder.addInput(PARAMS, 'shapeSmallSizeMin', {
     x: {min: 0.01, max: 0.5},
     y: {min: 0, max: 5},
     label: 'Мин. размер',
   })
-  shapesFolder.addInput(PARAMS, 'shapeSizeMax', {
+  shapesFolder.addInput(PARAMS, 'shapeSmallSizeMax', {
     x: {min: 0.01, max: 1},
     y: {min: 0.1, max: 5},
     label: 'Макс. размер',
+  })
+  shapesFolder.addInput(PARAMS, 'shapeBigSizeMin', {
+    x: {min: 0.01, max: 0.5},
+    y: {min: 0, max: 5},
+    label: 'Мин. размер',
+  })
+  shapesFolder.addInput(PARAMS, 'shapeBigSizeMax', {
+    x: {min: 0.01, max: 1},
+    y: {min: 0.1, max: 5},
+    label: 'Макс. размер',
+  })
+  shapesFolder.addInput(PARAMS, 'shapeSpaceMin', {
+    min: 0,
+    max: 1,
+    label: 'Мин пробел',
+  })
+  shapesFolder.addInput(PARAMS, 'shapeSpaceMax', {
+    min: 0,
+    max: 1,
+    label: 'Макс пробел',
   })
   shapesFolder.addInput(PARAMS, 'shapesRadius', {
     min: 0,
@@ -81,8 +101,8 @@ export function Pane(PARAMS) {
     label: 'Частота',
   })
   shapesFolder.addInput(PARAMS, 'shapesOverlap', {
-    min: -100,
-    max: 100,
+    min: -0.1,
+    max: 0.1,
     label: 'Нахлёст',
   })
   shapesFolder.addInput(PARAMS, 'shapesDistribution', {
