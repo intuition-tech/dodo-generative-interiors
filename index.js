@@ -85,11 +85,18 @@ pane.addButton({title: 'Load SVG'}).on('click', () => {
   openFileDialog(fileLoadedCallback)
 })
 // save button
-pane.addButton({title: 'Save wallpaper'}).on('click', () => {
-  saveSVG('#wallpaper svg', 'wallpaper.svg')
-})
-pane.addButton({title: 'Save panel'}).on('click', () => {
-  saveSVG('#panel svg', 'panel.svg')
+pane.addButton({title: 'Save assets'}).on('click', () => {
+  const zip = new JSZip()
+
+  const wallSvg = document.querySelector('#wallpaper svg').outerHTML
+  const panelSvg = document.querySelector('#panel svg').outerHTML
+
+  zip.file('wallpaper.svg', wallSvg)
+  zip.file('panel.svg', panelSvg)
+
+  zip.generateAsync({type: 'blob'}).then(function (content) {
+    saveAs(content, 'Dodo_' + PARAMS.seedString + '.zip')
+  })
 })
 
 function updateWallpaperSvg() {
