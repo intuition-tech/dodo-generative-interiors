@@ -13,35 +13,31 @@ import {makeWallpaperShapes} from './makeWallpaperShapes.js'
 import {makePanel} from './makePanel.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 import {zoomAndPan} from './zoomAndPan.js'
-zoomAndPan('#workspace-wrapper', '#workspace', {scale: 0.4})
+zoomAndPan('#workspace-wrapper', '#workspace', {scale: 0.2})
 
 let svgInputElement
 let wallpaperShapes
 
 let PARAMS = {
   debug: false,
-  seedString: 'Dodo',
+  seedString: 'DODO',
   colors:
     '#03BB8F,#07939B,#252525,#3E1D15,#810F00,#909DC5,#D04102,#D0D6EF,#D8E302,#EFE0D9,#F283AD,#F9E7CE,#FE1F00,#FF6D03,#FF9A00,#FFB07F',
   gradient1: '#F6ECEC',
   gradient2: '#CCD8E4',
   gradientsEnabled: true,
-  scale: 1, // FIXME 8
-  sizeX: 2000,
-  sizeY: 1000,
-  shapeProbability: 0.7,
+  scale: 8,
+  sizeX: 6000,
+  sizeY: 3000,
   shapesVertAmp: 0.37,
-  shapeSmallSizeMin: {x: 0.05, y: 0.3},
-  shapeSmallSizeMax: {x: 0.25, y: 3},
-  shapeBigSizeMin: {x: 0.05, y: 0.3},
-  shapeBigSizeMax: {x: 0.25, y: 3},
-  shapeBigSizeMax: {x: 0.25, y: 3},
-  shapeSpaceMin: 0.25,
-  shapeSpaceMax: 3,
-  shapesRadius: 100,
-  shapesFreq: 2.9,
-  shapesOverlap: 0,
-  shapesDistribution: 1,
+  shapeSmallSizeMin: {x: 0.1, y: 0.3},
+  shapeSmallSizeMax: {x: 0.2, y: 0.6},
+  shapeBigSizeMin: {x: 0.3, y: 1},
+  shapeBigSizeMax: {x: 0.5, y: 1.5},
+  shapeSpaceMin: 0.1,
+  shapeSpaceMax: 0.3,
+  shapesRadius: 200,
+  shapesOverlap: 0.01,
   panelWidth: 1000,
   panelHeight: 500,
   panelOffset: -0.04,
@@ -67,6 +63,7 @@ pane.on('change', e => {
     updatePanelSvg() // panel needs to update colors as well
   }
 })
+revealSecretPane()
 
 // const textInput = pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
 // textInput.element.querySelector('input').addEventListener('input', ev => {

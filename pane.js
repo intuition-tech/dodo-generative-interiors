@@ -4,8 +4,8 @@ export function Pane(PARAMS) {
 
   pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
 
-  let debug = pane.addInput(PARAMS, 'debug', {label: 'Отладка'})
-  pane.secretElements.push(debug)
+  // let debug = pane.addInput(PARAMS, 'debug', {label: 'Отладка'})
+  // pane.secretElements.push(debug)
 
   let colors = pane.addInput(PARAMS, 'colors', {label: 'Цвета'})
   pane.secretElements.push(colors)
@@ -47,12 +47,6 @@ export function Pane(PARAMS) {
   let shapesFolder = wall.addFolder({title: 'Фигуры', expanded: true})
   pane.secretElements.push(shapesFolder)
 
-  shapesFolder.addInput(PARAMS, 'shapeProbability', {
-    min: 0,
-    max: 1,
-    step: 0.01,
-    label: 'Вероятность фигуры',
-  })
   shapesFolder.addInput(PARAMS, 'shapesVertAmp', {
     min: 0,
     max: 1,
@@ -62,22 +56,22 @@ export function Pane(PARAMS) {
   shapesFolder.addInput(PARAMS, 'shapeSmallSizeMin', {
     x: {min: 0.01, max: 0.5},
     y: {min: 0, max: 5},
-    label: 'Мин. размер',
+    label: 'Мин. размер мелких',
   })
   shapesFolder.addInput(PARAMS, 'shapeSmallSizeMax', {
     x: {min: 0.01, max: 1},
     y: {min: 0.1, max: 5},
-    label: 'Макс. размер',
+    label: 'Макс. размер мелких',
   })
   shapesFolder.addInput(PARAMS, 'shapeBigSizeMin', {
     x: {min: 0.01, max: 0.5},
     y: {min: 0, max: 5},
-    label: 'Мин. размер',
+    label: 'Мин. размер крупных',
   })
   shapesFolder.addInput(PARAMS, 'shapeBigSizeMax', {
     x: {min: 0.01, max: 1},
     y: {min: 0.1, max: 5},
-    label: 'Макс. размер',
+    label: 'Макс. размер крупных',
   })
   shapesFolder.addInput(PARAMS, 'shapeSpaceMin', {
     min: 0,
@@ -94,21 +88,10 @@ export function Pane(PARAMS) {
     max: 500,
     label: 'Радиус',
   })
-  shapesFolder.addInput(PARAMS, 'shapesFreq', {
-    min: 0.1,
-    max: 6,
-    step: 0.1,
-    label: 'Частота',
-  })
   shapesFolder.addInput(PARAMS, 'shapesOverlap', {
     min: -0.1,
     max: 0.1,
     label: 'Нахлёст',
-  })
-  shapesFolder.addInput(PARAMS, 'shapesDistribution', {
-    min: 0.5,
-    max: 4,
-    label: 'Неравенство',
   })
 
   pane.secretElements.forEach(el => {

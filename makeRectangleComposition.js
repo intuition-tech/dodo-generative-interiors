@@ -14,17 +14,18 @@ function* genRect() {
 export function makeRectangleComposition(PARAMS) {
   const shapes = []
 
-  const SMALL_MIN_WIDTH_K = 1 * PARAMS.shapeSmallSizeMin.x
-  const SMALL_MAX_WIDTH_K = 1 * PARAMS.shapeSmallSizeMax.x
-  const SMALL_MIN_HEIGHT_K = 0.5 * PARAMS.shapeSmallSizeMin.y
-  const SMALL_MAX_HEIGHT_K = 0.5 * PARAMS.shapeSmallSizeMax.y
-  const BIG_MIN_WIDTH_K = 8 * PARAMS.shapeBigSizeMin.x
-  const BIG_MAX_WIDTH_K = 8 * PARAMS.shapeBigSizeMax.x
-  const BIG_MIN_HEIGHT_K = 4 * PARAMS.shapeBigSizeMin.y
-  const BIG_MAX_HEIGHT_K = 4 * PARAMS.shapeBigSizeMax.y
+  const SMALL_MIN_WIDTH_K = PARAMS.shapeSmallSizeMin.x
+  const SMALL_MAX_WIDTH_K = PARAMS.shapeSmallSizeMax.x
+  const SMALL_MIN_HEIGHT_K = PARAMS.shapeSmallSizeMin.y
+  const SMALL_MAX_HEIGHT_K = PARAMS.shapeSmallSizeMax.y
+  const BIG_MIN_WIDTH_K = PARAMS.shapeBigSizeMin.x
+  const BIG_MAX_WIDTH_K = PARAMS.shapeBigSizeMax.x
+  const BIG_MIN_HEIGHT_K = PARAMS.shapeBigSizeMin.y
+  const BIG_MAX_HEIGHT_K = PARAMS.shapeBigSizeMax.y
   const SPACE_MIN_K = PARAMS.shapeSpaceMin
   const SPACE_MAX_K = PARAMS.shapeSpaceMax
   const OVERLAP_K = PARAMS.shapesOverlap
+  const OFFSET_Y_K = PARAMS.shapesVertAmp
   const sizeX = PARAMS.sizeX
   const sizeY = PARAMS.sizeY
 
@@ -97,7 +98,9 @@ export function makeRectangleComposition(PARAMS) {
       break
     }
     let overlap = OVERLAP_K * sizeY // Apply overlap factor
-    let y = sizeY / 2 - h / 2
+    let dh = sizeY * OFFSET_Y_K
+    let offsetY = (R() * 2 - 1) * dh
+    let y = sizeY / 2 - h / 2 + offsetY
 
     let poly = [
       [x - overlap, y],

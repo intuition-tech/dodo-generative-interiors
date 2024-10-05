@@ -8,7 +8,7 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
   let shapes = rectangleComposition.map((rect, i) => {
     let polys = rect.map(poly => {
       // two random numbers to set the tilt
-      // poly = tiltRect(poly, tiltRandom(), tiltRandom()) // FIXME
+      poly = tiltRect(poly, tiltRandom(), tiltRandom())
       poly = subdivide3(poly, PARAMS.shapesRadius)
       poly = chaikinSmooth(poly, 4)
       return poly
@@ -26,7 +26,7 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
   })
 
   if (PARAMS.gradientsEnabled) {
-    shapes = addForegroundShapes(PARAMS, shapes) // FIXME
+    shapes = addForegroundShapes(PARAMS, shapes)
   }
 
   return shapes
@@ -108,7 +108,6 @@ function subdivide2(poly) {
   return newPoly
 }
 
-// FIXME use radius
 function subdivide3(poly, radius) {
   let newPoly = []
 
