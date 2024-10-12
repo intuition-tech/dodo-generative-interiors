@@ -37,18 +37,32 @@ export function smoothstep(min, max, x) {
   return s
 }
 
-export function saveSVG(selector, fileName) {
-  let svgElement = document.querySelector(selector)
-  const svgContent = svgElement.outerHTML
-  const blob = new Blob([svgContent], {type: 'image/svg+xml'})
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = fileName
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+function generateFileName(seedString) {
+  const now = new Date()
+
+  const day = String(now.getDate()).padStart(2, '0')
+  const month = String(now.getMonth() + 1).padStart(2, '0') // Месяцы начинаются с 0
+  const year = now.getFullYear()
+
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+
+  const fileName = `${seedString}_${day}_${month}_${year}_${hours}_${minutes}`
+  return fileName
+}
+
+export function saveSVG(PARAMS) {
+  const zip = new JSZip()
+
+  const wallSvg = document.querySelector('#wallpaper svg').outerHTML
+  const panelSvg = document.querySelector('#panel svg').outerHTML
+
+  zip.file('wallpaper.svg', wallSvg)
+  zip.file('panel.svg', panelSvg)
+
+  zip.generateAsync({type: 'blob'}).then(function (content) {
+    saveAs(content, generateFileName(PARAMS.seedString) + '.zip')
+  })
 }
 
 export function splitmix32(a) {
