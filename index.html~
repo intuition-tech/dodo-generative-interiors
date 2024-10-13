@@ -52,12 +52,13 @@
       }
 			*/
       .title {
-        position: absolute;
-        bottom: 100%;
-        margin: 0;
+        vertical-align: bottom;
+        margin-bottom: 0;
+        height: 100px;
+        top: -100px;
       }
       .svg-and-title {
-        margin-top: 100px;
+        padding-top: 100px;
         position: relative;
       }
     </style>

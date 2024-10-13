@@ -4,6 +4,8 @@ export function zoomAndPan(selectorContainer, selectorMovable, options = {}) {
   movable.style.transformOrigin = '0 0'
   movable.style.position = 'absolute'
 
+  let constantSizeElements = options.constantSizeElements || []
+
   let scale = options.scale || 1
   let panning = false
   let startPoint = {x: 0, y: 0}
@@ -19,7 +21,7 @@ export function zoomAndPan(selectorContainer, selectorMovable, options = {}) {
     const mouseX = e.clientX - rect.left
     const mouseY = e.clientY - rect.top
 
-    movable.style.transform = `translate(${endPoint.x}px, ${endPoint.y}px) scale(${scale})`
+    updateTransform()
 
     // Adjust the translation to keep the mouse position fixed
     endPoint.x += mouseX * (1 - delta)
@@ -48,6 +50,10 @@ export function zoomAndPan(selectorContainer, selectorMovable, options = {}) {
 
   function updateTransform() {
     movable.style.transform = `translate(${endPoint.x}px, ${endPoint.y}px) scale(${scale})`
+
+    constantSizeElements.forEach(el => {
+      el.style.fontSize = `${10 / scale}px`
+    })
   }
 
   updateTransform()

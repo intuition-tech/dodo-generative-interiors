@@ -9,6 +9,10 @@ export function Pane(PARAMS) {
 
   let colors = pane.addInput(PARAMS, 'colors', {label: 'Цвета'})
   pane.secretElements.push(colors)
+  let colorsFav = pane.addInput(PARAMS, 'colorsFav', {
+    label: 'Любимые цвета',
+  })
+  pane.secretElements.push(colorsFav)
 
   let wall = pane.addFolder({title: 'Обои'})
 

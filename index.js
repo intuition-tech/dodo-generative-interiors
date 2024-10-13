@@ -13,7 +13,9 @@ import {makeWallpaperShapes} from './makeWallpaperShapes.js'
 import {makePanel} from './makePanel.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 import {zoomAndPan} from './zoomAndPan.js'
-zoomAndPan('#workspace-wrapper', '#workspace', {scale: 0.2})
+let constantSizeElements = document.querySelectorAll('.title')
+// constantSizeElements = []
+zoomAndPan('#workspace-wrapper', '#workspace', {scale: 0.2, constantSizeElements})
 
 let svgInputElement
 let wallpaperShapes
@@ -22,7 +24,8 @@ let PARAMS = {
   debug: false,
   seedString: 'DODO',
   colors:
-    '#03BB8F,#07939B,#252525,#3E1D15,#810F00,#909DC5,#D04102,#D0D6EF,#D8E302,#EFE0D9,#F283AD,#F9E7CE,#FE1F00,#FF6D03,#FF9A00,#FFB07F',
+    '#03BB8F,#07939B,#252525,#3E1D15,#810F00,#909DC5,#D04102,#D0D6EF,#D8E302,#EFE0D9,#F283AD,#F9E7CE,#FFB07F',
+  colorsFav: `#FE1F00,#FF6D03,#FF9A00`,
   gradient1: '#F6ECEC',
   gradient2: '#CCD8E4',
   gradientsEnabled: true,
