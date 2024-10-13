@@ -3,6 +3,7 @@ import {union} from './union.js'
 const EPS = 0.000001
 const stripeWidth = 30 // 3 cm
 export function sliceWallpaperShapes(PARAMS, shapes) {
+  console.time('wallpaper: makeRectangleComposition')
   let slicesNumber = Math.ceil(PARAMS.sizeX / stripeWidth) // 3 cm
   let w = PARAMS.sizeX
   let h = PARAMS.sizeY
@@ -10,12 +11,14 @@ export function sliceWallpaperShapes(PARAMS, shapes) {
 
   let newShapes = []
   shapes.forEach(shape => {
+    console.log('shape.type:', shape.type)
     let newShape = {
       type: shape.type,
       fill: shape.fill,
       polys: [],
     }
 
+    console.time('create')
     shape.polys.forEach(poly => {
       for (let i = 0; i < slicesNumber; i++) {
         let rectPoly = []
@@ -39,9 +42,13 @@ export function sliceWallpaperShapes(PARAMS, shapes) {
         newShape.polys.push(...intersect(newPoly, rectPoly))
       }
     })
+    console.timeEnd('create')
 
+    console.time('union')
     newShape.polys = union(newShape.polys)
+    console.timeEnd('union')
     newShapes.push(newShape)
   })
+  console.timeEnd('wallpaper: makeRectangleComposition')
   return newShapes
 }

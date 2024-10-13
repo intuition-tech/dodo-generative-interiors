@@ -87,7 +87,6 @@ export function makeRectangleComposition(PARAMS) {
   for (let x = -BIG_MAX_WIDTH_K * sizeY; ; ) {
     let shape = {}
     let bigOrSmall = genRectIterator.next().value
-    console.log('bigOrSmall:', bigOrSmall)
     if (bigOrSmall === 'none') {
       let spaceWidth = map(R(), 0, 1, SPACE_MIN_K, SPACE_MAX_K) * sizeY
       x += spaceWidth

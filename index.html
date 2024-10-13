@@ -55,10 +55,41 @@
         position: absolute;
         bottom: 100%;
         margin: 0;
+        padding-bottom: 0.2em;
+        left: 0;
+        transform-origin: left bottom;
+        opacity: 0.5;
       }
       .svg-and-title {
         margin-top: 100px;
         position: relative;
+      }
+
+      body::before {
+        content: 'Минимальная ширина окна 1000 пикселей';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 1);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        text-align: center;
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      @media (max-width: 999px) {
+        body::before {
+          opacity: 1;
+          pointer-events: auto;
+        }
       }
     </style>
   </head>

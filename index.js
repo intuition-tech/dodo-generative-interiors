@@ -25,7 +25,7 @@ let PARAMS = {
   seedString: 'DODO',
   colors:
     '#03BB8F,#07939B,#252525,#3E1D15,#810F00,#909DC5,#D04102,#D0D6EF,#D8E302,#EFE0D9,#F283AD,#F9E7CE,#FFB07F',
-  colorsFav: `#FE1F00,#FF6D03,#FF9A00`,
+  colorsFav: `#FE1F00,#FF6D03,#FF9A00`, // FIXME combine with colors
   gradient1: '#F6ECEC',
   gradient2: '#CCD8E4',
   gradientsEnabled: true,
@@ -111,11 +111,13 @@ function updateWallpaperSvg() {
 }
 
 async function updatePanelSvg() {
+  console.time('panel')
   let container = document.getElementById('panel')
   container.innerHTML = ''
   let rectangleComposition = makeRectangleComposition(PARAMS) // FIXME reuse one from wallpaper
   let svg = await makePanelSvg(PARAMS, rectangleComposition)
   container.appendChild(svg)
+  console.timeEnd('panel')
 }
 
 async function makePanelSvg(PARAMS, rectangleComposition) {

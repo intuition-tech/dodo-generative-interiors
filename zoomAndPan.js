@@ -52,7 +52,8 @@ export function zoomAndPan(selectorContainer, selectorMovable, options = {}) {
     movable.style.transform = `translate(${endPoint.x}px, ${endPoint.y}px) scale(${scale})`
 
     constantSizeElements.forEach(el => {
-      el.style.fontSize = `${10 / scale}px`
+      // el.style.fontSize = `${10 / scale}px`
+      el.style.transform = `scale(${0.5 / scale})`
     })
   }
 

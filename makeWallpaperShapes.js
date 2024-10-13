@@ -33,7 +33,6 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
 }
 
 function addForegroundShapes(PARAMS, shapes) {
-  console.log('PARAMS:', PARAMS)
   let h = PARAMS.sizeY
   let number = Math.ceil(PARAMS.sizeX / 1000) + 1
   let period = PARAMS.sizeX / (number - 1)
