@@ -1,8 +1,11 @@
-export function Pane(PARAMS) {
+export function Pane(PARAMS, seedStringCallback) {
   const pane = new Tweakpane.Pane()
   pane.secretElements = []
 
-  pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
+  let seedString = pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
+  seedString.element
+    .querySelector('input')
+    .addEventListener('input', seedStringCallback)
 
   // let debug = pane.addInput(PARAMS, 'debug', {label: 'Отладка'})
   // pane.secretElements.push(debug)
@@ -39,7 +42,7 @@ export function Pane(PARAMS) {
   // })
   let sizeX = wall.addInput(PARAMS, 'sizeX', {
     min: 1,
-    max: 10000,
+    max: 20000,
     label: 'Ширина, мм',
   })
   let sizeY = wall.addInput(PARAMS, 'sizeY', {

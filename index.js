@@ -1,5 +1,4 @@
 import {Pane} from './pane.js'
-import {sliceWallpaperShapes} from './sliceWallpaperShapes.js'
 import {
   saveSVG,
   setSeed,
@@ -10,22 +9,39 @@ import {
 } from './helpers.js'
 import {makeSvg} from './makeSvg.js'
 import {makeWallpaperShapes} from './makeWallpaperShapes.js'
+import {
+  sliceWallpaperShapes,
+  sliceWallpaperShape,
+} from './sliceWallpaperShapes.js'
 import {makePanel} from './makePanel.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 import {zoomAndPan} from './zoomAndPan.js'
+const svgNS = 'http://www.w3.org/2000/svg'
 let constantSizeElements = document.querySelectorAll('.title')
 // constantSizeElements = []
 zoomAndPan('#workspace-wrapper', '#workspace', {scale: 0.2, constantSizeElements})
 
 let svgInputElement
-let wallpaperShapes
+
+// the object to store the data for continious rendering
+// it is used to fill variables progressively. The most heavy procedure is slicing shapes
+// therefore we make it one shape at a frame
+let STATE
+function resetState() {
+  STATE = {}
+  STATE.rectangleComposition = []
+  STATE.wallpaperShapes = []
+  STATE.wallpaperShapesSliced = []
+  STATE.isDone = false
+}
+resetState()
 
 let PARAMS = {
   debug: false,
   seedString: 'DODO',
   colors:
-    '#03BB8F,#07939B,#252525,#3E1D15,#810F00,#909DC5,#D04102,#D0D6EF,#D8E302,#EFE0D9,#F283AD,#F9E7CE,#FFB07F',
-  colorsFav: `#FE1F00,#FF6D03,#FF9A00`, // FIXME combine with colors
+    '#03BB8F,#07939B,#252525,#3E1D15,#810F00,#909DC5,#D04102,#D0D6EF,#D8E302,#EFE0D9,#F283AD,#F9E7CE,#FFB07F,#FE1F00,#FF6D03,#FF9A00',
+  colorsFav: `#FE1F00,#FF6D03,#FF9A00`,
   gradient1: '#F6ECEC',
   gradient2: '#CCD8E4',
   gradientsEnabled: true,
@@ -46,36 +62,29 @@ let PARAMS = {
   panelOffset: -0.04,
 }
 
-let pane = Pane(PARAMS)
+let pane = Pane(PARAMS, seedStringCallback)
 pane.on('change', e => {
-  // console.log('e:', e)
-  if (e.presetKey == 'seedString') {
-    PARAMS.seedString = e.value
-    if (e.value == 'password') {
-      revealSecretPane()
-    }
-    updateWallpaperSvg()
-    updatePanelSvg()
-  } else if (e.presetKey == 'colors') {
-    updateWallpaperSvg()
-    updatePanelSvg()
-  } else if (e.presetKey.includes('panel')) {
-    updatePanelSvg()
+  if (e.presetKey.includes('panel')) {
+    // update panel only
+    STATE.isDone = false
   } else {
-    updateWallpaperSvg()
-    updatePanelSvg() // panel needs to update colors as well
+    // update everything
+    resetState()
   }
 })
-revealSecretPane()
 
-// const textInput = pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
-// textInput.element.querySelector('input').addEventListener('input', ev => {
-//   PARAMS.seedString = ev.target.value
-//   if (ev.target.value == 'password') {
-//     revealSecretPane()
-//   }
-//   updateWallpaperSvg()
-// })
+function seedStringCallback(ev) {
+  PARAMS.seedString = ev.target.value
+  console.log('ev.target.value:', ev.target.value)
+  // update everything
+  resetState()
+  if (
+    ev.target.value.toLowerCase() == 'pass' ||
+    ev.target.value.toLowerCase() == 'password'
+  ) {
+    revealSecretPane()
+  }
+}
 
 function revealSecretPane() {
   pane.secretElements.forEach(el => {
@@ -93,31 +102,25 @@ pane.addButton({title: 'Save assets'}).on('click', () => {
 })
 
 function updateWallpaperSvg() {
-  setSeed(stringHash(PARAMS.seedString) + 2)
-  // shape is made of polys
-
-  let rectangleComposition = makeRectangleComposition(PARAMS)
-  // used for panel generation
-  wallpaperShapes = makeWallpaperShapes(PARAMS, rectangleComposition)
-
-  wallpaperShapes = sliceWallpaperShapes(PARAMS, wallpaperShapes)
-
-  let container = document.getElementById('wallpaper')
-  container.innerHTML = ''
-  let svg = makeSvg(PARAMS, wallpaperShapes)
-  svg.setAttribute('width', PARAMS.sizeX)
-  svg.setAttribute('height', PARAMS.sizeY)
-  container.appendChild(svg)
+  // setSeed(stringHash(PARAMS.seedString) + 2)
+  // // shape is made of polys
+  // let rectangleComposition = makeRectangleComposition(PARAMS)
+  // // used for panel generation
+  // wallpaperShapes = makeWallpaperShapes(PARAMS, rectangleComposition)
+  // wallpaperShapes = sliceWallpaperShapes(PARAMS, wallpaperShapes)
+  // let container = document.getElementById('wallpaper')
+  // container.innerHTML = ''
+  // let svg = makeSvg(PARAMS, wallpaperShapes)
+  // svg.setAttribute('width', PARAMS.sizeX)
+  // svg.setAttribute('height', PARAMS.sizeY)
+  // container.appendChild(svg)
 }
 
 async function updatePanelSvg() {
-  console.time('panel')
   let container = document.getElementById('panel')
   container.innerHTML = ''
-  let rectangleComposition = makeRectangleComposition(PARAMS) // FIXME reuse one from wallpaper
-  let svg = await makePanelSvg(PARAMS, rectangleComposition)
+  let svg = await makePanelSvg(PARAMS, STATE.rectangleComposition)
   container.appendChild(svg)
-  console.timeEnd('panel')
 }
 
 async function makePanelSvg(PARAMS, rectangleComposition) {
@@ -146,7 +149,6 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
     .map(Number)
 
   // Create a new SVG element
-  const svgNS = 'http://www.w3.org/2000/svg'
   const newSvg = document.createElementNS(svgNS, 'svg')
   newSvg.setAttribute('xmlns', svgNS)
   newSvg.setAttribute('viewBox', `${0} ${0} ${panelSvgWidth} ${panelSvgHeight}`)
@@ -222,17 +224,20 @@ async function makePanelSvg(PARAMS, rectangleComposition) {
     rect.setAttribute('width', panelSvgWidth / N / 2)
     rect.setAttribute('height', panelSvgHeight)
     let index =
-      map(i, 0, N, 0, wallpaperShapes.filter(d => d.type == 'rect').length) | 0
-    let color = wallpaperShapes[index].fill
+      map(
+        i,
+        0,
+        N,
+        0,
+        STATE.wallpaperShapes.filter(d => d.type == 'rect').length,
+      ) | 0
+    let color = STATE.wallpaperShapes[index].fill
     rect.setAttribute('fill', color)
     newSvg.appendChild(rect)
   }
 
   return newSvg
 }
-
-updateWallpaperSvg()
-updatePanelSvg()
 
 function openFileDialog() {
   const input = document.createElement('input')
@@ -272,3 +277,42 @@ function fileLoadedCallback(content, filetype) {
 
   updatePanelSvg()
 }
+
+function updateSvgsProgressively() {
+  if (STATE.isDone) return
+  if (STATE.rectangleComposition.length == 0) {
+    // инициализация
+    setSeed(stringHash(PARAMS.seedString) + 2)
+    STATE.rectangleComposition = makeRectangleComposition(PARAMS)
+    STATE.wallpaperShapes = makeWallpaperShapes(
+      PARAMS,
+      STATE.rectangleComposition,
+    )
+    STATE.wallpaperShapesSliced = []
+  }
+
+  // progressive slicing
+  let shapesNum = STATE.wallpaperShapes.length
+  let shapesSlicedNum = STATE.wallpaperShapesSliced.length
+  if (shapesSlicedNum < shapesNum) {
+    let shape = STATE.wallpaperShapes[shapesSlicedNum]
+    let shapeSliced = sliceWallpaperShape(PARAMS, shape)
+    STATE.wallpaperShapesSliced.push(shapeSliced)
+  } else {
+    updatePanelSvg()
+    STATE.isDone = true
+  }
+
+  let container = document.getElementById('wallpaper')
+  container.innerHTML = ''
+  let svg = makeSvg(PARAMS, STATE.wallpaperShapesSliced)
+  svg.setAttribute('width', PARAMS.sizeX)
+  svg.setAttribute('height', PARAMS.sizeY)
+  container.appendChild(svg)
+}
+
+function frame() {
+  requestAnimationFrame(frame)
+  updateSvgsProgressively()
+}
+frame()
