@@ -1,7 +1,7 @@
 import {intersect} from './intersect.js'
 import {union} from './union.js'
 const EPS = 0.000001
-const stripeWidth = 30 // 3 cm
+const stripeWidth = 60 // 6 cm
 export function sliceWallpaperShapes(PARAMS, shapes) {
   let newShapes = []
   shapes.forEach(shape => {
