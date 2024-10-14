@@ -17,9 +17,6 @@ import {makePanel} from './makePanel.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 import {zoomAndPan} from './zoomAndPan.js'
 const svgNS = 'http://www.w3.org/2000/svg'
-let constantSizeElements = document.querySelectorAll('.title')
-// constantSizeElements = []
-zoomAndPan('#workspace-wrapper', '#workspace', {scale: 0.2, constantSizeElements})
 
 let svgInputElement
 
@@ -60,6 +57,7 @@ let PARAMS = {
   panelWidth: 1000,
   panelHeight: 500,
   panelOffset: -0.04,
+  zoomSpeed: 0.05,
 }
 
 let pane = Pane(PARAMS, seedStringCallback)
@@ -71,6 +69,13 @@ pane.on('change', e => {
     // update everything
     resetState()
   }
+})
+
+let constantSizeElements = document.querySelectorAll('.title')
+// constantSizeElements = []
+zoomAndPan(PARAMS, '#workspace-wrapper', '#workspace', {
+  scale: 0.2,
+  constantSizeElements,
 })
 
 function seedStringCallback(ev) {

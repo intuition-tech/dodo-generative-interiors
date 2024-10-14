@@ -2,6 +2,12 @@ export function Pane(PARAMS, seedStringCallback) {
   const pane = new Tweakpane.Pane()
   pane.secretElements = []
 
+  pane.addInput(PARAMS, 'zoomSpeed', {
+    min: 0.0,
+    max: 0.1,
+    label: 'zoomSpeed',
+  })
+
   let seedString = pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
   seedString.element
     .querySelector('input')

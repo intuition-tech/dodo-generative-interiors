@@ -1,4 +1,9 @@
-export function zoomAndPan(selectorContainer, selectorMovable, options = {}) {
+export function zoomAndPan(
+  PARAMS,
+  selectorContainer,
+  selectorMovable,
+  options = {},
+) {
   const container = document.querySelector(selectorContainer)
   const movable = container.querySelector(selectorMovable)
   movable.style.transformOrigin = '0 0'
@@ -35,7 +40,7 @@ export function zoomAndPan(selectorContainer, selectorMovable, options = {}) {
 
     if (e.ctrlKey || e.metaKey) {
       // Zoom
-      const delta = e.deltaY > 0 ? 0.9 : 1.1
+      const delta = e.deltaY > 0 ? 1 - PARAMS.zoomSpeed : 1 + PARAMS.zoomSpeed
       zoomAround(e.clientX, e.clientY, delta)
     } else {
       // Pan
