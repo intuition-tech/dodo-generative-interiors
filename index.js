@@ -37,8 +37,17 @@ let PARAMS = {
   debug: false,
   seedString: 'DODO',
   colors:
-    '#03BB8F,#07939B,#252525,#3E1D15,#810F00,#909DC5,#D04102,#D0D6EF,#D8E302,#EFE0D9,#F283AD,#F9E7CE,#FFB07F,#FE1F00,#FF6D03,#FF9A00',
-  colorsFav: `#FE1F00,#FF6D03,#FF9A00`,
+    '#0096F4;	#028688;	#03BB8F;	#40976A;	#62B58B;	#88BFEB;	#B2C400;	#B3B9BD;	#B4D9E1;	#D55792;	#DBE036;	#DEA6F9;',
+  colorsFav:
+    '#75191A; #8C2E03; #964101; #A5000F; #B25340; #D04102; #D0681F; #E81C34; #E94C09; #EF549D; #F283AD; #F69FD5; #FE7801; #FF5602; #FF6201; #FF8147; #FF9A00; #FFCC89;',
+
+  // background: #D0E4FF;
+  // background: #ECEDAC;
+  // background: #EFE0D9;
+  // background: #EFE7E7;
+  // background: #F9E7CE;
+  // background: #FFF8F1;
+
   gradient1: '#F6ECEC',
   gradient2: '#CCD8E4',
   gradientsEnabled: true,
