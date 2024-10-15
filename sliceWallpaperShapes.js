@@ -48,8 +48,6 @@ export function sliceWallpaperShape(PARAMS, shape) {
     }
   })
 
-  console.time('union')
   newShape.polys = union(newShape.polys)
-  console.timeEnd('union')
   return newShape
 }

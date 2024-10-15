@@ -1,4 +1,6 @@
 import {R, map} from './helpers.js'
+import {parseColors} from './helpers.js'
+import {splitmix32, stringHash} from './helpers.js'
 
 function* genRect() {
   while (true) {
@@ -28,6 +30,7 @@ export function makeRectangleComposition(PARAMS) {
   const OFFSET_Y_K = PARAMS.shapesVertAmp
   const sizeX = PARAMS.sizeX
   const sizeY = PARAMS.sizeY
+  const FAV_COLOR_PERIOD_K = 0.7 // how many heights between fav colors
 
   function getRectWH(bigOrSmall = 'small') {
     let w, h
@@ -84,6 +87,11 @@ export function makeRectangleComposition(PARAMS) {
 
   let genRectIterator = genRect()
 
+  let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
+  let palette = parseColors(PARAMS.colors)
+  let paletteFav = parseColors(PARAMS.colorsFav)
+  let lastFavColorX = -R() * FAV_COLOR_PERIOD_K * sizeY
+
   for (let x = -BIG_MAX_WIDTH_K * sizeY; ; ) {
     let shape = {}
     let bigOrSmall = genRectIterator.next().value
@@ -109,6 +117,17 @@ export function makeRectangleComposition(PARAMS) {
     ]
     shape = [poly]
     shape.type = 'rect'
+    console.log('x:', x)
+    if (x > lastFavColorX + FAV_COLOR_PERIOD_K * sizeY) {
+      // use fav color
+      console.log('fav')
+      shape.fill = paletteFav[(colorRandom() * paletteFav.length) | 0]
+      lastFavColorX = x
+    } else {
+      // use regular color
+      console.log('not fav')
+      shape.fill = palette[(colorRandom() * palette.length) | 0]
+    }
     shapes.push(shape)
 
     x += w

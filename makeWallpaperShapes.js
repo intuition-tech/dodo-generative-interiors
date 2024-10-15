@@ -3,7 +3,6 @@ import {parseColors} from './helpers.js'
 import {splitmix32, stringHash} from './helpers.js'
 
 export function makeWallpaperShapes(PARAMS, rectangleComposition) {
-  let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
   let tiltRandom = splitmix32(stringHash(PARAMS.seedString) + 10)
   let shapes = rectangleComposition.map((rect, i) => {
     let polys = rect.map(poly => {
@@ -14,13 +13,10 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
       return poly
     })
 
-    let palette = parseColors(PARAMS.colors)
-    let color = palette[(colorRandom() * palette.length) | 0]
-
     let shape = {
       type: rect.type,
       polys: polys,
-      fill: color,
+      fill: rect.fill,
     }
     return shape
   })
