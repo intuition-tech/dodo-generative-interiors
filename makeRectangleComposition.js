@@ -30,7 +30,7 @@ export function makeRectangleComposition(PARAMS) {
   const OFFSET_Y_K = PARAMS.shapesVertAmp
   const sizeX = PARAMS.sizeX
   const sizeY = PARAMS.sizeY
-  const FAV_COLOR_PERIOD_K = 0.7 // how many heights between fav colors
+  const FAV_COLOR_PERIOD_K = 1 // how many heights between fav colors
 
   function getRectWH(bigOrSmall = 'small') {
     let w, h
