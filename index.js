@@ -309,14 +309,15 @@ function updateSvgsProgressively() {
   } else {
     updatePanelSvg()
     STATE.isDone = true
-  }
 
-  let container = document.getElementById('wallpaper')
-  container.innerHTML = ''
-  let svg = makeSvg(PARAMS, STATE.wallpaperShapesSliced)
-  svg.setAttribute('width', PARAMS.sizeX)
-  svg.setAttribute('height', PARAMS.sizeY)
-  container.appendChild(svg)
+    // update svg in the end
+    let container = document.getElementById('wallpaper')
+    container.innerHTML = ''
+    let svg = makeSvg(PARAMS, STATE.wallpaperShapesSliced)
+    svg.setAttribute('width', PARAMS.sizeX)
+    svg.setAttribute('height', PARAMS.sizeY)
+    container.appendChild(svg)
+  }
 }
 
 function frame() {
