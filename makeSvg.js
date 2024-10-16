@@ -1,5 +1,5 @@
-import {round, mod, vmul, vadd} from './helpers.js'
-import {parseColors} from './helpers.js'
+import {round, mod, vmul, vadd, splitmix32} from './helpers.js'
+import {parseColors, stringHash} from './helpers.js'
 
 let svgNS = 'http://www.w3.org/2000/svg'
 
@@ -19,8 +19,21 @@ export function makeSvg(PARAMS, shapes) {
     svg.removeChild(svg.firstChild)
   }
 
-  let rectsGroup = document.createElementNS(svgNS, 'g')
+  let backgroundGroup = document.createElementNS(svgNS, 'g')
+  let shapesGroup = document.createElementNS(svgNS, 'g')
   let foregroundGroup = document.createElementNS(svgNS, 'g')
+  let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 3343)
+  let palette = parseColors(PARAMS.colorsBgFg)
+  let backgroundFill = palette[(palette.length * colorRandom()) | 0]
+  let grad1Index = (palette.length * colorRandom()) | 0
+  let gradient1Fill = palette[grad1Index]
+  let gradient2Index =
+    (grad1Index + 1 + (((palette.length - 1) * colorRandom()) | 0)) %
+    palette.length
+  let gradient2Fill = palette[gradient2Index]
+  // console.log('%c' + backgroundFill, 'background: ' + backgroundFill)
+  // console.log('%c' + gradient1Fill, 'background: ' + gradient1Fill)
+  // console.log('%c' + gradient2Fill, 'background: ' + gradient2Fill)
 
   // bg
   const rect = document.createElementNS(svgNS, 'rect')
@@ -28,17 +41,17 @@ export function makeSvg(PARAMS, shapes) {
   rect.setAttribute('y', viewBox[1])
   rect.setAttribute('width', viewBox[2])
   rect.setAttribute('height', viewBox[3])
-  rect.setAttribute('fill', '#FDF9F8')
-  rectsGroup.appendChild(rect)
+  rect.setAttribute('fill', backgroundFill)
+  backgroundGroup.appendChild(rect)
 
   //fg
   const rectFg = document.createElementNS(svgNS, 'rect')
-  rect.setAttribute('x', viewBox[0])
-  rect.setAttribute('y', viewBox[1])
-  rect.setAttribute('width', viewBox[2])
-  rect.setAttribute('height', viewBox[3])
-  rect.setAttribute('fill', PARAMS.gradient1)
-  foregroundGroup.appendChild(rect)
+  rectFg.setAttribute('x', viewBox[0])
+  rectFg.setAttribute('y', viewBox[1])
+  rectFg.setAttribute('width', viewBox[2])
+  rectFg.setAttribute('height', viewBox[3])
+  rectFg.setAttribute('fill', gradient1Fill)
+  foregroundGroup.appendChild(rectFg)
 
   let colors = parseColors(PARAMS.colors)
   shapes.forEach(shape => {
@@ -58,17 +71,18 @@ export function makeSvg(PARAMS, shapes) {
       path.setAttribute('stroke', 'black')
     }
     if (shape.type === 'foreground') {
-      path.setAttribute('fill', PARAMS.gradient2)
+      path.setAttribute('fill', gradient2Fill)
       path.setAttribute('opacity', '0.1')
       foregroundGroup.appendChild(path)
     } else if (shape.type === 'rect') {
       path.setAttribute('fill', fill)
-      rectsGroup.appendChild(path)
+      shapesGroup.appendChild(path)
     } else {
       console.log('wtf?') // FIXME remove
     }
   })
-  svg.appendChild(rectsGroup)
+  svg.appendChild(backgroundGroup)
+  svg.appendChild(shapesGroup)
   // set svg multyply blending of foreground
   foregroundGroup.setAttribute('style', 'mix-blend-mode: multiply;')
   svg.appendChild(foregroundGroup)
