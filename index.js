@@ -36,7 +36,7 @@ resetState()
 
 let PARAMS = {
   debug: false,
-  seedString: 'DODO',
+  seedString: 'DODO12',
   colors:
     '#0096F4; #028688; #03BB8F; #40976A; #62B58B; #88BFEB; #B2C400; #B3B9BD; #B4D9E1; #D55792; #DBE036; #DEA6F9;',
   colorsFav:
@@ -58,7 +58,7 @@ let PARAMS = {
   shapeSpaceMax: 0.3,
   shapesRadius: 200,
   shapesOverlap: 0.01,
-  panelWidth: 100,
+  panelWidth: 2500,
   panelHeight: 500,
   panelOffset: -0.04,
   zoomSpeed: 0.05,

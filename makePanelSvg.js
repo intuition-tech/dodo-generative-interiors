@@ -1,4 +1,4 @@
-import {setSeed, stringHash, map, mod} from './helpers.js'
+import {setSeed, stringHash, map, mod, splitmix32} from './helpers.js'
 const svgNS = 'http://www.w3.org/2000/svg'
 export async function makePanelSvg(PARAMS, STATE, svgInputElement) {
   const panelSvgWidth = PARAMS.panelWidth * Math.sqrt(2)
@@ -122,19 +122,19 @@ export async function makePanelSvg(PARAMS, STATE, svgInputElement) {
   // }
 
   setSeed(stringHash(PARAMS.seedString) + 2)
+  let shiftRandom = splitmix32(100)
   for (let i = 0; i < N; i++) {
     const rect = document.createElementNS(svgNS, 'rect')
     rect.setAttribute('x', ((i + 0.5) * panelSvgWidth) / N)
     rect.setAttribute('width', panelSvgWidth / N / 2)
     rect.setAttribute('height', panelSvgHeight)
+    let rectShapes = STATE.wallpaperShapes.filter(d => d.type == 'rect')
+    // let index = map(i + 10 * shiftRandom() - 5, 0, N, 0, rectShapes.length) | 0
+    // let index = map(i, 0, N, 0, rectShapes.length) | 0
     let index =
-      map(
-        i,
-        0,
-        N,
-        0,
-        STATE.wallpaperShapes.filter(d => d.type == 'rect').length,
-      ) | 0
+      map(i + N * 0.5 * shiftRandom() - N * 0.25, 0, N, 0, rectShapes.length) | 0
+    if (index >= rectShapes.length) index = rectShapes.length - 1
+    if (index < 0) index = 0
     let color = STATE.wallpaperShapes[index].fill
     rect.setAttribute('fill', color)
     newSvg.appendChild(rect)
