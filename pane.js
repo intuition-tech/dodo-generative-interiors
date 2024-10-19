@@ -22,17 +22,21 @@ export function Pane(PARAMS, seedStringCallback) {
     label: 'Любимые цвета',
   })
   pane.secretElements.push(colorsFav)
+  let colorsBgFg = pane.addInput(PARAMS, 'colorsBgFg', {
+    label: 'Фон и градиенты',
+  })
+  pane.secretElements.push(colorsBgFg)
 
   let wall = pane.addFolder({title: 'Обои'})
 
-  let gradient1 = wall.addInput(PARAMS, 'gradient1', {
-    label: 'Градиент 1',
-  })
-  pane.secretElements.push(gradient1)
-  let gradient2 = wall.addInput(PARAMS, 'gradient2', {
-    label: 'Градиент 2',
-  })
-  pane.secretElements.push(gradient2)
+  // let gradient1 = wall.addInput(PARAMS, 'gradient1', {
+  //   label: 'Градиент 1',
+  // })
+  // pane.secretElements.push(gradient1)
+  // let gradient2 = wall.addInput(PARAMS, 'gradient2', {
+  //   label: 'Градиент 2',
+  // })
+  // pane.secretElements.push(gradient2)
 
   let scale = wall.addInput(PARAMS, 'scale', {
     min: 1,
