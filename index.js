@@ -127,8 +127,8 @@ function updateWallpaperSvg() {
 
 async function updatePanelSvg() {
   let container = document.getElementById('panel')
-  container.innerHTML = ''
   let svg = await makePanelSvg(PARAMS, STATE, svgInputElement)
+  container.innerHTML = ''
   container.appendChild(svg)
 }
 
@@ -192,6 +192,7 @@ function updateSvgsProgressively() {
     let shapeSliced = sliceWallpaperShape(PARAMS, shape)
     STATE.wallpaperShapesSliced.push(shapeSliced)
   } else {
+    // slicing is done, make the panel
     updatePanelSvg()
     STATE.isDone = true
 
