@@ -34,13 +34,14 @@ function resetState() {
 }
 resetState()
 
+const colorsCold = '#0096F4; #028688; #03BB8F; #40976A; #62B58B; #88BFEB; #B2C400; #B3B9BD; #B4D9E1; #D55792; #DBE036; #DEA6F9; '
+const colorsWarm = '#75191A; #8C2E03; #964101; #A5000F; #B25340; #D04102; #D0681F; #E81C34; #E94C09; #EF549D; #F283AD; #F69FD5; #FE7801; #FF5602; #FF6201; #FF8147; #FF9A00; #FFCC89; '
+
 let PARAMS = {
   debug: false,
   seedString: 'DODO12',
-  colors:
-    '#0096F4; #028688; #03BB8F; #40976A; #62B58B; #88BFEB; #B2C400; #B3B9BD; #B4D9E1; #D55792; #DBE036; #DEA6F9;',
-  colorsFav:
-    '#75191A; #8C2E03; #964101; #A5000F; #B25340; #D04102; #D0681F; #E81C34; #E94C09; #EF549D; #F283AD; #F69FD5; #FE7801; #FF5602; #FF6201; #FF8147; #FF9A00; #FFCC89;',
+  colors: colorsCold + colorsWarm,
+  colorsFav: colorsWarm,
   colorsBgFg: '#D0E4FF; #ECEDAC; #EFE0D9; #EFE7E7; #F9E7CE; #FFF8F1;',
 
   gradient1: '#F6ECEC',

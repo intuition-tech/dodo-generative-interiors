@@ -117,17 +117,27 @@ export function makeRectangleComposition(PARAMS) {
     ]
     shape = [poly]
     shape.type = 'rect'
-    console.log('x:', x)
-    if (x > lastFavColorX + FAV_COLOR_PERIOD_K * sizeY) {
+
+    if (bigOrSmall === 'big') {
       // use fav color
-      console.log('fav')
       shape.fill = paletteFav[(colorRandom() * paletteFav.length) | 0]
-      lastFavColorX = x
     } else {
       // use regular color
-      console.log('not fav')
       shape.fill = palette[(colorRandom() * palette.length) | 0]
     }
+
+		// // make fav color every N meters
+    // console.log('x:', x)
+    // if (x > lastFavColorX + FAV_COLOR_PERIOD_K * sizeY) {
+      // // use fav color
+      // console.log('fav')
+      // shape.fill = paletteFav[(colorRandom() * paletteFav.length) | 0]
+      // lastFavColorX = x
+    // } else {
+      // // use regular color
+      // console.log('not fav')
+      // shape.fill = palette[(colorRandom() * palette.length) | 0]
+    // }
     shapes.push(shape)
 
     x += w
