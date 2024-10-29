@@ -56,7 +56,7 @@ let PARAMS = {
   shapeBigSizeMin: {x: 0.3, y: 1},
   shapeBigSizeMax: {x: 0.5, y: 1.5},
   shapeSpaceMin: 0.1,
-  shapeSpaceMax: 0.3,
+  shapeSpaceMax: 0.12,
   shapesRadius: 200,
   shapesOverlap: 0.01,
   panelWidth: 2500,
@@ -83,11 +83,16 @@ zoomAndPan(PARAMS, '#workspace-wrapper', '#workspace', {
   constantSizeElements,
 })
 
+let resetStateTimeout
 function seedStringCallback(ev) {
   PARAMS.seedString = ev.target.value
-  console.log('ev.target.value:', ev.target.value)
-  // update everything
-  resetState()
+
+	// set delay before updating
+	if (resetStateTimeout) {
+		clearTimeout(resetStateTimeout);
+	}
+	resetStateTimeout = setTimeout(resetState,1000)
+
   if (
     ev.target.value.toLowerCase() == 'pass' ||
     ev.target.value.toLowerCase() == 'password'

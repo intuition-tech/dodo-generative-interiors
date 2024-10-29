@@ -19,39 +19,21 @@ export function makeSvg(PARAMS, shapes) {
     svg.removeChild(svg.firstChild)
   }
 
+	// add defs
+	let defs = document.createElementNS(svgNS, 'defs')
+	svg.appendChild(defs)
+  const gradSymbol = document.createElementNS(svgNS, 'symbol')
+  gradSymbol.id = 'gradient'
+	defs.appendChild(gradSymbol)
+
   let backgroundGroup = document.createElementNS(svgNS, 'g')
   let shapesGroup = document.createElementNS(svgNS, 'g')
   let foregroundGroup = document.createElementNS(svgNS, 'g')
-  let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 3343)
-  let palette = parseColors(PARAMS.colorsBgFg)
-  let backgroundFill = palette[(palette.length * colorRandom()) | 0]
-  let grad1Index = (palette.length * colorRandom()) | 0
-  let gradient1Fill = palette[grad1Index]
-  let gradient2Index =
-    (grad1Index + 1 + (((palette.length - 1) * colorRandom()) | 0)) %
-    palette.length
-  let gradient2Fill = palette[gradient2Index]
-  // console.log('%c' + backgroundFill, 'background: ' + backgroundFill)
-  // console.log('%c' + gradient1Fill, 'background: ' + gradient1Fill)
-  // console.log('%c' + gradient2Fill, 'background: ' + gradient2Fill)
 
   // bg
-  const rect = document.createElementNS(svgNS, 'rect')
-  rect.setAttribute('x', viewBox[0])
-  rect.setAttribute('y', viewBox[1])
-  rect.setAttribute('width', viewBox[2])
-  rect.setAttribute('height', viewBox[3])
-  rect.setAttribute('fill', backgroundFill)
-  backgroundGroup.appendChild(rect)
-
-  //fg
-  const rectFg = document.createElementNS(svgNS, 'rect')
-  rectFg.setAttribute('x', viewBox[0])
-  rectFg.setAttribute('y', viewBox[1])
-  rectFg.setAttribute('width', viewBox[2])
-  rectFg.setAttribute('height', viewBox[3])
-  rectFg.setAttribute('fill', gradient1Fill)
-  foregroundGroup.appendChild(rectFg)
+  const bgUse = document.createElementNS(svgNS, 'use')
+	bgUse.setAttribute('href', '#gradient')
+  backgroundGroup.appendChild(bgUse)
 
   let colors = parseColors(PARAMS.colors)
   shapes.forEach(shape => {
@@ -71,9 +53,10 @@ export function makeSvg(PARAMS, shapes) {
       path.setAttribute('stroke', 'black')
     }
     if (shape.type === 'foreground') {
-      path.setAttribute('fill', gradient2Fill)
-      path.setAttribute('opacity', '0.1')
-      foregroundGroup.appendChild(path)
+      path.setAttribute('fill', fill)
+			console.log('fill:',fill)
+      // path.setAttribute('opacity', '0.1')
+      gradSymbol.appendChild(path)
     } else if (shape.type === 'rect') {
       path.setAttribute('fill', fill)
       shapesGroup.appendChild(path)
@@ -84,8 +67,14 @@ export function makeSvg(PARAMS, shapes) {
   svg.appendChild(backgroundGroup)
   svg.appendChild(shapesGroup)
   // set svg multyply blending of foreground
+
+	let fgUse = document.createElementNS(svgNS, 'use')
+	fgUse.setAttribute('href', '#gradient')
+	foregroundGroup.appendChild(fgUse)
   foregroundGroup.setAttribute('style', 'mix-blend-mode: multiply;')
   svg.appendChild(foregroundGroup)
+
+	// FIXME use same group for both bg and fg using USE
 
   return svg
 }
