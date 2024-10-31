@@ -19,12 +19,12 @@ export function makeSvg(PARAMS, shapes) {
     svg.removeChild(svg.firstChild)
   }
 
-	// add defs
-	let defs = document.createElementNS(svgNS, 'defs')
-	svg.appendChild(defs)
+  // add defs
+  let defs = document.createElementNS(svgNS, 'defs')
+  svg.appendChild(defs)
   const gradSymbol = document.createElementNS(svgNS, 'symbol')
   gradSymbol.id = 'gradient'
-	defs.appendChild(gradSymbol)
+  defs.appendChild(gradSymbol)
 
   let backgroundGroup = document.createElementNS(svgNS, 'g')
   let shapesGroup = document.createElementNS(svgNS, 'g')
@@ -32,10 +32,9 @@ export function makeSvg(PARAMS, shapes) {
 
   // bg
   const bgUse = document.createElementNS(svgNS, 'use')
-	bgUse.setAttribute('href', '#gradient')
+  bgUse.setAttribute('href', '#gradient')
   backgroundGroup.appendChild(bgUse)
 
-  let colors = parseColors(PARAMS.colors)
   shapes.forEach(shape => {
     let polys = shape.polys
     let fill = shape.fill
@@ -54,7 +53,7 @@ export function makeSvg(PARAMS, shapes) {
     }
     if (shape.type === 'foreground') {
       path.setAttribute('fill', fill)
-			console.log('fill:',fill)
+      console.log('fill:', fill)
       // path.setAttribute('opacity', '0.1')
       gradSymbol.appendChild(path)
     } else if (shape.type === 'rect') {
@@ -68,13 +67,13 @@ export function makeSvg(PARAMS, shapes) {
   svg.appendChild(shapesGroup)
   // set svg multyply blending of foreground
 
-	let fgUse = document.createElementNS(svgNS, 'use')
-	fgUse.setAttribute('href', '#gradient')
-	foregroundGroup.appendChild(fgUse)
+  let fgUse = document.createElementNS(svgNS, 'use')
+  fgUse.setAttribute('href', '#gradient')
+  foregroundGroup.appendChild(fgUse)
   foregroundGroup.setAttribute('style', 'mix-blend-mode: multiply;')
   svg.appendChild(foregroundGroup)
 
-	// FIXME use same group for both bg and fg using USE
+  // FIXME use same group for both bg and fg using USE
 
   return svg
 }

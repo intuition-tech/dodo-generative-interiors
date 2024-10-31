@@ -88,9 +88,9 @@ export function makeRectangleComposition(PARAMS) {
   let genRectIterator = genRect()
 
   let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
-  let palette = parseColors(PARAMS.colors)
-  let paletteFav = parseColors(PARAMS.colorsFav)
-  let lastFavColorX = -R() * FAV_COLOR_PERIOD_K * sizeY
+  let paletteBig = parseColors(PARAMS.colorsBig)
+  let paletteSmall = parseColors(PARAMS.colorsSmall)
+  // let lastFavColorX = -R() * FAV_COLOR_PERIOD_K * sizeY
 
   for (let x = -BIG_MAX_WIDTH_K * sizeY; ; ) {
     let shape = {}
@@ -119,24 +119,22 @@ export function makeRectangleComposition(PARAMS) {
     shape.type = 'rect'
 
     if (bigOrSmall === 'big') {
-      // use fav color
-      shape.fill = paletteFav[(colorRandom() * paletteFav.length) | 0]
+      shape.fill = paletteBig[(colorRandom() * paletteBig.length) | 0]
     } else {
-      // use regular color
-      shape.fill = palette[(colorRandom() * palette.length) | 0]
+      shape.fill = paletteSmall[(colorRandom() * paletteSmall.length) | 0]
     }
 
-		// // make fav color every N meters
+    // // make fav color every N meters
     // console.log('x:', x)
     // if (x > lastFavColorX + FAV_COLOR_PERIOD_K * sizeY) {
-      // // use fav color
-      // console.log('fav')
-      // shape.fill = paletteFav[(colorRandom() * paletteFav.length) | 0]
-      // lastFavColorX = x
+    // // use fav color
+    // console.log('fav')
+    // shape.fill = paletteBig[(colorRandom() * paletteBig.length) | 0]
+    // lastFavColorX = x
     // } else {
-      // // use regular color
-      // console.log('not fav')
-      // shape.fill = palette[(colorRandom() * palette.length) | 0]
+    // // use regular color
+    // console.log('not fav')
+    // shape.fill = paletteSmall[(colorRandom() * paletteSmall.length) | 0]
     // }
     shapes.push(shape)
 
