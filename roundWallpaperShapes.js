@@ -1,4 +1,6 @@
-const roundSize = 5 // 1 cm
+import {map} from './helpers.js'
+
+const roundSize = 10 // 1 cm
 export function roundWallpaperShapes(PARAMS, shapes) {
   let newShapes = []
   shapes.forEach(shape => {
@@ -9,7 +11,8 @@ export function roundWallpaperShapes(PARAMS, shapes) {
 }
 
 export function roundWallpaperShape(PARAMS, shape) {
-  // return shape
+  if (shape.type === 'foreground') return shape
+
   let newShape = {
     type: shape.type,
     fill: shape.fill,
@@ -18,14 +21,33 @@ export function roundWallpaperShape(PARAMS, shape) {
 
   let newPolys = []
   shape.polys.forEach(poly => {
+    // find the most left and the most right coords
+    let minX = Infinity
+    let maxX = -Infinity
+    poly.forEach(point => {
+      let [x, y] = point
+
+      minX = Math.min(minX, x)
+      maxX = Math.max(maxX, x)
+    })
+
+    if (minX === maxX) {
+      console.log('minX === maxX')
+      return
+    }
+
+    // round them to roundSize
+    // use map() to lerp from left and right to rounded
+    let minXround = minX + roundSize / 2 - (minX % roundSize) - roundSize / 2
+    let maxXround = maxX - roundSize / 2 - (maxX % roundSize) + roundSize / 2
+
     let newPoly = []
     poly.forEach(point => {
       let [x, y] = point
-      x += roundSize / 2
-      x -= x % roundSize
-      x -= roundSize / 2
+      x = map(x, minX, maxX, minXround, maxXround)
       newPoly.push([x, y])
     })
+
     newPolys.push(newPoly)
   })
 

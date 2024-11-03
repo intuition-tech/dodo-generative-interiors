@@ -193,7 +193,7 @@ function updateSvgsProgressively() {
   if (shapesSlicedNum < shapesNum) {
     let shape = STATE.wallpaperShapes[shapesSlicedNum]
     shape = sliceWallpaperShape(PARAMS, shape)
-    // shape = roundWallpaperShape(PARAMS, shape)
+    shape = roundWallpaperShape(PARAMS, shape)
     STATE.wallpaperShapesSliced.push(shape)
   } else {
     // slicing is done, make the panel
