@@ -10,10 +10,8 @@ import {
 } from './helpers.js'
 import {makeSvg} from './makeSvg.js'
 import {makeWallpaperShapes} from './makeWallpaperShapes.js'
-import {
-  sliceWallpaperShapes,
-  sliceWallpaperShape,
-} from './sliceWallpaperShapes.js'
+import {sliceWallpaperShape} from './sliceWallpaperShapes.js'
+import {roundWallpaperShape} from './roundWallpaperShapes.js'
 import {makePanel} from './makePanel.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 import {zoomAndPan} from './zoomAndPan.js'
@@ -39,8 +37,9 @@ let PARAMS = {
   seedString: 'DODO12',
   colorsBig:
     '#A5000F,#B25340,#D04102,#D0681F,#E81C34,#E94C09,#EF549D,#F283AD,#F69FD5,#FE7801,#FF5602,#FF6201,#FF8147,#FF9A00,#FFCC89',
-  colorsSmall: '#03BB8F,#40976A,#75191A,#88BFEB,#8C2E03,#B3B9BD,#DBE036',
-  colorsBgFg: '#D0E4FF; #ECEDAC; #EFE0D9; #EFE7E7; #F9E7CE; #FFF8F1;',
+  colorsSmall:
+    '#0096F4,#028688,#03BB8F,#40976A,#75191A,#88BFEB,#8C2E03,#B3B9BD,#DBE036',
+  colorsBgFg: '#EFE0D9,#EFE7E7,#F9E7CE,#FFF8F1;',
 
   gradient1: '#F6ECEC',
   gradient2: '#CCD8E4',
@@ -193,8 +192,9 @@ function updateSvgsProgressively() {
   let shapesSlicedNum = STATE.wallpaperShapesSliced.length
   if (shapesSlicedNum < shapesNum) {
     let shape = STATE.wallpaperShapes[shapesSlicedNum]
-    let shapeSliced = sliceWallpaperShape(PARAMS, shape)
-    STATE.wallpaperShapesSliced.push(shapeSliced)
+    shape = sliceWallpaperShape(PARAMS, shape)
+    // shape = roundWallpaperShape(PARAMS, shape)
+    STATE.wallpaperShapesSliced.push(shape)
   } else {
     // slicing is done, make the panel
     updatePanelSvg()
