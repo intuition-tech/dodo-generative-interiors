@@ -32,41 +32,23 @@ function resetState() {
 }
 resetState()
 
-/*
-
-цвета
-#0096e0,#006db9,#03bb8f,#258682,#ced2d5,#b3b9bd,#9fa7ac
-
-любимые
-#f3fd36,#d6e036,#e81c34,#ff415e,#ed4897,#f283bf,#f6b8e2,#ff5602,#FF5602,#FF5602,#FF8147,#ff8147,#ffcc89
-
-фон
-#FFFFFF, #EEEEEE
-
-// rainbow
-#FF0000, #FF7F00, #FFFF00, #50FF00, #00FF8F, #00FFFF, #007FFF, #0000FF, #7F00FF
-
-*/
-
 let PARAMS = {
   debug: false,
-  seedString: 'DODO12',
+  zoomSpeed: 0.05,
+  seedString: 'Тамбов',
+  colorsSmall: '#0096e0,#006db9,#03bb8f,#258682,#ced2d5,#b3b9bd,#9fa7ac',
   colorsBig:
-    '#A5000F,#B25340,#D04102,#D0681F,#E81C34,#E94C09,#EF549D,#F283AD,#F69FD5,#FE7801,#FF5602,#FF6201,#FF8147,#FF9A00,#FFCC89',
-  colorsSmall:
-    '#0096F4,#028688,#03BB8F,#40976A,#75191A,#88BFEB,#8C2E03,#B3B9BD,#DBE036',
+    '#f3fd36,#d6e036,#e81c34,#ff415e,#ed4897,#f283bf,#f6b8e2,#ff5602,#ff8147,#ffcc89',
   colorsBgFg: '#FFFFFF, #EEEEEE',
-  gradient1: '#F6ECEC',
-  gradient2: '#CCD8E4',
   gradientsEnabled: true,
-  scale: 8,
+  scale: 12,
   sizeX: 6000,
   sizeY: 3000,
-  shapesVertAmp: 0.37,
-  shapeSmallSizeMin: {x: 0.1, y: 0.3},
-  shapeSmallSizeMax: {x: 0.2, y: 0.6},
-  shapeBigSizeMin: {x: 0.3, y: 1},
-  shapeBigSizeMax: {x: 0.5, y: 1.5},
+  shapesVertAmp: 0.07,
+  shapeSmallSizeMin: {x: 0.3, y: 0.5},
+  shapeSmallSizeMax: {x: 0.2, y: 0.8},
+  shapeBigSizeMin: {x: 0.5, y: 3},
+  shapeBigSizeMax: {x: 0.5, y: 3},
   shapeSpaceMin: 0.1,
   shapeSpaceMax: 0.12,
   shapesRadius: 1000,
@@ -74,7 +56,6 @@ let PARAMS = {
   panelWidth: 2500,
   panelHeight: 500,
   panelOffset: -0.04,
-  zoomSpeed: 0.05,
 }
 
 let pane = Pane(PARAMS, seedStringCallback)
