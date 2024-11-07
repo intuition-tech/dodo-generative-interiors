@@ -70,7 +70,7 @@ let PARAMS = {
   shapeBigSizeMax: {x: 0.5, y: 1.5},
   shapeSpaceMin: 0.1,
   shapeSpaceMax: 0.12,
-  shapesRadius: 200,
+  shapesRadius: 1000,
   shapesOverlap: 0.01,
   panelWidth: 2500,
   panelHeight: 500,

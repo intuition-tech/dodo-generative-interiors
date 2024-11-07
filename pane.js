@@ -103,7 +103,7 @@ export function Pane(PARAMS, seedStringCallback) {
   })
   shapesFolder.addInput(PARAMS, 'shapesRadius', {
     min: 0,
-    max: 500,
+    max: 1500,
     label: 'Радиус',
   })
   shapesFolder.addInput(PARAMS, 'shapesOverlap', {
