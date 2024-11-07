@@ -53,7 +53,6 @@ export function makeSvg(PARAMS, shapes) {
     }
     if (shape.type === 'foreground') {
       path.setAttribute('fill', fill)
-      console.log('fill:', fill)
       // path.setAttribute('opacity', '0.1')
       gradSymbol.appendChild(path)
     } else if (shape.type === 'rect') {

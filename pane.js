@@ -16,10 +16,11 @@ export function Pane(PARAMS, seedStringCallback) {
   // let debug = pane.addInput(PARAMS, 'debug', {label: 'Отладка'})
   // pane.secretElements.push(debug)
 
-  let colorsSmall = pane.addInput(PARAMS, 'colorsSmall', {label: 'Цвета'})
+  let colorsSmall = pane.addInput(PARAMS, 'colorsSmall', {label: 'Цвета мелких'})
+
   pane.secretElements.push(colorsSmall)
   let colorsBig = pane.addInput(PARAMS, 'colorsBig', {
-    label: 'Любимые цвета',
+    label: 'Цвета больших',
   })
   pane.secretElements.push(colorsBig)
   let colorsBgFg = pane.addInput(PARAMS, 'colorsBgFg', {

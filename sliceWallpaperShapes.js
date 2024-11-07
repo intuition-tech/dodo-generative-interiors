@@ -17,7 +17,6 @@ export function sliceWallpaperShape(PARAMS, shape) {
   let h = PARAMS.sizeY
   let sliceWidth = stripeWidth // 3 cm
 
-  console.log('shape.type:', shape.type)
   let newShape = {
     type: shape.type,
     fill: shape.fill,

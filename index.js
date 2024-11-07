@@ -32,6 +32,22 @@ function resetState() {
 }
 resetState()
 
+/*
+
+цвета
+#0096e0,#006db9,#03bb8f,#258682,#ced2d5,#b3b9bd,#9fa7ac
+
+любимые
+#f3fd36,#d6e036,#e81c34,#ff415e,#ed4897,#f283bf,#f6b8e2,#ff5602,#FF5602,#FF5602,#FF8147,#ff8147,#ffcc89
+
+фон
+#FFFFFF, #EEEEEE
+
+// rainbow
+#FF0000, #FF7F00, #FFFF00, #50FF00, #00FF8F, #00FFFF, #007FFF, #0000FF, #7F00FF
+
+*/
+
 let PARAMS = {
   debug: false,
   seedString: 'DODO12',

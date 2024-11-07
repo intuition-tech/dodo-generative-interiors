@@ -13,6 +13,8 @@ function* genRect() {
   }
 }
 
+// let debugFill = ''
+
 export function makeRectangleComposition(PARAMS) {
   const shapes = []
 
@@ -120,9 +122,13 @@ export function makeRectangleComposition(PARAMS) {
 
     if (bigOrSmall === 'big') {
       shape.fill = paletteBig[(colorRandom() * paletteBig.length) | 0]
+      // debugFill += shape.fill + ' '
     } else {
       shape.fill = paletteSmall[(colorRandom() * paletteSmall.length) | 0]
+      // debugFill += shape.fill + ' '
     }
+
+    // console.log(debugFill)
 
     // // make fav color every N meters
     // console.log('x:', x)

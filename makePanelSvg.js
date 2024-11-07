@@ -91,7 +91,7 @@ export async function makePanelSvg(PARAMS, STATE, svgInputElement) {
     } else if (useRightX < maskRightX) {
       // если в маске виден правый край
       useElementWrapper.appendChild(makeUseElement(-widthOrig * scale, 'right'))
-      console.log('NEVER HAPPENS')
+      // console.log('NEVER HAPPENS')
     }
 
     g.appendChild(mask)

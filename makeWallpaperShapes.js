@@ -30,29 +30,28 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
 
 function addForegroundShapes(PARAMS, shapes) {
   let h = PARAMS.sizeY
-  let number = 2//Math.ceil(PARAMS.sizeX / 1000) + 1
+  let number = 2 //Math.ceil(PARAMS.sizeX / 1000) + 1
   let period = PARAMS.sizeX / (number - 1)
   let grades = 40
 
-	let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 3343)
-	let palette = parseColors(PARAMS.colorsBgFg)
-	let grad1Index = (palette.length * colorRandom()) | 0
-	let grad2Index =
-		(grad1Index + 1 + (((palette.length - 1) * colorRandom()) | 0)) %
-		palette.length
-		let gradient1Fill = palette[grad1Index]
-	let gradient2Fill = palette[grad2Index]
+  let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 3343)
+  let palette = parseColors(PARAMS.colorsBgFg)
+  let grad1Index = (palette.length * colorRandom()) | 0
+  let grad2Index =
+    (grad1Index + 1 + (((palette.length - 1) * colorRandom()) | 0)) %
+    palette.length
+  let gradient1Fill = palette[grad1Index]
+  let gradient2Fill = palette[grad2Index]
 
   for (let i = 0; i < grades; i++) {
-		let w = period / grades * (grades - i)
+    let w = (period / grades) * (grades - i)
 
-		let mix = i / (grades-1)
-		let fill = interpolateColor(gradient1Fill, gradient2Fill, mix)
-		console.log('fill:',fill)
+    let mix = i / (grades - 1)
+    let fill = interpolateColor(gradient1Fill, gradient2Fill, mix)
 
     let shape = {}
     shape.type = 'foreground'
-		shape.fill = fill
+    shape.fill = fill
     shape.polys = []
     for (let i = 0; i < number; i++) {
       let cx = i * period
@@ -80,29 +79,28 @@ function addForegroundShapes(PARAMS, shapes) {
 // }
 
 function interpolateColor(color1, color2, fraction) {
-    // Parse colors and ensure the fraction is within the range [0, 1]
-    const f = Math.max(0, Math.min(1, fraction));
-    const c1 = parseInt(color1.slice(1), 16);
-    const c2 = parseInt(color2.slice(1), 16);
+  // Parse colors and ensure the fraction is within the range [0, 1]
+  const f = Math.max(0, Math.min(1, fraction))
+  const c1 = parseInt(color1.slice(1), 16)
+  const c2 = parseInt(color2.slice(1), 16)
 
-    // Extract RGB components of both colors
-    const r1 = (c1 >> 16) & 0xff;
-    const g1 = (c1 >> 8) & 0xff;
-    const b1 = c1 & 0xff;
+  // Extract RGB components of both colors
+  const r1 = (c1 >> 16) & 0xff
+  const g1 = (c1 >> 8) & 0xff
+  const b1 = c1 & 0xff
 
-    const r2 = (c2 >> 16) & 0xff;
-    const g2 = (c2 >> 8) & 0xff;
-    const b2 = c2 & 0xff;
+  const r2 = (c2 >> 16) & 0xff
+  const g2 = (c2 >> 8) & 0xff
+  const b2 = c2 & 0xff
 
-    // Interpolate each RGB component separately
-    const r = Math.round(r1 + f * (r2 - r1));
-    const g = Math.round(g1 + f * (g2 - g1));
-    const b = Math.round(b1 + f * (b2 - b1));
+  // Interpolate each RGB component separately
+  const r = Math.round(r1 + f * (r2 - r1))
+  const g = Math.round(g1 + f * (g2 - g1))
+  const b = Math.round(b1 + f * (b2 - b1))
 
-    // Convert interpolated RGB values back to hex and return the result
-    return `#${(r << 16 | g << 8 | b).toString(16).padStart(6, '0')}`;
+  // Convert interpolated RGB values back to hex and return the result
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
 }
-
 
 function tiltRect(poly, r1, r2) {
   // expect poly is a rectangle
