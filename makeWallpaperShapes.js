@@ -30,7 +30,7 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
 
 function addForegroundShapes(PARAMS, shapes) {
   let h = PARAMS.sizeY
-  let number = 2 //Math.ceil(PARAMS.sizeX / 1000) + 1
+  let number = Math.ceil(PARAMS.sizeX / 1000) + 1
   let period = PARAMS.sizeX / (number - 1)
   let grades = 40
 
@@ -109,9 +109,12 @@ function tiltRect(poly, r1, r2) {
   let height = bb[3] - bb[1]
   let cx = bb[0] + width / 2
   let cy = bb[1] + height / 2
-  let tiltKoeff = 0.25
-  let tiltT = ((r1 * 6 - 3) | 0) * tiltKoeff
-  let tiltB = ((r2 * 6 - 3) | 0) * tiltKoeff
+  // let tiltKoeff = 0.25
+  // let tiltT = ((r1 * 6 - 3) | 0) * tiltKoeff
+  // let tiltB = ((r2 * 6 - 3) | 0) * tiltKoeff
+  let tiltKoeff = 0.3
+  let tiltT = (Math.round(r1 * 5 - 3) + 0.5) * tiltKoeff
+  let tiltB = (Math.round(r2 * 5 - 3) + 0.5) * tiltKoeff
   let pLT = [cx - width / 2, cy - height / 2]
   let pRT = [cx + width / 2, cy - height / 2]
   let pLB = [cx - width / 2, cy + height / 2]
