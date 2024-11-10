@@ -101,27 +101,15 @@ function seedStringCallback(ev) {
     clearTimeout(resetStateTimeout)
   }
   resetStateTimeout = setTimeout(resetState, 1000)
-
-  if (
-    ev.target.value.toLowerCase() == 'pass' ||
-    ev.target.value.toLowerCase() == 'password'
-  ) {
-    revealSecretPane()
-  }
-}
-
-function revealSecretPane() {
-  pane.secretElements.forEach(el => {
-    el.hidden = false
-  })
 }
 
 // load svg
-pane.addButton({title: 'Load SVG'}).on('click', () => {
+pane.addButton({title: 'Загрузить .svg для панно'}).on('click', () => {
   openFileDialog(fileLoadedCallback)
 })
+
 // save button
-pane.addButton({title: 'Save assets'}).on('click', () => {
+pane.addButton({title: 'Скачать обои и панно'}).on('click', () => {
   saveSVG(PARAMS)
 })
 
