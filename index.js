@@ -15,7 +15,6 @@ import {roundWallpaperShape} from './roundWallpaperShapes.js'
 import {makePanel} from './makePanel.js'
 import {makeRectangleComposition} from './makeRectangleComposition.js'
 import {zoomAndPan} from './zoomAndPan.js'
-const svgNS = 'http://www.w3.org/2000/svg'
 
 let svgInputElement
 
@@ -43,6 +42,7 @@ let PARAMS = {
   gradientsEnabled: true,
   scale: 12,
   sizeX: 6000,
+  sizeXRounded: 6000,
   sizeY: 3000,
   shapesVertAmp: 0.07,
   shapeSmallSizeMin: {x: 0.3, y: 0.5},
@@ -54,12 +54,28 @@ let PARAMS = {
   shapesRadius: 1000,
   shapesOverlap: 0.01,
   panelWidth: 2500,
+  panelWidthRounded: 2500,
   panelHeight: 500,
-  panelOffset: -0.04,
+  panelOffset: 0,
+  panelWidthRoundSize: 50,
 }
 
 let pane = Pane(PARAMS, seedStringCallback)
 pane.on('change', e => {
+  if (e.presetKey == 'sizeX') {
+    let roundSize = 30
+    PARAMS.sizeXRounded =
+      PARAMS.sizeX + roundSize / 2 - ((PARAMS.sizeX + roundSize / 2) % roundSize)
+  }
+
+  if (e.presetKey == 'panelWidth') {
+    let roundSize = PARAMS.panelWidthRoundSize
+    PARAMS.panelWidthRounded =
+      PARAMS.panelWidth +
+      roundSize / 2 -
+      ((PARAMS.panelWidth + roundSize / 2) % roundSize)
+  }
+
   if (e.presetKey.includes('panel')) {
     // update panel only
     STATE.isDone = false
@@ -119,7 +135,7 @@ function updateWallpaperSvg() {
   // let container = document.getElementById('wallpaper')
   // container.innerHTML = ''
   // let svg = makeSvg(PARAMS, wallpaperShapes)
-  // svg.setAttribute('width', PARAMS.sizeX)
+  // svg.setAttribute('width', PARAMS.sizeXRounded)
   // svg.setAttribute('height', PARAMS.sizeY)
   // container.appendChild(svg)
 }
@@ -200,7 +216,7 @@ function updateSvgsProgressively() {
     let container = document.getElementById('wallpaper')
     container.innerHTML = ''
     let svg = makeSvg(PARAMS, STATE.wallpaperShapesSliced)
-    svg.setAttribute('width', PARAMS.sizeX)
+    svg.setAttribute('width', PARAMS.sizeXRounded)
     svg.setAttribute('height', PARAMS.sizeY)
     container.appendChild(svg)
   }

@@ -1,12 +1,14 @@
 export function Pane(PARAMS, seedStringCallback) {
   const pane = new Tweakpane.Pane()
+
   pane.secretElements = []
 
-  pane.addInput(PARAMS, 'zoomSpeed', {
+  let zoom = pane.addInput(PARAMS, 'zoomSpeed', {
     min: 0.0,
     max: 0.1,
     label: 'zoomSpeed',
   })
+  pane.secretElements.push(zoom)
 
   let seedString = pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
   seedString.element
@@ -52,13 +54,24 @@ export function Pane(PARAMS, seedStringCallback) {
   //   label: 'Размер, мм',
   // })
   let sizeX = wall.addInput(PARAMS, 'sizeX', {
+    step: 1,
     min: 1,
-    max: 20000,
+    // max: 20000,
     label: 'Ширина, мм',
   })
+  // wall.addBlade({
+  //   view: 'infodump',
+  //   content: 'Округлено до XXXXXX',
+  // })
+  wall.addMonitor(PARAMS, 'sizeXRounded', {
+    format: value => Math.round(value),
+    label: 'Округлили до',
+  })
+
   let sizeY = wall.addInput(PARAMS, 'sizeY', {
+    step: 1,
     min: 1,
-    max: 10000,
+    // max: 10000,
     label: 'Высота, мм',
   })
 
@@ -118,19 +131,23 @@ export function Pane(PARAMS, seedStringCallback) {
 
   let panel = pane.addFolder({title: 'Панно'})
   panel.addInput(PARAMS, 'panelWidth', {
-    label: 'Ширина, мм',
+    step: 1,
     min: 1,
-    max: 10000,
+    // max: 10000,
+    label: 'Ширина, мм',
+  })
+  panel.addMonitor(PARAMS, 'panelWidthRounded', {
+    format: value => Math.round(value),
+    label: 'Округлили до',
   })
   panel.addInput(PARAMS, 'panelHeight', {
-    label: 'Высота, мм',
+    step: 1,
     min: 1,
-    max: 10000,
+    // max: 10000,
+    label: 'Высота, мм',
   })
   panel.addInput(PARAMS, 'panelOffset', {
     label: 'Смещение',
-    min: -1,
-    max: 1,
   })
 
   return pane

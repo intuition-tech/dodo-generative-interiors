@@ -30,7 +30,7 @@ export function makeRectangleComposition(PARAMS) {
   const SPACE_MAX_K = PARAMS.shapeSpaceMax
   const OVERLAP_K = PARAMS.shapesOverlap
   const OFFSET_Y_K = PARAMS.shapesVertAmp
-  const sizeX = PARAMS.sizeX
+  const sizeX = PARAMS.sizeXRounded
   const sizeY = PARAMS.sizeY
   const FAV_COLOR_PERIOD_K = 1 // how many heights between fav colors
 

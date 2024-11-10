@@ -1,14 +1,14 @@
 import {setSeed, stringHash, map, mod, splitmix32} from './helpers.js'
 const svgNS = 'http://www.w3.org/2000/svg'
 export async function makePanelSvg(PARAMS, STATE, svgInputElement) {
-  const panelSvgWidth = PARAMS.panelWidth * Math.sqrt(2)
+  const panelSvgWidth = PARAMS.panelWidthRounded * Math.sqrt(2)
   const panelSvgHeight = PARAMS.panelHeight
 
   // A prism is a 3d element the panel is made of
   // A prism consists of two stripes for each side
-  const panelPrismWidthFrontalProjection = 50 // FIXME adjust
+  const panelPrismWidthFrontalProjection = PARAMS.panelWidthRoundSize
   // Number of prisms
-  const N = (PARAMS.panelWidth / panelPrismWidthFrontalProjection) | 0
+  const N = (PARAMS.panelWidthRounded / panelPrismWidthFrontalProjection) | 0
 
   // Fetch the SVG file
   if (!svgInputElement) {

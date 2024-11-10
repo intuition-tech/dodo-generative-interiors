@@ -12,8 +12,8 @@ export function sliceWallpaperShapes(PARAMS, shapes) {
 }
 
 export function sliceWallpaperShape(PARAMS, shape) {
-  let slicesNumber = Math.ceil(PARAMS.sizeX / stripeWidth) // 3 cm
-  let w = PARAMS.sizeX
+  let slicesNumber = Math.ceil(PARAMS.sizeXRounded / stripeWidth) // 3 cm
+  let w = PARAMS.sizeXRounded
   let h = PARAMS.sizeY
   let sliceWidth = stripeWidth // 3 cm
 

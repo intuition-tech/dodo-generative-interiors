@@ -11,7 +11,7 @@ export function roundWallpaperShapes(PARAMS, shapes) {
 }
 
 export function roundWallpaperShape(PARAMS, shape) {
-  if (shape.type === 'foreground') return shape
+  // if (shape.type === 'foreground') return shape
 
   let newShape = {
     type: shape.type,
