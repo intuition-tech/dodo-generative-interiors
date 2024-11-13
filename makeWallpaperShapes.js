@@ -32,7 +32,7 @@ function addForegroundShapes(PARAMS, shapes) {
   let h = PARAMS.sizeY
   let number = Math.ceil(PARAMS.sizeXRounded / 1000) + 1
   let period = PARAMS.sizeXRounded / (number - 1)
-  let grades = 40
+  let grades = 8
 
   let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 3343)
   let palette = parseColors(PARAMS.colorsBgFg)
