@@ -98,17 +98,17 @@ export function Pane(PARAMS, seedStringCallback) {
 
   let shapesFront = advanced.addFolder({title: 'Верхний слой'})
   shapesFront.addInput(PARAMS, 'colorsFront', {
-    label: 'Цвета больших',
+    label: 'Палитра',
   })
   shapesFront.addInput(PARAMS, 'shapeFrontSizeMin', {
     x: {min: 0.01, max: 0.5},
-    y: {min: 0, max: 5},
-    label: 'Мин. размер крупных',
+    y: {min: 0, max: 10},
+    label: 'Мин размер',
   })
   shapesFront.addInput(PARAMS, 'shapeFrontSizeMax', {
     x: {min: 0.01, max: 1},
-    y: {min: 0.1, max: 5},
-    label: 'Макс. размер крупных',
+    y: {min: 0.1, max: 10},
+    label: 'Макс размер',
   })
   shapesFront.addInput(PARAMS, 'shapeFrontSpaceMin', {
     min: 0,
@@ -123,17 +123,17 @@ export function Pane(PARAMS, seedStringCallback) {
 
   let shapesMiddle = advanced.addFolder({title: 'Средний слой'})
   shapesMiddle.addInput(PARAMS, 'colorsMiddle', {
-    label: 'Цвета мелких',
+    label: 'Палитра',
   })
   shapesMiddle.addInput(PARAMS, 'shapeMiddleSizeMin', {
     x: {min: 0.01, max: 0.5},
     y: {min: 0, max: 5},
-    label: 'Мин. размер мелких',
+    label: 'Мин размер',
   })
   shapesMiddle.addInput(PARAMS, 'shapeMiddleSizeMax', {
     x: {min: 0.01, max: 1},
     y: {min: 0.1, max: 5},
-    label: 'Макс. размер мелких',
+    label: 'Макс размер',
   })
   shapesMiddle.addInput(PARAMS, 'shapeMiddleSpaceMin', {
     min: 0,
@@ -148,17 +148,17 @@ export function Pane(PARAMS, seedStringCallback) {
 
   let shapesBack = advanced.addFolder({title: 'Нижний слой'})
   shapesBack.addInput(PARAMS, 'colorsBack', {
-    label: 'Цвета больших',
+    label: 'Палитра',
   })
   shapesBack.addInput(PARAMS, 'shapeBackSizeMin', {
     x: {min: 0.01, max: 0.5},
-    y: {min: 0, max: 5},
-    label: 'Мин. размер крупных',
+    y: {min: 0, max: 10},
+    label: 'Мин размер',
   })
   shapesBack.addInput(PARAMS, 'shapeBackSizeMax', {
     x: {min: 0.01, max: 1},
-    y: {min: 0.1, max: 5},
-    label: 'Макс. размер крупных',
+    y: {min: 0.1, max: 10},
+    label: 'Макс размер',
   })
   shapesBack.addInput(PARAMS, 'shapeBackSpaceMin', {
     min: 0,

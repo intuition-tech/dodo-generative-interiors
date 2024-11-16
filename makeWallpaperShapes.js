@@ -212,21 +212,3 @@ function subdivide3(poly, radius) {
 
   return newPoly
 }
-
-// }
-// }
-// if (len < cornerRadius * 2) {
-// let k = 0.5
-// newPoly.push(p1)
-// newPoly.push([p1[0] * k + p2[0] * k, p1[1] * k + p2[1] * k])
-// } else {
-
-function rombus(x, y, r) {
-  let poly = []
-  poly.push([x - r, y])
-  poly.push([x, y + r])
-  poly.push([x + r, y])
-  poly.push([x, y - r])
-  poly = chaikinSmooth(poly, 4)
-  return poly
-}

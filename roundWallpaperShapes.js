@@ -1,6 +1,6 @@
 import {map} from './helpers.js'
 
-const roundSize = 10 // 1 cm
+const roundSize = 5 // mm.
 export function roundWallpaperShapes(PARAMS, shapes) {
   let newShapes = []
   shapes.forEach(shape => {

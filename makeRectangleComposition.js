@@ -68,6 +68,7 @@ export function makeRectangleComposition(PARAMS) {
   fillLayerWithShapes(
     PARAMS,
     shapes,
+    'rect',
     paletteBack,
     colorRandom,
     PARAMS.shapeBackSizeMin.x,
@@ -84,6 +85,7 @@ export function makeRectangleComposition(PARAMS) {
   fillLayerWithShapes(
     PARAMS,
     shapes,
+    'rect',
     paletteMiddle,
     colorRandom,
     PARAMS.shapeMiddleSizeMin.x,
@@ -100,6 +102,7 @@ export function makeRectangleComposition(PARAMS) {
   fillLayerWithShapes(
     PARAMS,
     shapes,
+    'rect',
     paletteFront,
     colorRandom,
     PARAMS.shapeFrontSizeMin.x,
@@ -119,12 +122,13 @@ export function makeRectangleComposition(PARAMS) {
 // gets a value between 0 and 1
 // koeff is between 0 and 1 and usef for shapes scaling
 function getPerspectiveKoeff(x) {
-  return x * 0.5 + 0.5
+  return Math.min(Math.max(map(x, 0, 1, 1.5, 0.5), 0), 1)
 }
 
 function fillLayerWithShapes(
   PARAMS,
   shapes,
+  shapeType,
   palette,
   colorRandom,
   MIN_WIDTH_K,
@@ -149,12 +153,16 @@ function fillLayerWithShapes(
       x += spaceWidth
       continue
     }
-    let [w, h] = getRectWH('small')
+    let [w, h] = getRectWH()
+    let progress = (x - w / 2) / sizeX // ~ [0, 1]
+    let scale = getPerspectiveKoeff(progress)
+    w *= scale
+    h *= scale
     if (x - w / 2 > sizeX) {
       break
     }
     let overlap = OVERLAP_K * sizeY // Apply overlap factor
-    let dh = sizeY * OFFSET_Y_K
+    let dh = sizeY * OFFSET_Y_K * scale
     let offsetY = (R() * 2 - 1) * dh
     let y = sizeY / 2 - h / 2 + offsetY
 
@@ -165,29 +173,20 @@ function fillLayerWithShapes(
       [x - overlap, y + h],
     ]
     shape = [poly]
-    shape.type = 'rect'
+    shape.type = shapeType
 
     shape.fill = palette[(colorRandom() * palette.length) | 0]
 
     shapes.push(shape)
 
+    if (w < 10) w = 10 // prevent too small steps
     x += w
   }
 
-  function getRectWH(bigOrSmall = 'small') {
+  function getRectWH() {
     let w, h
-    if (bigOrSmall === 'small') {
-      w = map(R(), 0, 1, MIN_WIDTH_K, MAX_WIDTH_K) * sizeY
-      h = map(R(), 0, 1, MIN_HEIGHT_K, MAX_HEIGHT_K) * sizeY
-      // w = map(R(), 0, 1, 0.2, 0.2) * sizeY
-      // h = map(R(), 0, 1, 0.2, 0.2) * sizeY
-    } else {
-      w = map(R(), 0, 1, MIN_WIDTH_K, MAX_WIDTH_K) * sizeY
-      h = map(R(), 0, 1, MIN_HEIGHT_K, MAX_HEIGHT_K) * sizeY
-      // w = map(R(), 0, 1, 0.2, 0.2) * sizeY
-      // h = map(R(), 0, 1, 0.4, 0.4) * sizeY
-    }
-
+    w = map(R(), 0, 1, MIN_WIDTH_K, MAX_WIDTH_K) * sizeY
+    h = map(R(), 0, 1, MIN_HEIGHT_K, MAX_HEIGHT_K) * sizeY
     return [w, h]
   }
 }
