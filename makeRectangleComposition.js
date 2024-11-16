@@ -18,39 +18,6 @@ function* genRect() {
 export function makeRectangleComposition(PARAMS) {
   const shapes = []
 
-  const SMALL_MIN_WIDTH_K = PARAMS.shapeSmallSizeMin.x
-  const SMALL_MAX_WIDTH_K = PARAMS.shapeSmallSizeMax.x
-  const SMALL_MIN_HEIGHT_K = PARAMS.shapeSmallSizeMin.y
-  const SMALL_MAX_HEIGHT_K = PARAMS.shapeSmallSizeMax.y
-  const BIG_MIN_WIDTH_K = PARAMS.shapeBigSizeMin.x
-  const BIG_MAX_WIDTH_K = PARAMS.shapeBigSizeMax.x
-  const BIG_MIN_HEIGHT_K = PARAMS.shapeBigSizeMin.y
-  const BIG_MAX_HEIGHT_K = PARAMS.shapeBigSizeMax.y
-  const SPACE_MIN_K = PARAMS.shapeSpaceMin
-  const SPACE_MAX_K = PARAMS.shapeSpaceMax
-  const OVERLAP_K = PARAMS.shapesOverlap
-  const OFFSET_Y_K = PARAMS.shapesVertAmp
-  const sizeX = PARAMS.sizeXRounded
-  const sizeY = PARAMS.sizeY
-  const FAV_COLOR_PERIOD_K = 1 // how many heights between fav colors
-
-  function getRectWH(bigOrSmall = 'small') {
-    let w, h
-    if (bigOrSmall === 'small') {
-      w = map(R(), 0, 1, SMALL_MIN_WIDTH_K, SMALL_MAX_WIDTH_K) * sizeY
-      h = map(R(), 0, 1, SMALL_MIN_HEIGHT_K, SMALL_MAX_HEIGHT_K) * sizeY
-      // w = map(R(), 0, 1, 0.2, 0.2) * sizeY
-      // h = map(R(), 0, 1, 0.2, 0.2) * sizeY
-    } else {
-      w = map(R(), 0, 1, BIG_MIN_WIDTH_K, BIG_MAX_WIDTH_K) * sizeY
-      h = map(R(), 0, 1, BIG_MIN_HEIGHT_K, BIG_MAX_HEIGHT_K) * sizeY
-      // w = map(R(), 0, 1, 0.2, 0.2) * sizeY
-      // h = map(R(), 0, 1, 0.4, 0.4) * sizeY
-    }
-
-    return [w, h]
-  }
-
   // let x = 0//{{{
   // let rectsInGroup = 0 // groups are separated with spaces
   // while (x < sizeX) {
@@ -87,22 +54,54 @@ export function makeRectangleComposition(PARAMS) {
   //   ;[shapes[i], shapes[j]] = [shapes[j], shapes[i]]
   // }//}}}
 
-  let genRectIterator = genRect()
-
   let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
-  let paletteBig = parseColors(PARAMS.colorsBig)
   let paletteSmall = parseColors(PARAMS.colorsSmall)
-  // let lastFavColorX = -R() * FAV_COLOR_PERIOD_K * sizeY
+  let paletteBig = parseColors(PARAMS.colorsBig)
 
-  for (let x = -BIG_MAX_WIDTH_K * sizeY; ; ) {
+  // FIXME
+  // Добавить функцию для определения перспективы
+  // FIXME
+  // Разделять: палитры, параметры прямоугольников, параметры пробелов, число штук в группе
+  // FIXME сделать больше крутилок для каждого слоя. В принципе, это как большие и маленькие, только надо три группы теперь. Можно их сворачивать в аккордиончики
+  fillLayerWithShapes(PARAMS, shapes, paletteBig, colorRandom)
+
+  return shapes
+}
+
+// gets a value between 0 and 1
+// koeff is between 0 and 1 and usef for shapes scaling
+function getPerspectiveKoeff(x) {
+  return x * 0.5 + 0.5
+}
+
+function fillLayerWithShapes(PARAMS, shapes, palette, colorRandom) {
+  const SMALL_MIN_WIDTH_K = PARAMS.shapeSmallSizeMin.x
+  const SMALL_MAX_WIDTH_K = PARAMS.shapeSmallSizeMax.x
+  const SMALL_MIN_HEIGHT_K = PARAMS.shapeSmallSizeMin.y
+  const SMALL_MAX_HEIGHT_K = PARAMS.shapeSmallSizeMax.y
+  const BIG_MIN_WIDTH_K = PARAMS.shapeBigSizeMin.x
+  const BIG_MAX_WIDTH_K = PARAMS.shapeBigSizeMax.x
+  const BIG_MIN_HEIGHT_K = PARAMS.shapeBigSizeMin.y
+  const BIG_MAX_HEIGHT_K = PARAMS.shapeBigSizeMax.y
+  const SPACE_MIN_K = PARAMS.shapeSpaceMin
+  const SPACE_MAX_K = PARAMS.shapeSpaceMax
+  const OVERLAP_K = PARAMS.shapesOverlap
+  const OFFSET_Y_K = PARAMS.shapesVertAmp
+  const sizeX = PARAMS.sizeXRounded
+  const sizeY = PARAMS.sizeY
+  const FAV_COLOR_PERIOD_K = 1 // how many heights between fav colors
+  let genRectIterator = genRect()
+  // FIXME set a proper left margin
+  for (let x = -1 * sizeY; ; ) {
     let shape = {}
     let bigOrSmall = genRectIterator.next().value
+    // FIXME, remove big
     if (bigOrSmall === 'none') {
       let spaceWidth = map(R(), 0, 1, SPACE_MIN_K, SPACE_MAX_K) * sizeY
       x += spaceWidth
       continue
     }
-    let [w, h] = getRectWH(bigOrSmall)
+    let [w, h] = getRectWH('small')
     if (x - w / 2 > sizeX) {
       break
     }
@@ -120,32 +119,27 @@ export function makeRectangleComposition(PARAMS) {
     shape = [poly]
     shape.type = 'rect'
 
-    if (bigOrSmall === 'big') {
-      shape.fill = paletteBig[(colorRandom() * paletteBig.length) | 0]
-      // debugFill += shape.fill + ' '
-    } else {
-      shape.fill = paletteSmall[(colorRandom() * paletteSmall.length) | 0]
-      // debugFill += shape.fill + ' '
-    }
+    shape.fill = palette[(colorRandom() * palette.length) | 0]
 
-    // console.log(debugFill)
-
-    // // make fav color every N meters
-    // console.log('x:', x)
-    // if (x > lastFavColorX + FAV_COLOR_PERIOD_K * sizeY) {
-    // // use fav color
-    // console.log('fav')
-    // shape.fill = paletteBig[(colorRandom() * paletteBig.length) | 0]
-    // lastFavColorX = x
-    // } else {
-    // // use regular color
-    // console.log('not fav')
-    // shape.fill = paletteSmall[(colorRandom() * paletteSmall.length) | 0]
-    // }
     shapes.push(shape)
 
     x += w
   }
 
-  return shapes
+  function getRectWH(bigOrSmall = 'small') {
+    let w, h
+    if (bigOrSmall === 'small') {
+      w = map(R(), 0, 1, SMALL_MIN_WIDTH_K, SMALL_MAX_WIDTH_K) * sizeY
+      h = map(R(), 0, 1, SMALL_MIN_HEIGHT_K, SMALL_MAX_HEIGHT_K) * sizeY
+      // w = map(R(), 0, 1, 0.2, 0.2) * sizeY
+      // h = map(R(), 0, 1, 0.2, 0.2) * sizeY
+    } else {
+      w = map(R(), 0, 1, BIG_MIN_WIDTH_K, BIG_MAX_WIDTH_K) * sizeY
+      h = map(R(), 0, 1, BIG_MIN_HEIGHT_K, BIG_MAX_HEIGHT_K) * sizeY
+      // w = map(R(), 0, 1, 0.2, 0.2) * sizeY
+      // h = map(R(), 0, 1, 0.4, 0.4) * sizeY
+    }
+
+    return [w, h]
+  }
 }
