@@ -2,9 +2,9 @@ import {R, map} from './helpers.js'
 import {parseColors} from './helpers.js'
 import {splitmix32, stringHash} from './helpers.js'
 
-function* genRect() {
+function* genRect(groupSizes) {
   while (true) {
-    let N = R() < 0.5 ? 2 : 3
+    let N = groupSizes[(R() * groupSizes.length) | 0]
     let bigId = (N * R()) | 0
     for (let i = 0; i < N; i++) {
       yield i == bigId ? 'big' : 'small'
@@ -55,15 +55,63 @@ export function makeRectangleComposition(PARAMS) {
   // }//}}}
 
   let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
-  let paletteSmall = parseColors(PARAMS.colorsSmall)
-  let paletteBig = parseColors(PARAMS.colorsBig)
 
-  // FIXME
-  // Добавить функцию для определения перспективы
-  // FIXME
-  // Разделять: палитры, параметры прямоугольников, параметры пробелов, число штук в группе
-  // FIXME сделать больше крутилок для каждого слоя. В принципе, это как большие и маленькие, только надо три группы теперь. Можно их сворачивать в аккордиончики
-  fillLayerWithShapes(PARAMS, shapes, paletteBig, colorRandom)
+  let paletteFront = parseColors(PARAMS.colorsFront)
+  let paletteMiddle = parseColors(PARAMS.colorsMiddle)
+  let paletteBack = parseColors(PARAMS.colorsBack)
+
+  const OVERLAP_K = PARAMS.shapesOverlap
+  const OFFSET_Y_K = PARAMS.shapesVertAmp
+
+  // FIXME правильно панно раскрашивать. Брать все шейпы: фронт, бэк, мид, — и сортировать по координате
+
+  fillLayerWithShapes(
+    PARAMS,
+    shapes,
+    paletteBack,
+    colorRandom,
+    PARAMS.shapeBackSizeMin.x,
+    PARAMS.shapeBackSizeMax.x,
+    PARAMS.shapeBackSizeMin.y,
+    PARAMS.shapeBackSizeMax.y,
+    PARAMS.shapeBackSpaceMin,
+    PARAMS.shapeBackSpaceMax,
+    OVERLAP_K,
+    OFFSET_Y_K,
+    [1], // groupSizes
+  )
+
+  fillLayerWithShapes(
+    PARAMS,
+    shapes,
+    paletteMiddle,
+    colorRandom,
+    PARAMS.shapeMiddleSizeMin.x,
+    PARAMS.shapeMiddleSizeMax.x,
+    PARAMS.shapeMiddleSizeMin.y,
+    PARAMS.shapeMiddleSizeMax.y,
+    PARAMS.shapeMiddleSpaceMin,
+    PARAMS.shapeMiddleSpaceMax,
+    OVERLAP_K,
+    OFFSET_Y_K,
+    [2, 3], // groupSizes
+  )
+
+  fillLayerWithShapes(
+    PARAMS,
+    shapes,
+    paletteFront,
+    colorRandom,
+    PARAMS.shapeFrontSizeMin.x,
+    PARAMS.shapeFrontSizeMax.x,
+    PARAMS.shapeFrontSizeMin.y,
+    PARAMS.shapeFrontSizeMax.y,
+    PARAMS.shapeFrontSpaceMin,
+    PARAMS.shapeFrontSpaceMax,
+    OVERLAP_K,
+    OFFSET_Y_K,
+    [1], // groupSizes
+  )
 
   return shapes
 }
@@ -74,28 +122,28 @@ function getPerspectiveKoeff(x) {
   return x * 0.5 + 0.5
 }
 
-function fillLayerWithShapes(PARAMS, shapes, palette, colorRandom) {
-  const SMALL_MIN_WIDTH_K = PARAMS.shapeSmallSizeMin.x
-  const SMALL_MAX_WIDTH_K = PARAMS.shapeSmallSizeMax.x
-  const SMALL_MIN_HEIGHT_K = PARAMS.shapeSmallSizeMin.y
-  const SMALL_MAX_HEIGHT_K = PARAMS.shapeSmallSizeMax.y
-  const BIG_MIN_WIDTH_K = PARAMS.shapeBigSizeMin.x
-  const BIG_MAX_WIDTH_K = PARAMS.shapeBigSizeMax.x
-  const BIG_MIN_HEIGHT_K = PARAMS.shapeBigSizeMin.y
-  const BIG_MAX_HEIGHT_K = PARAMS.shapeBigSizeMax.y
-  const SPACE_MIN_K = PARAMS.shapeSpaceMin
-  const SPACE_MAX_K = PARAMS.shapeSpaceMax
-  const OVERLAP_K = PARAMS.shapesOverlap
-  const OFFSET_Y_K = PARAMS.shapesVertAmp
+function fillLayerWithShapes(
+  PARAMS,
+  shapes,
+  palette,
+  colorRandom,
+  MIN_WIDTH_K,
+  MAX_WIDTH_K,
+  MIN_HEIGHT_K,
+  MAX_HEIGHT_K,
+  SPACE_MIN_K,
+  SPACE_MAX_K,
+  OVERLAP_K,
+  OFFSET_Y_K,
+  groupSizes,
+) {
   const sizeX = PARAMS.sizeXRounded
   const sizeY = PARAMS.sizeY
-  const FAV_COLOR_PERIOD_K = 1 // how many heights between fav colors
-  let genRectIterator = genRect()
+  let genRectIterator = genRect(groupSizes)
   // FIXME set a proper left margin
   for (let x = -1 * sizeY; ; ) {
     let shape = {}
     let bigOrSmall = genRectIterator.next().value
-    // FIXME, remove big
     if (bigOrSmall === 'none') {
       let spaceWidth = map(R(), 0, 1, SPACE_MIN_K, SPACE_MAX_K) * sizeY
       x += spaceWidth
@@ -129,13 +177,13 @@ function fillLayerWithShapes(PARAMS, shapes, palette, colorRandom) {
   function getRectWH(bigOrSmall = 'small') {
     let w, h
     if (bigOrSmall === 'small') {
-      w = map(R(), 0, 1, SMALL_MIN_WIDTH_K, SMALL_MAX_WIDTH_K) * sizeY
-      h = map(R(), 0, 1, SMALL_MIN_HEIGHT_K, SMALL_MAX_HEIGHT_K) * sizeY
+      w = map(R(), 0, 1, MIN_WIDTH_K, MAX_WIDTH_K) * sizeY
+      h = map(R(), 0, 1, MIN_HEIGHT_K, MAX_HEIGHT_K) * sizeY
       // w = map(R(), 0, 1, 0.2, 0.2) * sizeY
       // h = map(R(), 0, 1, 0.2, 0.2) * sizeY
     } else {
-      w = map(R(), 0, 1, BIG_MIN_WIDTH_K, BIG_MAX_WIDTH_K) * sizeY
-      h = map(R(), 0, 1, BIG_MIN_HEIGHT_K, BIG_MAX_HEIGHT_K) * sizeY
+      w = map(R(), 0, 1, MIN_WIDTH_K, MAX_WIDTH_K) * sizeY
+      h = map(R(), 0, 1, MIN_HEIGHT_K, MAX_HEIGHT_K) * sizeY
       // w = map(R(), 0, 1, 0.2, 0.2) * sizeY
       // h = map(R(), 0, 1, 0.4, 0.4) * sizeY
     }

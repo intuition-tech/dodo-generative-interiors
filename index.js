@@ -35,22 +35,36 @@ let PARAMS = {
   debug: false,
   zoomSpeed: 0.05,
   seedString: 'Тамбов',
-  colorsSmall: '#0096e0,#006db9,#03bb8f,#258682,#ced2d5,#b3b9bd,#9fa7ac',
-  colorsBig:
-    '#f3fd36,#d6e036,#e81c34,#ff415e,#ed4897,#f283bf,#f6b8e2,#ff5602,#ff8147,#ffcc89',
   colorsBgFg: '#FFFFFF, #EEEEEE',
   gradientsEnabled: true,
-  scale: 12,
+  scale: 1,
   sizeX: 6000,
   sizeXRounded: 6000,
   sizeY: 3000,
   shapesVertAmp: 0.07,
-  shapeSmallSizeMin: {x: 0.3, y: 0.5},
-  shapeSmallSizeMax: {x: 0.2, y: 0.8},
-  shapeBigSizeMin: {x: 0.5, y: 3},
-  shapeBigSizeMax: {x: 0.5, y: 3},
-  shapeSpaceMin: 0.1,
-  shapeSpaceMax: 0.12,
+
+  // back
+  colorsBack:
+    '#f3fd36,#d6e036,#e81c34,#ff415e,#ed4897,#f283bf,#f6b8e2,#ff5602,#ff8147,#ffcc89',
+  shapeBackSizeMin: {x: 0.5, y: 3},
+  shapeBackSizeMax: {x: 0.5, y: 3},
+  shapeBackSpaceMin: 0.1,
+  shapeBackSpaceMax: 0.12,
+
+  // middle
+  colorsMiddle: '#0096e0,#006db9,#03bb8f,#258682,#ced2d5,#b3b9bd,#9fa7ac',
+  shapeMiddleSizeMin: {x: 0.3, y: 0.5},
+  shapeMiddleSizeMax: {x: 0.2, y: 0.8},
+  shapeMiddleSpaceMin: 0.1,
+  shapeMiddleSpaceMax: 0.12,
+
+  // front
+  colorsFront: '#ff00ee, #ffff00',
+  shapeFrontSizeMin: {x: 0.02, y: 3},
+  shapeFrontSizeMax: {x: 0.2, y: 3},
+  shapeFrontSpaceMin: 0.2,
+  shapeFrontSpaceMax: 0.22,
+
   shapesRadius: 1000,
   shapesOverlap: 0.01,
   panelWidth: 2500,
