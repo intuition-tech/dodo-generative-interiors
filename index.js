@@ -53,6 +53,7 @@ let PARAMS = {
   shapeBackSizeMax: {x: 0.5, y: 3},
   shapeBackSpaceMin: 0.1,
   shapeBackSpaceMax: 0.12,
+  shapeBackTreshold: 0.75,
 
   // middle
   colorsMiddle:
@@ -61,6 +62,7 @@ let PARAMS = {
   shapeMiddleSizeMax: {x: 0.2, y: 0.8},
   shapeMiddleSpaceMin: 0.1,
   shapeMiddleSpaceMax: 0.12,
+  shapeMiddleTreshold: 0.0,
 
   // front
   colorsFront: '#0096e0,#006db9,#03bb8f,#258682,#ced2d5,#b3b9bd,#9fa7ac',
@@ -68,6 +70,7 @@ let PARAMS = {
   shapeFrontSizeMax: {x: 0.05, y: 3},
   shapeFrontSpaceMin: 0.1,
   shapeFrontSpaceMax: 0.5,
+  shapeFrontTreshold: 0.75,
 
   shapesRadius: 1000,
   shapesOverlap: 0.01,

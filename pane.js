@@ -137,6 +137,11 @@ export function Pane(PARAMS, seedStringCallback) {
     max: 1,
     label: 'Макс пробел',
   })
+  shapesFront.addInput(PARAMS, 'shapeFrontTreshold', {
+    min: 0,
+    max: 1,
+    label: 'Порог',
+  })
 
   let shapesMiddle = advanced.addFolder({title: 'Средний слой'})
   shapesMiddle.addInput(PARAMS, 'colorsMiddle', {
@@ -162,6 +167,11 @@ export function Pane(PARAMS, seedStringCallback) {
     max: 1,
     label: 'Макс пробел',
   })
+  shapesMiddle.addInput(PARAMS, 'shapeMiddleTreshold', {
+    min: 0,
+    max: 1,
+    label: 'Порог',
+  })
 
   let shapesBack = advanced.addFolder({title: 'Нижний слой'})
   shapesBack.addInput(PARAMS, 'colorsBack', {
@@ -186,6 +196,11 @@ export function Pane(PARAMS, seedStringCallback) {
     min: 0,
     max: 1,
     label: 'Макс пробел',
+  })
+  shapesBack.addInput(PARAMS, 'shapeBackTreshold', {
+    min: 0,
+    max: 1,
+    label: 'Порог',
   })
 
   return pane

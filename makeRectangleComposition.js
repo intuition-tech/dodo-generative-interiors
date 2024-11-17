@@ -77,6 +77,7 @@ export function makeRectangleComposition(PARAMS) {
     PARAMS.shapeBackSizeMax.y,
     PARAMS.shapeBackSpaceMin,
     PARAMS.shapeBackSpaceMax,
+    PARAMS.shapeBackTreshold,
     OVERLAP_K,
     OFFSET_Y_K,
     [1], // groupSizes
@@ -94,6 +95,7 @@ export function makeRectangleComposition(PARAMS) {
     PARAMS.shapeMiddleSizeMax.y,
     PARAMS.shapeMiddleSpaceMin,
     PARAMS.shapeMiddleSpaceMax,
+    PARAMS.shapeMiddleTreshold,
     OVERLAP_K,
     OFFSET_Y_K,
     [2, 3], // groupSizes
@@ -111,6 +113,7 @@ export function makeRectangleComposition(PARAMS) {
     PARAMS.shapeFrontSizeMax.y,
     PARAMS.shapeFrontSpaceMin,
     PARAMS.shapeFrontSpaceMax,
+    PARAMS.shapeFrontTreshold,
     OVERLAP_K,
     OFFSET_Y_K,
     [1], // groupSizes
@@ -157,6 +160,7 @@ function fillLayerWithShapes(
   MAX_HEIGHT_K,
   SPACE_MIN_K,
   SPACE_MAX_K,
+  TRESHOLD,
   OVERLAP_K,
   OFFSET_Y_K,
   groupSizes,
@@ -176,29 +180,30 @@ function fillLayerWithShapes(
     let [w, h] = getRectWH()
     let progress = (x + w / 2) / sizeX // ~ [0, 1]
     let scale = getPerspectiveValue(PARAMS, progress)
-    console.log('scale:', scale)
     w *= scale
     h *= scale
-    if (x - w / 2 > sizeX) {
+    if (x > sizeX) {
       break
     }
-    let overlap = OVERLAP_K * sizeY // Apply overlap factor
-    let dh = sizeY * OFFSET_Y_K * scale
-    let offsetY = (R() * 2 - 1) * dh
-    let y = sizeY / 2 - h / 2 + offsetY
+    if (scale > TRESHOLD) {
+      let overlap = OVERLAP_K * sizeY // Apply overlap factor
+      let dh = sizeY * OFFSET_Y_K * scale
+      let offsetY = (R() * 2 - 1) * dh
+      let y = sizeY / 2 - h / 2 + offsetY
 
-    let poly = [
-      [x - overlap, y],
-      [x + overlap + w, y],
-      [x + overlap + w, y + h],
-      [x - overlap, y + h],
-    ]
-    shape = [poly]
-    shape.type = shapeType
+      let poly = [
+        [x - overlap, y],
+        [x + overlap + w, y],
+        [x + overlap + w, y + h],
+        [x - overlap, y + h],
+      ]
+      shape = [poly]
+      shape.type = shapeType
 
-    shape.fill = palette[(colorRandom() * palette.length) | 0]
+      shape.fill = palette[(colorRandom() * palette.length) | 0]
 
-    shapes.push(shape)
+      shapes.push(shape)
+    }
 
     if (w < 10) w = 10 // prevent too small steps
     x += w
