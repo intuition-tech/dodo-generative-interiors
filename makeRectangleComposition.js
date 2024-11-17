@@ -121,8 +121,28 @@ export function makeRectangleComposition(PARAMS) {
 
 // gets a value between 0 and 1
 // koeff is between 0 and 1 and usef for shapes scaling
-function getPerspectiveKoeff(x) {
-  return Math.min(Math.max(map(x, 0, 1, 1.5, 0.5), 0), 1)
+function getPerspectiveValue(PARAMS, x) {
+  x = Math.min(Math.max(x, 0), 1)
+
+  if (x <= 0.5) {
+    // Interpolate between left and center
+    return map(
+      x,
+      0,
+      0.5,
+      PARAMS.perspectiveValueLeft,
+      PARAMS.perspectiveValueCenter,
+    )
+  } else {
+    // Interpolate between center and right
+    return map(
+      x,
+      0.5,
+      1,
+      PARAMS.perspectiveValueCenter,
+      PARAMS.perspectiveValueRight,
+    )
+  }
 }
 
 function fillLayerWithShapes(
@@ -154,8 +174,9 @@ function fillLayerWithShapes(
       continue
     }
     let [w, h] = getRectWH()
-    let progress = (x - w / 2) / sizeX // ~ [0, 1]
-    let scale = getPerspectiveKoeff(progress)
+    let progress = (x + w / 2) / sizeX // ~ [0, 1]
+    let scale = getPerspectiveValue(PARAMS, progress)
+    console.log('scale:', scale)
     w *= scale
     h *= scale
     if (x - w / 2 > sizeX) {

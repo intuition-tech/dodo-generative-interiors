@@ -43,6 +43,10 @@ let PARAMS = {
   sizeY: 3000,
   shapesVertAmp: 0.07,
 
+  perspectiveValueLeft: 1,
+  perspectiveValueCenter: 1,
+  perspectiveValueRight: 0.5,
+
   // back
   colorsBack: '#0096e0,#006db9,#03bb8f,#258682,#ced2d5,#b3b9bd,#9fa7ac',
   shapeBackSizeMin: {x: 0.5, y: 3},
