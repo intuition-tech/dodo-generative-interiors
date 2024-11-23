@@ -60,7 +60,7 @@ export function makeRectangleComposition(PARAMS) {
   let paletteMiddle = parseColors(PARAMS.colorsMiddle)
   let paletteBack = parseColors(PARAMS.colorsBack)
 
-  const OVERLAP_K = PARAMS.shapesOverlap
+  const OVERLAP = PARAMS.shapesOverlap
   const OFFSET_Y_K = PARAMS.shapesVertAmp
 
   // FIXME правильно панно раскрашивать. Брать все шейпы: фронт, бэк, мид, — и сортировать по координате
@@ -78,7 +78,7 @@ export function makeRectangleComposition(PARAMS) {
     PARAMS.shapeBackSpaceMin,
     PARAMS.shapeBackSpaceMax,
     PARAMS.shapeBackTreshold,
-    OVERLAP_K,
+    OVERLAP,
     OFFSET_Y_K,
     [1], // groupSizes
   )
@@ -96,7 +96,7 @@ export function makeRectangleComposition(PARAMS) {
     PARAMS.shapeMiddleSpaceMin,
     PARAMS.shapeMiddleSpaceMax,
     PARAMS.shapeMiddleTreshold,
-    OVERLAP_K,
+    OVERLAP,
     OFFSET_Y_K,
     [2, 3], // groupSizes
   )
@@ -114,7 +114,7 @@ export function makeRectangleComposition(PARAMS) {
     PARAMS.shapeFrontSpaceMin,
     PARAMS.shapeFrontSpaceMax,
     PARAMS.shapeFrontTreshold,
-    OVERLAP_K,
+    OVERLAP,
     OFFSET_Y_K,
     [1], // groupSizes
   )
@@ -161,7 +161,7 @@ function fillLayerWithShapes(
   SPACE_MIN_K,
   SPACE_MAX_K,
   TRESHOLD,
-  OVERLAP_K,
+  OVERLAP,
   OFFSET_Y_K,
   groupSizes,
 ) {
@@ -186,7 +186,7 @@ function fillLayerWithShapes(
       break
     }
     if (scale > TRESHOLD) {
-      let overlap = OVERLAP_K * sizeY // Apply overlap factor
+      let overlap = OVERLAP
       let dh = sizeY * OFFSET_Y_K * scale
       let offsetY = (R() * 2 - 1) * dh
       let y = sizeY / 2 - h / 2 + offsetY

@@ -1,3 +1,9 @@
+/*
+- .задать правильную ширину сегментов панно https://t.me/c/2173701367/1090, проверить, что экспортируется правильный размер (50 mm диагональ)
+- скругления углов сделать разными для разных шейпов
+- во все поля кроме ввода размеров поставить целые числа
+*/
+
 import {Pane} from './pane.js'
 import {makePanelSvg} from './makePanelSvg.js'
 import {
@@ -72,8 +78,9 @@ let PARAMS = {
   shapeFrontSpaceMax: 0.5,
   shapeFrontTreshold: 0.75,
 
-  shapesRadius: 1000,
-  shapesOverlap: 0.01,
+  shapesRadiusMin: 100,
+  shapesRadiusMax: 1000,
+  shapesOverlap: 30,
   panelWidth: 2500,
   panelWidthRounded: 2500,
   panelHeight: 500,
@@ -90,7 +97,7 @@ pane.on('change', e => {
   }
 
   if (e.presetKey == 'panelWidth') {
-    let roundSize = PARAMS.panelWidthRoundSize
+    let roundSize = PARAMS.panelWidthRoundSize // FIXME
     PARAMS.panelWidthRounded =
       PARAMS.panelWidth +
       roundSize / 2 -

@@ -31,7 +31,7 @@ export function Pane(PARAMS, seedStringCallback) {
   })
   // wall.addBlade({
   //   view: 'infodump',
-  //   content: 'Округлено до XXXXXX',
+  //   content: 'Округлено до XXXXXX',pane
   // })
 
   wall.addMonitor(PARAMS, 'sizeXRounded', {
@@ -72,18 +72,19 @@ export function Pane(PARAMS, seedStringCallback) {
   let advanced = pane.addFolder({title: 'Больше настроек', expanded: true})
 
   let scale = advanced.addInput(PARAMS, 'scale', {
-    min: 1,
-    max: 30,
+    step: 1,
     label: 'Сжатие',
   })
-  advanced.addInput(PARAMS, 'shapesRadius', {
-    min: 0,
-    max: 1500,
-    label: 'Радиус',
+  advanced.addInput(PARAMS, 'shapesRadiusMin', {
+    step: 1,
+    label: 'Радиус мин',
+  })
+  advanced.addInput(PARAMS, 'shapesRadiusMax', {
+    step: 1,
+    label: 'Радиус макс',
   })
   advanced.addInput(PARAMS, 'shapesOverlap', {
-    min: -0.1,
-    max: 0.1,
+    step: 1,
     label: 'Нахлёст',
   })
   let colorsBgFg = advanced.addInput(PARAMS, 'colorsBgFg', {

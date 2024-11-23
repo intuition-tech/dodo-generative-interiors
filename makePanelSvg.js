@@ -12,7 +12,7 @@ export async function makePanelSvg(PARAMS, STATE, svgInputElement) {
 
   // Fetch the SVG file
   if (!svgInputElement) {
-    const response = await fetch('dodo.svg')
+    const response = await fetch('dodo_en.svg')
     const svgText = await response.text()
     const parser = new DOMParser()
     const svgDoc = parser.parseFromString(svgText, 'image/svg+xml')

@@ -1,5 +1,5 @@
 import {chaikinSmooth} from './chaikinSmooth.js'
-import {parseColors} from './helpers.js'
+import {parseColors, R} from './helpers.js'
 import {splitmix32, stringHash} from './helpers.js'
 
 export function makeWallpaperShapes(PARAMS, rectangleComposition) {
@@ -8,7 +8,7 @@ export function makeWallpaperShapes(PARAMS, rectangleComposition) {
     let polys = rect.map(poly => {
       // two random numbers to set the tilt
       poly = tiltRect(poly, tiltRandom(), tiltRandom())
-      poly = subdivide3(poly, PARAMS.shapesRadius)
+      poly = subdivide3(poly, PARAMS.shapesRadiusMin, PARAMS.shapesRadiusMax)
       poly = chaikinSmooth(poly, 4)
       return poly
     })
@@ -156,7 +156,8 @@ function subdivide2(poly) {
   return newPoly
 }
 
-function subdivide3(poly, radius) {
+function subdivide3(poly, minRadius, maxRadius) {
+  let radius = R() * (maxRadius - minRadius) + minRadius
   let newPoly = []
 
   for (let i = 0; i < poly.length; i++) {
