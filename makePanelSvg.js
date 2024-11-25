@@ -84,14 +84,12 @@ export async function makePanelSvg(PARAMS, STATE, svgInputElement) {
     }
 
     useElementWrapper.appendChild(makeUseElement(0, 'center'))
-    // FIXME походу модуль надо включить и может даже заработает. Может визуальный дебаг какой-нибудь выводить? Например, чтобы при наведении на прямоугольник показывалось его содержимое. Или
     if (useLeftX > maskLeftX) {
       // если в маске виден левый край
       useElementWrapper.appendChild(makeUseElement(widthOrig * scale, 'left'))
     } else if (useRightX < maskRightX) {
       // если в маске виден правый край
       useElementWrapper.appendChild(makeUseElement(-widthOrig * scale, 'right'))
-      // console.log('NEVER HAPPENS')
     }
 
     g.appendChild(mask)
@@ -123,19 +121,23 @@ export async function makePanelSvg(PARAMS, STATE, svgInputElement) {
 
   setSeed(stringHash(PARAMS.seedString) + 2)
   let shiftRandom = splitmix32(100)
+  let rectShapes = STATE.wallpaperShapes.filter(
+    d => d.type == 'rect' || d.type == 'rectBg' || d.type == 'rectFg',
+  )
+  rectShapes = rectShapes.sort((d1, d2) => d1.polys[0][0] - d2.polys[0][0])
   for (let i = 0; i < N; i++) {
     const rect = document.createElementNS(svgNS, 'rect')
     rect.setAttribute('x', ((i + 0.5) * panelSvgWidth) / N)
     rect.setAttribute('width', panelSvgWidth / N / 2)
     rect.setAttribute('height', panelSvgHeight)
-    let rectShapes = STATE.wallpaperShapes.filter(d => d.type == 'rect')
     // let index = map(i + 10 * shiftRandom() - 5, 0, N, 0, rectShapes.length) | 0
     // let index = map(i, 0, N, 0, rectShapes.length) | 0
     let index =
-      map(i + N * 0.5 * shiftRandom() - N * 0.25, 0, N, 0, rectShapes.length) | 0
-    if (index >= rectShapes.length) index = rectShapes.length - 1
-    if (index < 0) index = 0
-    let color = STATE.wallpaperShapes[index].fill
+      map(i + N * 0.2 * (shiftRandom() - 0.5), 0, N, 0, rectShapes.length) | 0
+    // if (index >= rectShapes.length) index = rectShapes.length - 1
+    // if (index < 0) index = 0
+    index = mod(index, rectShapes.length)
+    let color = rectShapes[index].fill
     rect.setAttribute('fill', color)
     newSvg.appendChild(rect)
   }

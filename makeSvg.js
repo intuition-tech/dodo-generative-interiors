@@ -55,11 +55,15 @@ export function makeSvg(PARAMS, shapes) {
       path.setAttribute('fill', fill)
       // path.setAttribute('opacity', '0.1')
       gradSymbol.appendChild(path)
-    } else if (shape.type === 'rect') {
+    } else if (
+      shape.type === 'rect' ||
+      shape.type === 'rectBg' ||
+      shape.type === 'rectFg'
+    ) {
       path.setAttribute('fill', fill)
       shapesGroup.appendChild(path)
     } else {
-      console.log('wtf?') // FIXME remove
+      console.log('unknown shape')
     }
   })
   svg.appendChild(backgroundGroup)

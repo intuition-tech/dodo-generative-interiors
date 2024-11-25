@@ -97,7 +97,7 @@ pane.on('change', e => {
   }
 
   if (e.presetKey == 'panelWidth') {
-    let roundSize = PARAMS.panelWidthRoundSize // FIXME
+    let roundSize = PARAMS.panelWidthRoundSize
     PARAMS.panelWidthRounded =
       PARAMS.panelWidth +
       roundSize / 2 -

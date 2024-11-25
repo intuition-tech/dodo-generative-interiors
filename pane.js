@@ -97,6 +97,8 @@ export function Pane(PARAMS, seedStringCallback) {
     label: 'Вертикальная амплитуда',
   })
 
+	// Настроить имеющиесфя лампыа
+
   let shapesFront = advanced.addFolder({title: 'Верхний слой'})
   shapesFront.addInput(PARAMS, 'colorsFront', {
     label: 'Палитра',

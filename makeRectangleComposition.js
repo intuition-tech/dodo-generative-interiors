@@ -75,12 +75,10 @@ export function makeRectangleComposition(PARAMS) {
   const OVERLAP = PARAMS.shapesOverlap
   const OFFSET_Y_K = PARAMS.shapesVertAmp
 
-  // FIXME правильно панно раскрашивать. Брать все шейпы: фронт, бэк, мид, — и сортировать по координате
-
   fillLayerWithShapes(
     PARAMS,
     shapes,
-    'rect',
+    'rectBg',
     paletteBack,
     colorRandom,
     PARAMS.shapeBackSizeMin.x,
@@ -118,7 +116,7 @@ export function makeRectangleComposition(PARAMS) {
   fillLayerWithShapes(
     PARAMS,
     shapes,
-    'rect',
+    'rectFg',
     paletteFront,
     colorRandom,
     PARAMS.shapeFrontSizeMin.x,
@@ -180,7 +178,7 @@ function fillLayerWithShapes(
   const sizeY = PARAMS.sizeY
   let genRectIterator = genRect(groupSizes)
   // FIXME set a proper left margin
-  for (let x = -1 * sizeY; ; ) {
+  for (let x = -0.25 * sizeY; ; ) {
     let shape = {}
     let bigOrSmall = genRectIterator.next().value
     if (bigOrSmall === 'none') {
