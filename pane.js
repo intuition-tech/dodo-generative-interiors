@@ -97,23 +97,6 @@ export function Pane(PARAMS, seedStringCallback) {
     label: 'Вертикальная амплитуда',
   })
 
-  let perspective = advanced.addFolder({title: 'Перспектива'})
-  perspective.addInput(PARAMS, 'perspectiveValueLeft', {
-    min: 0,
-    max: 2,
-    label: 'Слева',
-  })
-  perspective.addInput(PARAMS, 'perspectiveValueCenter', {
-    min: 0,
-    max: 2,
-    label: 'В центре',
-  })
-  perspective.addInput(PARAMS, 'perspectiveValueRight', {
-    min: 0,
-    max: 2,
-    label: 'Справа',
-  })
-
   let shapesFront = advanced.addFolder({title: 'Верхний слой'})
   shapesFront.addInput(PARAMS, 'colorsFront', {
     label: 'Палитра',

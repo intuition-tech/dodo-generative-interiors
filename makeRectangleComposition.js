@@ -15,9 +15,21 @@ function* genRect(groupSizes) {
 
 // let debugFill = ''
 
+function getPerspectiveValues() {
+  const perspectiveValues = [
+    [1.5, 1.5, 0.7],
+    [0.7, 1.5, 1.5],
+    [0.7, 1.5, 0.7],
+  ]
+  let [perspectiveValueLeft, perspectiveValueCenter, perspectiveValueRight] =
+    perspectiveValues[(R() * perspectiveValues.length) | 0]
+  return [perspectiveValueLeft, perspectiveValueCenter, perspectiveValueRight]
+}
+
 export function makeRectangleComposition(PARAMS) {
   const shapes = []
-
+  let [perspectiveValueLeft, perspectiveValueCenter, perspectiveValueRight] =
+    getPerspectiveValues()
   // let x = 0//{{{
   // let rectsInGroup = 0 // groups are separated with spaces
   // while (x < sizeX) {
@@ -81,6 +93,7 @@ export function makeRectangleComposition(PARAMS) {
     OVERLAP,
     OFFSET_Y_K,
     [1], // groupSizes
+    [1, 1, 1], // perspectiveValues
   )
 
   fillLayerWithShapes(
@@ -99,6 +112,7 @@ export function makeRectangleComposition(PARAMS) {
     OVERLAP,
     OFFSET_Y_K,
     [2, 3], // groupSizes
+    [perspectiveValueLeft, perspectiveValueCenter, perspectiveValueRight],
   )
 
   fillLayerWithShapes(
@@ -117,6 +131,7 @@ export function makeRectangleComposition(PARAMS) {
     OVERLAP,
     OFFSET_Y_K,
     [1], // groupSizes
+    [1, 1, 1], // perspectiveValues
   )
 
   return shapes
@@ -124,27 +139,20 @@ export function makeRectangleComposition(PARAMS) {
 
 // gets a value between 0 and 1
 // koeff is between 0 and 1 and usef for shapes scaling
-function getPerspectiveValue(PARAMS, x) {
+function getPerspectiveValue(
+  perspectiveValueLeft,
+  perspectiveValueCenter,
+  perspectiveValueRight,
+  x,
+) {
   x = Math.min(Math.max(x, 0), 1)
 
   if (x <= 0.5) {
     // Interpolate between left and center
-    return map(
-      x,
-      0,
-      0.5,
-      PARAMS.perspectiveValueLeft,
-      PARAMS.perspectiveValueCenter,
-    )
+    return map(x, 0, 0.5, perspectiveValueLeft, perspectiveValueCenter)
   } else {
     // Interpolate between center and right
-    return map(
-      x,
-      0.5,
-      1,
-      PARAMS.perspectiveValueCenter,
-      PARAMS.perspectiveValueRight,
-    )
+    return map(x, 0.5, 1, perspectiveValueCenter, perspectiveValueRight)
   }
 }
 
@@ -164,7 +172,10 @@ function fillLayerWithShapes(
   OVERLAP,
   OFFSET_Y_K,
   groupSizes,
+  perspectiveValues,
 ) {
+  let [perspectiveValueLeft, perspectiveValueCenter, perspectiveValueRight] =
+    perspectiveValues
   const sizeX = PARAMS.sizeXRounded
   const sizeY = PARAMS.sizeY
   let genRectIterator = genRect(groupSizes)
@@ -179,7 +190,12 @@ function fillLayerWithShapes(
     }
     let [w, h] = getRectWH()
     let progress = (x + w / 2) / sizeX // ~ [0, 1]
-    let scale = getPerspectiveValue(PARAMS, progress)
+    let scale = getPerspectiveValue(
+      perspectiveValueLeft,
+      perspectiveValueCenter,
+      perspectiveValueRight,
+      progress,
+    )
     w *= scale
     h *= scale
     if (x > sizeX) {
