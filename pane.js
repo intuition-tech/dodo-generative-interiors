@@ -69,7 +69,7 @@ export function Pane(PARAMS, seedStringCallback) {
     label: 'Смещение',
   })
 
-  let advanced = pane.addFolder({title: 'Больше настроек', expanded: true})
+  let advanced = pane.addFolder({title: 'Больше настроек', expanded: false})
 
   let scale = advanced.addInput(PARAMS, 'scale', {
     step: 1,
@@ -97,9 +97,9 @@ export function Pane(PARAMS, seedStringCallback) {
     label: 'Вертикальная амплитуда',
   })
 
-	// Настроить имеющиесфя лампыа
+  // Настроить имеющиесфя лампыа
 
-  let shapesFront = advanced.addFolder({title: 'Верхний слой'})
+  let shapesFront = advanced.addFolder({title: 'Верхний слой', expanded: false})
   shapesFront.addInput(PARAMS, 'colorsFront', {
     label: 'Палитра',
   })
@@ -129,7 +129,7 @@ export function Pane(PARAMS, seedStringCallback) {
     label: 'Порог',
   })
 
-  let shapesMiddle = advanced.addFolder({title: 'Средний слой'})
+  let shapesMiddle = advanced.addFolder({title: 'Средний слой', expanded: false})
   shapesMiddle.addInput(PARAMS, 'colorsMiddle', {
     label: 'Палитра',
   })
@@ -159,7 +159,7 @@ export function Pane(PARAMS, seedStringCallback) {
     label: 'Порог',
   })
 
-  let shapesBack = advanced.addFolder({title: 'Нижний слой'})
+  let shapesBack = advanced.addFolder({title: 'Нижний слой', expanded: false})
   shapesBack.addInput(PARAMS, 'colorsBack', {
     label: 'Палитра',
   })

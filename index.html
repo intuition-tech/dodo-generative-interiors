@@ -21,13 +21,6 @@
         margin-top: 2em;
         font-weight: normal;
       }
-      svg {
-      }
-      .tp-dfwv {
-        position: fixed !important;
-        right: 0 !important;
-        top: 0 !important;
-      }
       #workspace {
         padding: 1em;
         position: relative;
@@ -40,16 +33,6 @@
         height: 100%;
         overflow: hidden;
       }
-      /*
-         .svg-wrapper {
-           position: absolute;
-           top: 0;
-           left: 0px;
-         }
-         .svg-wrapper#wallpaper {
-           top: 150px;
-         }
-      */
       .title {
         position: absolute;
         bottom: 100%;
@@ -92,10 +75,7 @@
       }
 
       .tp-dfwv {
-        width: 198px !important;
-      }
-      .tp-lblv_l {
-        /*min-width: 100px;*/
+        width: 250px !important;
       }
       .tp-lblv_v {
         width: 95px !important;
@@ -105,6 +85,74 @@
       }
       .tp-sglv input[readonly] {
         text-align: right;
+      }
+
+      .tp-rotv {
+        background-color: hsl(0, 0%, 94.58%) !important;
+        font-size: 13px !important;
+      }
+      .tp-rotv {
+        --font-family: sans-serif !important;
+        --bs-br: var(--tp-base-border-radius, 6px) !important;
+        --cnt-h-p: var(--tp-container-horizontal-padding, 4px) !important;
+        --cnt-v-p: var(--tp-container-vertical-padding, 4px) !important;
+        --elm-br: var(--tp-element-border-radius, 2px) !important;
+        --bld-s: var(--tp-blade-spacing, 4px) !important;
+        --bld-us: var(--tp-blade-unit-size, 20px) !important;
+        --bs-bg: var(
+          --tp-base-background-color,
+          hsl(240, 2.27%, 17.25%)
+        ) !important;
+        --bs-sh: var(--tp-base-shadow-color, rgba(0, 0, 0, 0.2)) !important;
+        --btn-bg: var(
+          --tp-button-background-color,
+          hsl(0, 0%, 87.84%)
+        ) !important;
+        --btn-bg-a: var(--tp-button-background-color-active, #d6d6d6) !important;
+        --btn-bg-f: var(--tp-button-background-color-focus, #c9cace) !important;
+        --btn-bg-h: var(--tp-button-background-color-hover, #bdbcc4) !important;
+        --btn-fg: var(--tp-button-foreground-color, hsl(230, 7%, 17%)) !important;
+        --cnt-bg: var(
+          --tp-container-background-color,
+          rgba(187, 188, 196, 0.1)
+        ) !important;
+        --cnt-bg-a: var(
+          --tp-container-background-color-active,
+          rgba(187, 188, 196, 0.25)
+        ) !important;
+        --cnt-bg-f: var(
+          --tp-container-background-color-focus,
+          rgba(187, 188, 196, 0.2)
+        ) !important;
+        --cnt-bg-h: var(
+          --tp-container-background-color-hover,
+          rgba(187, 188, 196, 0.15)
+        ) !important;
+        --cnt-fg: var(
+          --tp-container-foreground-color,
+          hsl(230, 7%, 75%)
+        ) !important;
+        --in-bg: var(
+          --tp-input-background-color,
+          rgba(187, 188, 196, 0.1)
+        ) !important;
+        --in-bg-a: var(
+          --tp-input-background-color-active,
+          rgba(187, 188, 196, 0.25)
+        ) !important;
+        --in-bg-f: var(
+          --tp-input-background-color-focus,
+          rgba(187, 188, 196, 0.2)
+        ) !important;
+        --in-bg-h: var(
+          --tp-input-background-color-hover,
+          rgba(187, 188, 196, 0.15)
+        ) !important;
+        --in-fg: hsl(0deg 0% 0%) !important;
+        --lbl-fg: rgb(0 0 0 / 70%) !important;
+        --mo-bg: rgb(0 0 0 / 20%) !important;
+        --mo-fg: rgb(0 0 0 / 70%) !important;
+        --grv-fg: rgb(0 0 0 / 10%) !important;
       }
     </style>
   </head>
