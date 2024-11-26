@@ -47,40 +47,39 @@ let PARAMS = {
   sizeX: 6000,
   sizeXRounded: 6000,
   sizeY: 3000,
-  shapesVertAmp: 0.07,
+  shapesVertAmp: 0.2,
 
   perspectiveValueLeft: 1,
   perspectiveValueCenter: 1,
   perspectiveValueRight: 0.5,
 
   // back
-  colorsBack: '#0096e0,#006db9,#03bb8f,#258682,#ced2d5,#b3b9bd,#9fa7ac',
+  colorsBack: '#E81C34 #FF5602 #C83A2E #F283BF #EAEE3F #A5000F',
   shapeBackSizeMin: {x: 0.5, y: 3},
   shapeBackSizeMax: {x: 0.5, y: 3},
   shapeBackSpaceMin: 0.1,
-  shapeBackSpaceMax: 0.12,
+  shapeBackSpaceMax: 0.5,
   shapeBackTreshold: 0.75,
 
   // middle
-  colorsMiddle:
-    '#f3fd36,#d6e036,#e81c34,#ff415e,#ed4897,#f283bf,#f6b8e2,#ff5602,#ff8147,#ffcc89',
-  shapeMiddleSizeMin: {x: 0.3, y: 0.5},
-  shapeMiddleSizeMax: {x: 0.2, y: 0.8},
+  colorsMiddle: '#F3FD36 #D6E036 #FF415E #ED4897 #FFCC89 #F6B8E2 #FF8147 #FF8147',
+  shapeMiddleSizeMin: {x: 0.1, y: 0.5},
+  shapeMiddleSizeMax: {x: 0.4, y: 0.8},
   shapeMiddleSpaceMin: 0.1,
-  shapeMiddleSpaceMax: 0.12,
-  shapeMiddleTreshold: 0.0,
+  shapeMiddleSpaceMax: 0.2,
+  shapeMiddleTreshold: 0.7,
 
   // front
-  colorsFront: '#0096e0,#006db9,#03bb8f,#258682,#ced2d5,#b3b9bd,#9fa7ac',
-  shapeFrontSizeMin: {x: 0.02, y: 3},
+  colorsFront: '#006DB9 #0096E0 #03BB8F #258682 #CED2D5 #B3B9BD #9FA7AC',
+  shapeFrontSizeMin: {x: 0.01, y: 3},
   shapeFrontSizeMax: {x: 0.05, y: 3},
   shapeFrontSpaceMin: 0.1,
-  shapeFrontSpaceMax: 0.5,
+  shapeFrontSpaceMax: 1,
   shapeFrontTreshold: 0.75,
 
   shapesRadiusMin: 100,
   shapesRadiusMax: 1000,
-  shapesOverlap: 30,
+  shapesOverlap: 80,
   panelWidth: 2500,
   panelWidthRounded: 2500,
   panelHeight: 500,
