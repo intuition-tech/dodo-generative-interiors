@@ -1,6 +1,5 @@
 import {R, map} from './helpers.js'
-import {parseColors} from './helpers.js'
-import {splitmix32, stringHash} from './helpers.js'
+import {splitmix32, stringHash, parseColors, shuffleArray} from './helpers.js'
 
 function* genRect(groupSizes) {
   while (true) {
@@ -69,8 +68,34 @@ export function makeRectangleComposition(PARAMS) {
   let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
 
   let paletteFront = parseColors(PARAMS.colorsFront)
+  paletteFront = shuffleArray(paletteFront).slice(0, 2)
   let paletteMiddle = parseColors(PARAMS.colorsMiddle)
+  paletteMiddle = shuffleArray(paletteMiddle).slice(0, 2)
   let paletteBack = parseColors(PARAMS.colorsBack)
+  paletteBack = shuffleArray(paletteBack).slice(0, 2)
+  // output colors into console with a colorful background
+  console.log('———————')
+  console.log('front')
+  for (let i = 0; i < paletteFront.length; i++) {
+    console.log(
+      `%c${paletteFront[i]}`,
+      'background: ' + paletteFront[i] + '; color: ' + paletteFront[i],
+    )
+  }
+  console.log('middle')
+  for (let i = 0; i < paletteMiddle.length; i++) {
+    console.log(
+      `%c${paletteMiddle[i]}`,
+      'background: ' + paletteMiddle[i] + '; color: ' + paletteMiddle[i],
+    )
+  }
+  console.log('back')
+  for (let i = 0; i < paletteBack.length; i++) {
+    console.log(
+      `%c${paletteBack[i]}`,
+      'background: ' + paletteBack[i] + '; color: ' + paletteBack[i],
+    )
+  }
 
   const OVERLAP = PARAMS.shapesOverlap
   const OFFSET_Y_K = PARAMS.shapesVertAmp
