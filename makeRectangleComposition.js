@@ -67,12 +67,23 @@ export function makeRectangleComposition(PARAMS) {
 
   let colorRandom = splitmix32(stringHash(PARAMS.seedString) + 8)
 
-  let paletteFront = parseColors(PARAMS.colorsFront)
-  paletteFront = shuffleArray(paletteFront).slice(0, 2)
-  let paletteMiddle = parseColors(PARAMS.colorsMiddle)
-  paletteMiddle = shuffleArray(paletteMiddle).slice(0, 2)
-  let paletteBack = parseColors(PARAMS.colorsBack)
-  paletteBack = shuffleArray(paletteBack).slice(0, 2)
+  let paletteFrontBase = parseColors(PARAMS.colorsFront)
+  let paletteFront = shuffleArray(paletteFrontBase).slice(0, 2)
+
+  let paletteMiddleBase = parseColors(PARAMS.colorsMiddle)
+  let paletteMiddleAccent = parseColors(PARAMS.colorsMiddleAccent)
+  let paletteMiddle = [
+    shuffleArray(paletteMiddleBase)[0],
+    shuffleArray(paletteMiddleAccent)[0],
+  ]
+
+  let paletteBackBase = parseColors(PARAMS.colorsBack)
+  let paletteBackAccent = parseColors(PARAMS.colorsBackAccent)
+  let paletteBack = [
+    shuffleArray(paletteBackBase)[0],
+    shuffleArray(paletteBackAccent)[0],
+  ]
+
   // output colors into console with a colorful background
   console.log('———————')
   console.log('front')

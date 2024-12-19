@@ -133,6 +133,9 @@ export function Pane(PARAMS, seedStringCallback) {
   shapesMiddle.addInput(PARAMS, 'colorsMiddle', {
     label: 'Палитра',
   })
+  shapesMiddle.addInput(PARAMS, 'colorsMiddleAccent', {
+    label: 'Палитра акцентная',
+  })
   shapesMiddle.addInput(PARAMS, 'shapeMiddleSizeMin', {
     x: {min: 0.01, max: 0.5},
     y: {min: 0, max: 5},
@@ -162,6 +165,9 @@ export function Pane(PARAMS, seedStringCallback) {
   let shapesBack = advanced.addFolder({title: 'Нижний слой', expanded: false})
   shapesBack.addInput(PARAMS, 'colorsBack', {
     label: 'Палитра',
+  })
+  shapesBack.addInput(PARAMS, 'colorsBackAccent', {
+    label: 'Палитра акцентная',
   })
   shapesBack.addInput(PARAMS, 'shapeBackSizeMin', {
     x: {min: 0.01, max: 0.5},
