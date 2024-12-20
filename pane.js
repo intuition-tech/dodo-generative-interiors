@@ -1,7 +1,7 @@
 export function Pane(PARAMS, seedStringCallback) {
   const pane = new Tweakpane.Pane()
 
-  let seedString = pane.addInput(PARAMS, 'seedString', {label: 'Слово'})
+  let seedString = pane.addInput(PARAMS, 'seedString', {label: 'Город'})
   seedString.element
     .querySelector('input')
     .addEventListener('input', seedStringCallback)

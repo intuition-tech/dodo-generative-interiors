@@ -54,7 +54,7 @@ let PARAMS = {
   perspectiveValueRight: 0.5,
 
   // front
-  colorsFront: '#006DB9 #0096E0 #03BB8F #258682 #CED2D5 #B3B9BD #9FA7AC',
+  colorsFront: '#0096E0, #D5FF4A, #03BB8F, #CED2D5, #FFCEC4',
   colorsFrontAccent: '',
   shapeFrontSizeMin: {x: 0.01, y: 3},
   shapeFrontSizeMax: {x: 0.05, y: 3},
@@ -63,9 +63,8 @@ let PARAMS = {
   shapeFrontTreshold: 0.75,
 
   // middle
-  colorsMiddle:
-    '#EDF736 #F99D90 #FF415E #ED4897 #FFCC89 #F6B8E2 #B4B9BD #03BB8F #FFCEC4',
-  colorsMiddleAccent: '#FF9A00 #FF8147 #E36B0',
+  colorsMiddle: '#EDF736 #F99D90 #FF415E #ED4897 #FFCC89 #F6B8E2 #B3B9BD #03BB8F',
+  colorsMiddleAccent: '#FF9A00 #FE8101 #FF6900',
   shapeMiddleSizeMin: {x: 0.1, y: 0.5},
   shapeMiddleSizeMax: {x: 0.35, y: 0.7},
   shapeMiddleSpaceMin: 0.15,
@@ -74,7 +73,7 @@ let PARAMS = {
 
   // back
   colorsBack: '#6D1433 #A3412D #A5000F #9FA7AC',
-  colorsBackAccent: '#FF5602 #DC3535 #E81C34',
+  colorsBackAccent: '#F05F17 #F44A28 #E81C35',
   shapeBackSizeMin: {x: 0.5, y: 3},
   shapeBackSizeMax: {x: 0.5, y: 3},
   shapeBackSpaceMin: 0.2,
