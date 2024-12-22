@@ -34,10 +34,12 @@ export function Pane(PARAMS, seedStringCallback) {
   //   content: 'Округлено до XXXXXX',pane
   // })
 
-  wall.addMonitor(PARAMS, 'sizeXRounded', {
+  let sizeXRounded = wall.addMonitor(PARAMS, 'sizeXRounded', {
     format: value => Math.round(value),
+    elementName: 'yoooo',
     label: 'Округлили до',
   })
+  sizeXRounded.element.style.opacity = '0.5'
 
   let sizeY = wall.addInput(PARAMS, 'sizeY', {
     step: 1,
@@ -55,10 +57,11 @@ export function Pane(PARAMS, seedStringCallback) {
     // max: 10000,
     label: 'Ширина, мм',
   })
-  panel.addMonitor(PARAMS, 'panelWidthRounded', {
+  let panelWidthRounded = panel.addMonitor(PARAMS, 'panelWidthRounded', {
     format: value => Math.round(value),
     label: 'Округлили до',
   })
+  panelWidthRounded.element.style.opacity = '0.5'
   panel.addInput(PARAMS, 'panelHeight', {
     step: 1,
     min: 1,
