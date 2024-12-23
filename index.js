@@ -40,7 +40,7 @@ resetState()
 let PARAMS = {
   debug: false,
   zoomSpeed: 0.05,
-  seedString: 'Тамбов',
+  seedString: 'Ростов-на',
   colorsBgFg: '#FFFFFF, #EEEEEE',
   gradientsEnabled: true,
   scale: 12,
